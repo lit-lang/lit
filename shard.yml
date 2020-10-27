@@ -1,0 +1,13 @@
+name: lit
+version: 0.1.0
+
+authors:
+  - your-name-here <your-email-here>
+
+targets:
+  lit:
+    main: src/lit.cr
+
+crystal: 0.35.1
+
+license: MIT
