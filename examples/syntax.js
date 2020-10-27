@@ -125,10 +125,7 @@ Kernel = {
 }
 
 
-notes = List.map([0, 0, 0], -> {
-  gets()
-})
-
 mean = arr -> List.sum(arr) / List.length(arr)
 
+notes = List.map([0, 0, 0], -> gets())
 notes |> mean |> puts
