@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-private def it_parses(str, to_type, to_literal)
+private def it_parses(str, to_type, to_literal = nil)
   it "parses #{str}" do
     token = Lit::Parser.parse(str).first
     token.should be_a Lit::Token
@@ -16,9 +16,11 @@ describe Lit::Parser do
     it_parses n.to_s, to_type: Lit::TokenType::NUMBER, to_literal: n
   end
 
-  it_parses "", to_type: Lit::TokenType::EOF, to_literal: nil
-  it_parses "(", to_type: Lit::TokenType::LEFT_PAREN, to_literal: nil
-  it_parses ")", to_type: Lit::TokenType::RIGHT_PAREN, to_literal: nil
+  it_parses "", to_type: Lit::TokenType::EOF
+  it_parses "(", to_type: Lit::TokenType::LEFT_PAREN
+  it_parses ")", to_type: Lit::TokenType::RIGHT_PAREN
+  it_parses "{", to_type: Lit::TokenType::LEFT_BRACE
+  it_parses "}", to_type: Lit::TokenType::RIGHT_BRACE
 
   it "raises error on unexpected chars" do
     expect_raises(Exception, "Unexpected character 'a' at line 1") do

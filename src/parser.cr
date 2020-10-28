@@ -40,6 +40,10 @@ module Lit
         add_token(Lit::TokenType::LEFT_PAREN)
       when ')'
         add_token(Lit::TokenType::RIGHT_PAREN)
+      when '{'
+        add_token(Lit::TokenType::LEFT_BRACE)
+      when '}'
+        add_token(Lit::TokenType::RIGHT_BRACE)
       else
         if digit?(c)
           consume_number
