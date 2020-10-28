@@ -19,7 +19,7 @@ describe Lit::Parser do
   it_parses "", to_type: Lit::TokenType::EOF, to_literal: nil
 
   it "raises error on unexpected chars" do
-    expect_raises(Exception) do
+    expect_raises(Exception, "Unexpected character 'a' at line 1") do
       Lit::Parser.parse("a")
     end
   end

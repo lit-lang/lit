@@ -40,7 +40,7 @@ module Lit
         if digit?(c)
           consume_number
         else
-          raise "Unexpected character at line #{@line}"
+          raise "Unexpected character '#{c}' at line #{@line}"
         end
       end
     end
