@@ -64,7 +64,7 @@ module Lit
         end
       end
 
-      add_token(TokenType::Number, token_string.to_f)
+      add_token(TokenType::NUMBER, token_string.to_f)
     end
 
     private def peek : Char

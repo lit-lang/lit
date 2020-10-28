@@ -13,7 +13,7 @@ end
 
 describe Lit::Parser do
   ((0..10).to_a + [504, 69.420]).each do |n|
-    it_parses n.to_s, to_type: Lit::TokenType::Number, to_literal: n
+    it_parses n.to_s, to_type: Lit::TokenType::NUMBER, to_literal: n
   end
 
   it_parses "", to_type: Lit::TokenType::EOF, to_literal: nil

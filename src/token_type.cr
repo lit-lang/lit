@@ -1,7 +1,6 @@
 module Lit
   enum TokenType
-    Number
-    Nil
+    NUMBER
     EOF
   end
 end
