@@ -1,3 +1,6 @@
+require "./parser"
+require "./token"
+
 # TODO: Write documentation for `Lit`
 module Lit
   VERSION = "0.1.0"

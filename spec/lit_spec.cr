@@ -1,9 +1,7 @@
 require "./spec_helper"
 
 describe Lit do
-  # TODO: Write tests
-
-  it "works" do
-    false.should eq(true)
+  it "has a version" do
+    Lit::VERSION.should_not be_nil
   end
 end
