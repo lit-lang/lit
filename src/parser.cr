@@ -144,7 +144,9 @@ module Lit
     end
 
     private def consume_identifier
-      while alphanumeric?(peek); advance; end
+      while alphanumeric?(peek)
+        advance
+      end
 
       text = @src[@token_start_pos...@current_pos]
       type = TokenType::IDENTIFIER
@@ -189,7 +191,7 @@ module Lit
     end
 
     private def alphanumeric?(c : Char) : Bool
-      alpha?(c) || digit?(c)
+      alpha?(c) || digit?(c) || c.in? ['?', '!']
     end
   end
 end

@@ -38,7 +38,7 @@ describe Lit::Parser do
   it_parses "|", to_type: Lit::TokenType::BAR
   it_parses "||", to_type: Lit::TokenType::BAR_BAR
   it_parses "|>", to_type: Lit::TokenType::PIPE_OPERATOR
-  it_parses "silverchair", to_type: Lit::TokenType::IDENTIFIER
+  it_parses "silverchair!?", to_type: Lit::TokenType::IDENTIFIER
 
   it "parses strings" do
     str = %("This is a string. 1 + 1")
