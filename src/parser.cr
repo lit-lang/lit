@@ -15,14 +15,18 @@ module Lit
     end
 
     def parse
-      until at_end?
-        @token_start_pos = @current_pos
-        scan_token
-      end
+      scan_tokens
+      add_eof_token
 
       @tokens
     end
 
+    private def scan_tokens
+      until at_end?
+        @token_start_pos = @current_pos
+        scan_token
+      end
+    end
     private def at_end?
       @current_pos >= @src.size
     end
@@ -35,7 +39,7 @@ module Lit
         if digit?(c)
           consume_number
         else
-          add_token(TokenType::Nil)
+          raise "Unexpected character at line #{@line}"
         end
       end
     end
@@ -85,6 +89,10 @@ module Lit
       text = @src[@token_start_pos...@current_pos]
 
       @tokens << Token.new(type, text, literal, @line)
+    end
+
+    private def add_eof_token
+      @tokens << Token.new(TokenType::EOF, "", nil, @line)
     end
 
     private def digit?(c : Char) : Bool
