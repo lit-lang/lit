@@ -27,7 +27,7 @@ TODO: Write installation instructions here
 
 Initial sintax
 
-```
+```rb
 say_hello = n -> puts("hello {n}")
 sum = (a, b) -> a + b
 a = 1
@@ -46,12 +46,12 @@ github_user_names = {
   matz = 'Yukihiro Matsumoto'
 }
 print(github_user_names.dhh)
-// => 'David Heinemeier Hansson'
+# => 'David Heinemeier Hansson'
 
 puts(github_user_names['matz'])
-// => 'Yukihiro Matsumoto\n'
+# => 'Yukihiro Matsumoto\n'
 
-// for small hashes
+# for small hashes
 point = {x = 1; y = 2}
 
 Math = {
@@ -97,25 +97,25 @@ List = {
   }
 }
 
-Math.Circle.circumference(r: 2)
-// => 12.5663706
+# Math.Circle.circumference(r: 2)
+# => 12.5663706
 
 AdminUser = {
   admin? = true
 }
 
 Email = {
-  send = (from, to) -> {// # some implementation}
+  send = (from, to) -> {# some implementation}
 }
 
 User = (_name, _email) -> {
   return {
-    ...AdminUser // # Composition
+    ...AdminUser # Composition
   
-    name = _name, // # constructor
-    email = _email, // # constructor
+    name = _name, # constructor
+    email = _email, # constructor
   
-    // # Methods
+    # Methods
     say_hello = puts("Hello, I'm {_name}" )
     send_email = to -> Email.send(email, to)
   }
@@ -123,21 +123,11 @@ User = (_name, _email) -> {
 
 me = User('matheus', 'matheus@email.com')
 me.say_hello()
-me.send_email(to: 'matz@email.com')
+# me.send_email(to: 'matz@email.com')
 
-// Future?
-// if(me.admin?) puts('What?')
-// else puts('Hi, mere mortal')
-
-if(me.admin?,
-  then: puts('What?'),
-  else: puts('Hi, mere mortal')
-)
-
-match me.admin? {
-  true = puts('What?'),
-  false = puts('Hi, mere mortal')
-}
+# Future?
+# if(me.admin?) puts('What?')
+# else puts('Hi, mere mortal')
 
 me.admin? |> on(
   true = puts('What?'),
@@ -155,12 +145,9 @@ Kernel = {
 }
 
 
-notes = List.map([0, 0, 0], -> {
-  gets()
-})
-
 mean = arr -> List.sum(arr) / List.length(arr)
 
+notes = List.map([0, 0, 0], -> gets())
 notes |> mean |> puts
 ```
 
