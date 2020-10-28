@@ -1,4 +1,5 @@
 require "./token"
+require "./keywords"
 
 module Lit
   class Parser
@@ -149,7 +150,7 @@ module Lit
       end
 
       text = @src[@token_start_pos...@current_pos]
-      type = TokenType::IDENTIFIER
+      type = keyword?(text) ? TokenType::KEYWORD : TokenType::IDENTIFIER
 
       add_token(type)
     end
@@ -192,6 +193,10 @@ module Lit
 
     private def alphanumeric?(c : Char) : Bool
       alpha?(c) || digit?(c) || c.in? ['?', '!']
+    end
+
+    private def keyword?(identifier : String) : Bool
+      identifier.in? KEYWORDS
     end
   end
 end
