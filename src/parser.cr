@@ -27,6 +27,7 @@ module Lit
         scan_token
       end
     end
+
     private def at_end?
       @current_pos >= @src.size
     end
@@ -51,12 +52,16 @@ module Lit
     end
 
     private def consume_number
-      while digit?(peek); advance; end
+      while digit?(peek)
+        advance
+      end
 
       if peek == '.' && digit?(peek_next)
         advance # consuming the .
 
-        while digit?(peek); advance; end
+        while digit?(peek)
+          advance
+        end
       end
 
       add_token(TokenType::Number, token_string.to_f)
@@ -77,6 +82,7 @@ module Lit
     private def token_string
       @src[@token_start_pos...@current_pos]
     end
+
     # private def current_char
     #   @src[@current_pos]
     # end
