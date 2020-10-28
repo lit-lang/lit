@@ -41,6 +41,10 @@ module Lit
         add_token(TokenType::LEFT_PAREN)
       when ')'
         add_token(TokenType::RIGHT_PAREN)
+      when '['
+        add_token(TokenType::LEFT_BRACKET)
+      when ']'
+        add_token(TokenType::RIGHT_BRACKET)
       when '{'
         add_token(TokenType::LEFT_BRACE)
       when '}'
@@ -65,6 +69,8 @@ module Lit
         match?('=') ? add_token(TokenType::GREATER_EQUAL) : add_token(TokenType::GREATER)
       when '<'
         match?('=') ? add_token(TokenType::LESS_EQUAL) : add_token(TokenType::LESS)
+      when '!'
+        match?('=') ? add_token(TokenType::BANG_EQUAL) : add_token(TokenType::BANG)
       when '|'
         if match?('|')
           add_token(TokenType::BAR_BAR)

@@ -19,6 +19,8 @@ describe Lit::Parser do
   it_parses "", to_type: Lit::TokenType::EOF
   it_parses "(", to_type: Lit::TokenType::LEFT_PAREN
   it_parses ")", to_type: Lit::TokenType::RIGHT_PAREN
+  it_parses "[", to_type: Lit::TokenType::LEFT_BRACKET
+  it_parses "]", to_type: Lit::TokenType::RIGHT_BRACKET
   it_parses "{", to_type: Lit::TokenType::LEFT_BRACE
   it_parses "}", to_type: Lit::TokenType::RIGHT_BRACE
   it_parses ",", to_type: Lit::TokenType::COMMA
@@ -38,6 +40,8 @@ describe Lit::Parser do
   it_parses "|", to_type: Lit::TokenType::BAR
   it_parses "||", to_type: Lit::TokenType::BAR_BAR
   it_parses "|>", to_type: Lit::TokenType::PIPE_OPERATOR
+  it_parses "!", to_type: Lit::TokenType::BANG
+  it_parses "!=", to_type: Lit::TokenType::BANG_EQUAL
   it_parses "silverchair!?", to_type: Lit::TokenType::IDENTIFIER
   it_parses "if", to_type: Lit::TokenType::KEYWORD
 
