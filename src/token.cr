@@ -4,7 +4,7 @@ module Lit
   class Token
     getter type : TokenType
     getter lexeme : String
-    getter literal : Float64?
+    getter literal : Float64 | String | Nil
     getter line : Int32
 
     def initialize(@type, @lexeme, @literal, @line); end

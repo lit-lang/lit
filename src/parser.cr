@@ -37,32 +37,55 @@ module Lit
 
       case c
       when '('
-        add_token(Lit::TokenType::LEFT_PAREN)
+        add_token(TokenType::LEFT_PAREN)
       when ')'
-        add_token(Lit::TokenType::RIGHT_PAREN)
+        add_token(TokenType::RIGHT_PAREN)
       when '{'
-        add_token(Lit::TokenType::LEFT_BRACE)
+        add_token(TokenType::LEFT_BRACE)
       when '}'
-        add_token(Lit::TokenType::RIGHT_BRACE)
+        add_token(TokenType::RIGHT_BRACE)
       when ','
-        add_token(Lit::TokenType::COMMA)
+        add_token(TokenType::COMMA)
       when '.'
-        add_token(Lit::TokenType::DOT)
+        add_token(TokenType::DOT)
       when ';'
-        add_token(Lit::TokenType::SEMICOLON)
+        add_token(TokenType::SEMICOLON)
       when '+'
-        add_token(Lit::TokenType::PLUS)
+        add_token(TokenType::PLUS)
       when '-'
-        add_token(Lit::TokenType::MINUS)
+        add_token(TokenType::MINUS)
       when '/'
-        add_token(Lit::TokenType::SLASH)
+        add_token(TokenType::SLASH)
       when '*'
-        add_token(Lit::TokenType::STAR)
+        match?('*') ? add_token(TokenType::STAR_STAR) : add_token(TokenType::STAR)
+      when '='
+        match?('=') ? add_token(TokenType::EQUAL_EQUAL) : add_token(TokenType::EQUAL)
+      when '>'
+        match?('=') ? add_token(TokenType::GREATER_EQUAL) : add_token(TokenType::GREATER)
+      when '<'
+        match?('=') ? add_token(TokenType::LESS_EQUAL) : add_token(TokenType::LESS)
+      when '|'
+        if match?('|')
+          add_token(TokenType::BAR_BAR)
+        elsif match?('>')
+          add_token(TokenType::PIPE_OPERATOR)
+        else
+          add_token(TokenType::BAR)
+        end
+      when '\n'
+        @line += 1
+      when '#'
+        consume_comment
+      when ' ', '\r', '\t'
+        # ignore whitespaces
+      when '"'
+        consume_string
       else
         if digit?(c)
           consume_number
+        # elsif alpha?(c)
         else
-          raise "Unexpected character '#{c}' at line #{@line}"
+          raise "Unexpected character #{c.inspect} at line #{@line}"
         end
       end
     end
@@ -71,6 +94,15 @@ module Lit
       @current_pos += 1
 
       @src[@current_pos - 1]
+    end
+
+    private def match?(expected)
+      return false if at_end?
+      return false if @src[@current_pos] != expected
+
+      @current_pos += 1
+
+      true
     end
 
     private def consume_number
@@ -86,7 +118,28 @@ module Lit
         end
       end
 
-      add_token(TokenType::NUMBER, token_string.to_f)
+      add_token(TokenType::NUMBER, current_token_string.to_f)
+    end
+
+    private def consume_comment
+      until peek == '\n' || at_end?
+        advance
+      end
+    end
+
+    private def consume_string
+      until peek == '"' || at_end?
+        @line += 1 if peek == '\n'
+        advance
+      end
+
+      raise "Unterminated string at line #{@line}" if at_end?
+
+      advance # Consume the closing "
+
+      value = current_token_string.delete('"')
+
+      add_token(TokenType::STRING, value)
     end
 
     private def peek : Char
@@ -101,22 +154,16 @@ module Lit
       @src[@current_pos + 1]
     end
 
-    private def token_string
+    private def current_token_string
       @src[@token_start_pos...@current_pos]
     end
-
-    # private def current_char
-    #   @src[@current_pos]
-    # end
 
     private def add_token(type : TokenType)
       add_token(type, nil)
     end
 
     private def add_token(type, literal)
-      text = @src[@token_start_pos...@current_pos]
-
-      @tokens << Token.new(type, text, literal, @line)
+      @tokens << Token.new(type, current_token_string, literal, @line)
     end
 
     private def add_eof_token
