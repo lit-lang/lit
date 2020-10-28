@@ -83,7 +83,8 @@ module Lit
       else
         if digit?(c)
           consume_number
-          # elsif alpha?(c)
+        elsif alpha?(c)
+          consume_identifier
         else
           raise "Unexpected character #{c.inspect} at line #{@line}"
         end
@@ -142,6 +143,15 @@ module Lit
       add_token(TokenType::STRING, value)
     end
 
+    private def consume_identifier
+      while alphanumeric?(peek); advance; end
+
+      text = @src[@token_start_pos...@current_pos]
+      type = TokenType::IDENTIFIER
+
+      add_token(type)
+    end
+
     private def peek : Char
       return '\0' if at_end?
 
@@ -172,6 +182,14 @@ module Lit
 
     private def digit?(c : Char) : Bool
       c.in? '0'..'9'
+    end
+
+    private def alpha?(c : Char) : Bool
+      c.in?('a'..'z') || c.in?('A'..'Z') || c == '_'
+    end
+
+    private def alphanumeric?(c : Char) : Bool
+      alpha?(c) || digit?(c)
     end
   end
 end

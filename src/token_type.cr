@@ -7,7 +7,7 @@ module Lit
     BAR; BAR_BAR
     PIPE_OPERATOR
 
-    NUMBER; STRING
+    NUMBER; STRING; IDENTIFIER
     EOF
   end
 end

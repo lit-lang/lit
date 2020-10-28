@@ -38,6 +38,7 @@ describe Lit::Parser do
   it_parses "|", to_type: Lit::TokenType::BAR
   it_parses "||", to_type: Lit::TokenType::BAR_BAR
   it_parses "|>", to_type: Lit::TokenType::PIPE_OPERATOR
+  it_parses "silverchair", to_type: Lit::TokenType::IDENTIFIER
 
   it "parses strings" do
     str = %("This is a string. 1 + 1")
@@ -95,8 +96,8 @@ describe Lit::Parser do
   end
 
   it "raises error on unexpected chars" do
-    expect_raises(Exception, "Unexpected character 'a' at line 1") do
-      Lit::Parser.parse("a")
+    expect_raises(Exception, "Unexpected character '?' at line 1") do
+      Lit::Parser.parse("?")
     end
   end
 end
