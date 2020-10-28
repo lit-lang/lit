@@ -79,8 +79,8 @@ module Lit
         consume_comment
       when ' ', '\r', '\t'
         # ignore whitespaces
-      when '"'
-        consume_string
+      when '"', '\''
+        consume_string(quote: c)
       else
         if digit?(c)
           consume_number
@@ -129,17 +129,17 @@ module Lit
       end
     end
 
-    private def consume_string
-      until peek == '"' || at_end?
+    private def consume_string(quote)
+      until peek == quote || at_end?
         @line += 1 if peek == '\n'
         advance
       end
 
       raise "Unterminated string at line #{@line}" if at_end?
 
-      advance # Consume the closing "
+      advance # Consume the closing quote
 
-      value = current_token_string.delete('"')
+      value = current_token_string.delete(quote)
 
       add_token(TokenType::STRING, value)
     end

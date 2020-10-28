@@ -52,6 +52,17 @@ describe Lit::Parser do
     token.line.should eq 1
   end
 
+  it "parses strings with single quotes" do
+    str = "'This is a string. 1 + 1'"
+
+    token = Lit::Parser.parse(str).first
+    token.should be_a Lit::Token
+    token.type.should eq Lit::TokenType::STRING
+    token.lexeme.should eq str
+    token.literal.should eq "This is a string. 1 + 1"
+    token.line.should eq 1
+  end
+
   it "parses multiline strings" do
     str = %("multi\nline\nstring")
 
@@ -94,6 +105,12 @@ describe Lit::Parser do
     Lit::Parser.parse("({12.13})").map(&.type.to_s).should eq(%w[
       LEFT_PAREN LEFT_BRACE NUMBER RIGHT_BRACE RIGHT_PAREN EOF
     ])
+  end
+
+  it "raises error on unterminated string" do
+    expect_raises(Exception, "Unterminated string at line 2") do
+      Lit::Parser.parse(%("Unterminated \nstring'))
+    end
   end
 
   it "raises error on unexpected chars" do
