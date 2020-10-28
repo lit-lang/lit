@@ -83,7 +83,7 @@ module Lit
       else
         if digit?(c)
           consume_number
-        # elsif alpha?(c)
+          # elsif alpha?(c)
         else
           raise "Unexpected character #{c.inspect} at line #{@line}"
         end

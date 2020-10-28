@@ -41,7 +41,7 @@ describe Lit::Parser do
 
   it "parses strings" do
     str = %("This is a string. 1 + 1")
-    
+
     token = Lit::Parser.parse(str).first
     token.should be_a Lit::Token
     token.type.should eq Lit::TokenType::STRING
