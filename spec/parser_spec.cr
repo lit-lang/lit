@@ -12,20 +12,13 @@ private def it_parses(str, to_type, to_literal)
 end
 
 describe Lit::Parser do
-  (0..10).to_a + [504, 69.420].each do |n|
+  ((0..10).to_a + [504, 69.420]).each do |n|
     it_parses n.to_s, to_type: Lit::TokenType::Number, to_literal: n
   end
 
-  it "parses nothing" do
-    token = Lit::Parser.parse("").first
-    token.should be_a Lit::Token
-    token.type.should eq Lit::TokenType::EOF
-    token.lexeme.should eq ""
-    token.literal.should eq nil
-    token.line.should eq 1
-  end
+  it_parses "", to_type: Lit::TokenType::EOF, to_literal: nil
 
-  it "raises erros on unexpected chars" do
+  it "raises error on unexpected chars" do
     expect_raises(Exception) do
       Lit::Parser.parse("a")
     end
