@@ -44,6 +44,20 @@ module Lit
         add_token(Lit::TokenType::LEFT_BRACE)
       when '}'
         add_token(Lit::TokenType::RIGHT_BRACE)
+      when ','
+        add_token(Lit::TokenType::COMMA)
+      when '.'
+        add_token(Lit::TokenType::DOT)
+      when ';'
+        add_token(Lit::TokenType::SEMICOLON)
+      when '+'
+        add_token(Lit::TokenType::PLUS)
+      when '-'
+        add_token(Lit::TokenType::MINUS)
+      when '/'
+        add_token(Lit::TokenType::SLASH)
+      when '*'
+        add_token(Lit::TokenType::STAR)
       else
         if digit?(c)
           consume_number

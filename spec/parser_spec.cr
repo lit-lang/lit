@@ -21,6 +21,19 @@ describe Lit::Parser do
   it_parses ")", to_type: Lit::TokenType::RIGHT_PAREN
   it_parses "{", to_type: Lit::TokenType::LEFT_BRACE
   it_parses "}", to_type: Lit::TokenType::RIGHT_BRACE
+  it_parses ",", to_type: Lit::TokenType::COMMA
+  it_parses ".", to_type: Lit::TokenType::DOT
+  it_parses ";", to_type: Lit::TokenType::SEMICOLON
+  it_parses "+", to_type: Lit::TokenType::PLUS
+  it_parses "-", to_type: Lit::TokenType::MINUS
+  it_parses "/", to_type: Lit::TokenType::SLASH
+  it_parses "*", to_type: Lit::TokenType::STAR
+
+  it "parses tokens correctly" do
+    Lit::Parser.parse("({12.13})").map(&.type.to_s).should eq(%w[
+      LEFT_PAREN LEFT_BRACE NUMBER RIGHT_BRACE RIGHT_PAREN EOF
+    ])
+  end
 
   it "raises error on unexpected chars" do
     expect_raises(Exception, "Unexpected character 'a' at line 1") do
