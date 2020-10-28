@@ -17,6 +17,8 @@ describe Lit::Parser do
   end
 
   it_parses "", to_type: Lit::TokenType::EOF, to_literal: nil
+  it_parses "(", to_type: Lit::TokenType::LEFT_PAREN, to_literal: nil
+  it_parses ")", to_type: Lit::TokenType::RIGHT_PAREN, to_literal: nil
 
   it "raises error on unexpected chars" do
     expect_raises(Exception, "Unexpected character 'a' at line 1") do

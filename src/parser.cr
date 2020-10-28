@@ -36,6 +36,10 @@ module Lit
       c = advance
 
       case c
+      when '('
+        add_token(Lit::TokenType::LEFT_PAREN)
+      when ')'
+        add_token(Lit::TokenType::RIGHT_PAREN)
       else
         if digit?(c)
           consume_number
