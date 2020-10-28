@@ -1,31 +1,19 @@
 require "./spec_helper"
 
+private def it_parses(str, to_type, to_literal)
+  it "parses #{str}" do
+    token = Lit::Parser.parse(str).first
+    token.should be_a Lit::Token
+    token.type.should eq to_type
+    token.lexeme.should eq str
+    token.literal.should eq to_literal
+    token.line.should eq 1
+  end
+end
+
 describe Lit::Parser do
-  it "parses an integer" do
-    token = Lit::Parser.parse("1").first
-    token.should be_a Lit::Token
-    token.type.should eq Lit::TokenType::Number
-    token.lexeme.should eq "1"
-    token.literal.should eq 1
-    token.line.should eq 1
-  end
-
-  it "parses a bigger integer" do
-    token = Lit::Parser.parse("504").first
-    token.should be_a Lit::Token
-    token.type.should eq Lit::TokenType::Number
-    token.lexeme.should eq "504"
-    token.literal.should eq 504
-    token.line.should eq 1
-  end
-
-  it "parses a float" do
-    token = Lit::Parser.parse("69.420").first
-    token.should be_a Lit::Token
-    token.type.should eq Lit::TokenType::Number
-    token.lexeme.should eq "69.420"
-    token.literal.should eq 69.420
-    token.line.should eq 1
+  ((0..10).to_a + [504, 69.420]).each do |n|
+    it_parses n.to_s, to_type: Lit::TokenType::Number, to_literal: n
   end
 
   it "parses nothing" do
