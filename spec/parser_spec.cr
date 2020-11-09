@@ -40,6 +40,7 @@ describe Lit::Parser do
   it_parses "|", to_type: Lit::TokenType::BAR
   it_parses "||", to_type: Lit::TokenType::BAR_BAR
   it_parses "|>", to_type: Lit::TokenType::PIPE_OPERATOR
+  it_parses "->", to_type: Lit::TokenType::ARROW
   it_parses "!", to_type: Lit::TokenType::BANG
   it_parses "!=", to_type: Lit::TokenType::BANG_EQUAL
   it_parses "silverchair!?", to_type: Lit::TokenType::IDENTIFIER

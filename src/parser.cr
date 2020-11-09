@@ -58,7 +58,7 @@ module Lit
       when '+'
         add_token(TokenType::PLUS)
       when '-'
-        add_token(TokenType::MINUS)
+        match?('>') ? add_token(TokenType::ARROW) : add_token(TokenType::MINUS)
       when '/'
         add_token(TokenType::SLASH)
       when '*'
