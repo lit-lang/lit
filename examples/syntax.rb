@@ -1,4 +1,6 @@
 say_hello = n -> puts("hello {n}")
+say_hello = fn(n) puts("hello {n}")
+say_hello = { |n| puts("hello {n}") }
 sum = (a, b) -> a + b
 a = 1
 b = 2
@@ -116,6 +118,34 @@ Kernel = {
 
 
 mean = arr -> List.sum(arr) / List.length(arr)
+# should be equivalent to
+mean = arr -> arr.sum() / arr.length()
+mean(1, 2, 3) == (1, 2, 3).mean == 2
 
 notes = List.map([0, 0, 0], -> gets())
 notes |> mean |> puts
+
+successors = map((1, 2, 3), i -> i + 1 )
+
+(a = (1, 2, 3); b = 2)
+(
+  a = (1, 2, 3)
+  b = 2
+)
+
+map((1, 2, 3), i -> {
+  return i + 1
+})
+
+# Maybe without parens and ruby-like blocks?
+(1, 2, 3).map { |i| return i + 1 }
+
+# It would be nice to construct DSLs (i think the commas are a small compromisse)
+describe 'List', {
+  describe '.map', {
+    it 'does something', {
+      expect(List.map(1, 2, 3, { |n| n * 2 })).toEq(2, 4, 6)
+      (1, 2, 3).map { |n| n * 2 }.should beEq(2, 4, 6)
+    }
+  }
+}
