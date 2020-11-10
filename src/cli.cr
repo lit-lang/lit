@@ -1,0 +1,3 @@
+require "./lit"
+
+Lit.run
