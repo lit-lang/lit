@@ -7,10 +7,10 @@ module Lit
   extend self
 
   def run(opts : Array(String) = ARGV)
-    if opts.first?.nil?
-      run_repl
-    else
+    if opts.first?
       run_file(opts.first)
+    else
+      run_repl
     end
   end
 
