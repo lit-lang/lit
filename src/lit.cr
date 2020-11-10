@@ -5,5 +5,9 @@ require "./token"
 module Lit
   VERSION = "0.1.0"
 
-  # TODO: Put your code here
+  def self.run_file(path)
+    File.read(path)
+  rescue
+    puts "File not found!"
+  end
 end
