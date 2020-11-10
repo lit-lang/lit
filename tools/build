@@ -1,3 +1,3 @@
 #!/bin/bash
 
-crystal build --verbose --release src/lit.cr -o bin/lit
+crystal build -p --verbose --release src/cli.cr -o bin/lit
