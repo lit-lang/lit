@@ -151,6 +151,15 @@ notes = List.map([0, 0, 0], -> gets())
 notes |> mean |> puts
 ```
 
+## Grammar
+<!-- program     -> declaration* EOF
+declaration -> fnDecl | varDecl | statement
+fnDecl      -> "fn" function;
+varDecl
+statement -->
+
+primary = "true" | "false" | "nil" | NUMBER | STRING | IDENTIFIER | "(" expression ")"
+
 ## Development
 
 TODO: Write development instructions here
