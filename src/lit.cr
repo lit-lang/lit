@@ -1,3 +1,4 @@
+require "readline"
 require "./scanner"
 require "./token"
 
@@ -19,11 +20,8 @@ module Lit
   def run_repl
     puts "Lit #{VERSION} - REPL\n\n"
 
-    line = ""
     loop do
-      print "> "
-
-      line = gets || ""
+      line = read_line
       break if should_exit?(line)
 
       print "=> "
@@ -31,6 +29,8 @@ module Lit
     rescue e
       puts e
     end
+
+    puts "Bye! Cya..."
   end
 
   def run_file(path : String) : Array(Token)
@@ -39,6 +39,10 @@ module Lit
     puts "File not found!"
 
     [] of Token
+  end
+
+  private def read_line
+    Readline.readline("> ", add_history: true) || ""
   end
 
   private def should_exit?(line : String) : Bool

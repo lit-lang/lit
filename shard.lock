@@ -4,6 +4,10 @@ shards:
     git: https://github.com/crystal-ameba/ameba.git
     version: 0.13.2
 
+  readline:
+    git: https://github.com/crystal-lang/crystal-readline.git
+    version: 0.1.0
+
   stdio:
     git: https://github.com/mosop/stdio.git
     version: 0.1.4
