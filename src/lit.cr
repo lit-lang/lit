@@ -1,4 +1,4 @@
-require "./parser"
+require "./scanner"
 require "./token"
 
 # TODO: Write documentation for `Lit`

@@ -2,7 +2,7 @@ require "./token"
 require "./keywords"
 
 module Lit
-  class Parser
+  class Scanner
     def initialize(src : String)
       @tokens = [] of Token
       @src = src
@@ -11,11 +11,11 @@ module Lit
       @line = 1
     end
 
-    def self.parse(src : String) : Array(Token)
-      new(src).parse
+    def self.scan(src : String) : Array(Token)
+      new(src).scan
     end
 
-    def parse
+    def scan
       scan_tokens
       add_eof_token
 
