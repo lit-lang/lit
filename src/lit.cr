@@ -3,7 +3,9 @@ require "./token"
 
 # TODO: Write documentation for `Lit`
 module Lit
-  VERSION = "0.1.0"
+  VERSION    = "0.1.0"
+  EXIT_REGEX = /^\s*(#|$)|\b(quit|exit)\b/i
+
   extend self
 
   def run(opts : Array(String) = ARGV)
@@ -15,7 +17,20 @@ module Lit
   end
 
   def run_repl
-    "repl"
+    puts "Lit #{VERSION} - REPL\n\n"
+
+    line = ""
+    loop do
+      print "> "
+
+      line = gets || ""
+      break if line =~ EXIT_REGEX && !line.empty?
+
+      print "=> "
+      pp Scanner.scan(line)
+    rescue e
+      puts e
+    end
   end
 
   def run_file(path : String) : Array(Token)
