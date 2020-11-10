@@ -12,6 +12,8 @@ development_dependencies:
   ameba:
     github: crystal-ameba/ameba
     version: ~> 0.13.2
+  stdio:
+    github: mosop/stdio
 
 crystal: 0.35.1
 
