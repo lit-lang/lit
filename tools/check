@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "[CHECK] Formating files..."
+crystal tool format
+
+echo "[CHECK] Running linter..."
+bin/ameba
+
+echo "[CHECK] Running tests..."
+crystal spec
