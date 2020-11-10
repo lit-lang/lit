@@ -24,7 +24,7 @@ module Lit
       print "> "
 
       line = gets || ""
-      break if line =~ EXIT_REGEX && !line.empty?
+      break if should_exit?(line)
 
       print "=> "
       pp Scanner.scan(line)
@@ -39,5 +39,9 @@ module Lit
     puts "File not found!"
 
     [] of Token
+  end
+
+  private def should_exit?(line : String) : Bool
+    EXIT_REGEX.matches?(line) && !line.empty?
   end
 end
