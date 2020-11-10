@@ -18,9 +18,11 @@ module Lit
     "repl"
   end
 
-  def run_file(path : String)
-    File.read(path)
+  def run_file(path : String) : Array(Token)
+    Scanner.scan(File.read(path))
   rescue
     puts "File not found!"
+
+    [] of Token
   end
 end

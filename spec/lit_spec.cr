@@ -10,7 +10,13 @@ describe Lit do
       it "runs the file" do
         argv = ["./examples/hello_world.lit"]
 
-        Lit.run(argv).should eq "print(\"Hello world!\")\n"
+        Lit.run(argv).as(Array(Lit::Token)).map(&.type).should eq [
+          token(IDENTIFIER),
+          token(LEFT_PAREN),
+          token(STRING),
+          token(RIGHT_PAREN),
+          token(EOF),
+        ]
       end
     end
 
@@ -23,8 +29,8 @@ describe Lit do
 
   describe ".run_file" do
     context "when file is found" do
-      it "reads the file" do
-        Lit.run_file("./examples/hello_world.lit").should eq "print(\"Hello world!\")\n"
+      it "runs the file" do
+        Lit.run_file("./examples/hello_world.lit").should be_a Array(Lit::Token)
       end
     end
 
