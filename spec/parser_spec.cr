@@ -1,9 +1,5 @@
 require "./spec_helper"
 
-macro token(type)
-  Lit::TokenType::{{type}}
-end
-
 private def it_scans(str, to_type, to_literal = nil)
   it "scans #{str}" do
     token = Lit::Scanner.scan(str).first
