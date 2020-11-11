@@ -20,6 +20,10 @@ module Lit
       add_eof_token
 
       @tokens
+    rescue e
+      puts Format.error(e.to_s)
+
+      [] of Token
     end
 
     private def scan_tokens
@@ -93,7 +97,9 @@ module Lit
         elsif alpha?(c)
           consume_identifier
         else
-          raise "Unexpected character #{c.inspect} at line #{@line}"
+          location = at_end? ? "end of file" : "line #{@line}"
+
+          raise "Unexpected character #{c.inspect} at #{location}."
         end
       end
     end

@@ -113,14 +113,10 @@ describe Lit::Scanner do
   end
 
   it "raises error on unterminated string" do
-    expect_raises(Exception, "Unterminated string at line 2") do
-      Lit::Scanner.scan(%("Unterminated \nstring'))
-    end
+    output_of { Lit::Scanner.scan(%("Unterminated \nstring')) }.should contain("Unterminated string at line 2")
   end
 
   it "raises error on unexpected chars" do
-    expect_raises(Exception, "Unexpected character '?' at line 1") do
-      Lit::Scanner.scan("?")
-    end
+    output_of { Lit::Scanner.scan("?") }.should contain("Unexpected character '?' at end of file")
   end
 end
