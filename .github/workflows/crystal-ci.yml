@@ -2,9 +2,9 @@ name: Crystal CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
@@ -12,12 +12,10 @@ jobs:
     container:
       image: crystallang/crystal
     steps:
-    - uses: actions/checkout@v2
-    - name: Install dependencies
-      run: shards install
-    - name: Run tests
-      run: crystal spec
-    - name: Run Linter
-      uses: crystal-ameba/github-action@v0.2.6
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: apt update && apt install -y libreadline-dev && shards install
+      - name: Run tests
+        run: crystal spec
+      - name: Run Linter
+        run: bin/ameba
