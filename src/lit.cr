@@ -1,6 +1,7 @@
 require "readline"
 require "./scanner"
 require "./token"
+require "./repl"
 
 # TODO: Write documentation for `Lit`
 module Lit
@@ -18,34 +19,14 @@ module Lit
   end
 
   def run_repl
-    puts "Lit #{VERSION} - REPL\n\n"
-
-    loop do
-      line = read_line
-      break if should_exit?(line)
-
-      print "=> "
-      pp Scanner.scan(line)
-    rescue e
-      puts e
-    end
-
-    puts "Bye! Cya..."
+    REPL.run
   end
 
   def run_file(path : String) : Array(Token)
     Scanner.scan(File.read(path))
-  rescue
+  rescue File::NotFoundError
     puts "File not found!"
 
     [] of Token
-  end
-
-  private def read_line
-    Readline.readline("> ", add_history: true) || ""
-  end
-
-  private def should_exit?(line : String) : Bool
-    EXIT_REGEX.matches?(line) && !line.empty?
   end
 end
