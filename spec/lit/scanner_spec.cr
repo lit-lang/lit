@@ -112,11 +112,11 @@ describe Lit::Scanner do
     ])
   end
 
-  it "raises error on unterminated string" do
+  it "errors on unterminated string" do
     output_of { Lit::Scanner.scan(%("Unterminated \nstring')) }.should contain("[Line 2] Error: Unterminated string")
   end
 
-  it "raises error on unexpected chars" do
+  it "errors on unexpected chars" do
     output_of { Lit::Scanner.scan("?") }.should contain("[Line 1] Error: Unexpected character '?'")
   end
 end

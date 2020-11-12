@@ -15,7 +15,7 @@ describe Lit::Lit do
 
     context "when file is not found" do
       it "outputs the error" do
-        output_of { Lit::Lit.run_file("./unkown-path/what.tf") }.should eq "File not found!\n"
+        output_of { Lit::Lit.run_file("./unkown-path/what.tf") }.should contain "File not found!"
       end
     end
   end

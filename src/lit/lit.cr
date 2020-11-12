@@ -3,6 +3,7 @@ require "./scanner"
 require "./token"
 require "./repl"
 require "./macros"
+require "./format"
 
 # TODO: Write documentation for `Lit`
 module Lit
@@ -25,7 +26,7 @@ module Lit
     def self.run_file(path : String)
       run(File.read(path))
     rescue File::NotFoundError
-      puts "File not found!"
+      puts Format.error("Error: File not found!")
     ensure
       exit(65) if had_error
       exit(70) if had_runtime_error
@@ -36,7 +37,7 @@ module Lit
     end
 
     private def self.report(line : Int, where : String, message : String)
-      puts("[Line #{line}] Error#{where}: #{message}")
+      puts(Format.error("[Line #{line}] Error#{where}: #{message}"))
 
       self.had_error = true
     end
