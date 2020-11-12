@@ -6,30 +6,35 @@ module Lit
 
     extend self
 
-    def run
+    def run(runner)
       puts "Lit #{VERSION} - REPL\n\n"
 
       loop do
         line = read_line
         break if should_exit?(line)
 
-        print "=> "
-        puts evaluate(line)
+        output = evaluate(line, runner)
+        print_output(output)
       end
 
       puts "Bye! Cya..."
     end
 
     private def read_line
-      Readline.readline("> ", add_history: true) || ""
+      Readline.readline("lit> ", add_history: true) || ""
     end
 
-    private def evaluate(line : String) : String
-      tokens = Scanner.scan(line)
+    private def evaluate(line : String, runner) : String?
+      result = runner.run(line)
+      runner.had_error = false
 
-      %([#{tokens.map(&.inspect).join(", ")}])
-    rescue e
-      Format.error("[ERROR] #{e}")
+      result
+    end
+
+    private def print_output(output)
+      return if output.nil?
+
+      puts "=> #{output}"
     end
 
     private def should_exit?(line : String) : Bool

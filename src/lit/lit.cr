@@ -20,7 +20,7 @@ module Lit
     end
 
     def self.run_repl
-      REPL.run
+      REPL.run(self)
     end
 
     def self.run_file(path : String)
