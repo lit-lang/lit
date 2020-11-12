@@ -1,5 +1,6 @@
 require "./token"
 require "./keywords"
+require "./lit"
 
 module Lit
   class Scanner
@@ -97,9 +98,7 @@ module Lit
         elsif alpha?(c)
           consume_identifier
         else
-          location = at_end? ? "end of file" : "line #{@line}"
-
-          raise "Unexpected character #{c.inspect} at #{location}."
+          Lit.error(@line, "Unexpected character #{c.inspect}")
         end
       end
     end
@@ -147,7 +146,10 @@ module Lit
         advance
       end
 
-      raise "Unterminated string at line #{@line}" if at_end?
+      if at_end?
+        Lit.error(@line, "Unterminated string")
+        return
+      end
 
       advance # Consume the closing quote
 

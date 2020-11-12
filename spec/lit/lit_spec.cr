@@ -8,6 +8,7 @@ describe Lit::Lit do
   describe ".run_file" do
     context "when file is found" do
       it "runs the file" do
+        Lit::Lit.had_error = false
         Lit::Lit.run_file("./examples/hello_world.lit").should be_a String
       end
     end
