@@ -49,6 +49,13 @@ puts(mean(notes))
 # and it is equivalent to
 notes.mean().puts()
 # => 2
+
+# DESIGN NOTE:
+# The above expression is *not* beautiful.
+# If I want to keep this oo-like call, it shouldn't require parenthesis.
+# Maybe I cannot implement this in the first version.
+notes.mean.puts
+# => 2
 ```
 
 ## Grammar
