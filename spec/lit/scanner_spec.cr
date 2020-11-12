@@ -1,4 +1,4 @@
-require "./spec_helper"
+require "../spec_helper"
 
 private def it_scans(str, to_type, to_literal = nil)
   it "scans #{str}" do

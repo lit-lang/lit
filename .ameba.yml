@@ -4,4 +4,4 @@ Metrics/CyclomaticComplexity:
   Enabled: true
   Severity: Convention
   Excluded:
-  - src/scanner.cr
+  - src/lit/scanner.cr
