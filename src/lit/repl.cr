@@ -2,6 +2,8 @@ require "./format"
 
 module Lit
   module REPL
+    EXIT_REGEX = /^\s*(#|$)|\b(quit|exit)\b/i
+
     extend self
 
     def run
