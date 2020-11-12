@@ -5,7 +5,6 @@ require "./repl"
 require "./macros"
 require "./format"
 
-# TODO: Write documentation for `Lit`
 module Lit
   class Lit
     class_property had_error : Bool = false, had_runtime_error : Bool = false
