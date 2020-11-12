@@ -5,32 +5,10 @@ describe Lit::Lit do
     Lit::VERSION.should_not be_nil
   end
 
-  describe ".run" do
-    context "when file is given" do
-      it "runs the file" do
-        argv = ["./examples/hello_world.lit"]
-
-        Lit::Lit.run(argv).as(Array(Lit::Token)).map(&.type).should eq [
-          token(IDENTIFIER),
-          token(LEFT_PAREN),
-          token(STRING),
-          token(RIGHT_PAREN),
-          token(EOF),
-        ]
-      end
-    end
-
-    context "when no file is given" do
-      it "runs the repl" do
-        # Lit::Lit.run([] of String).should eq "repl"
-      end
-    end
-  end
-
   describe ".run_file" do
     context "when file is found" do
       it "runs the file" do
-        Lit::Lit.run_file("./examples/hello_world.lit").should be_a Array(Lit::Token)
+        Lit::Lit.run_file("./examples/hello_world.lit").should be_a String
       end
     end
 
