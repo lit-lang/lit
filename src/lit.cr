@@ -1,7 +1,7 @@
 require "readline"
-require "./scanner"
-require "./token"
-require "./repl"
+require "./lit/scanner"
+require "./lit/token"
+require "./lit/repl"
 
 # TODO: Write documentation for `Lit`
 module Lit
