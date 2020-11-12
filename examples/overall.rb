@@ -1,5 +1,6 @@
 say_hello = n -> puts("hello {n}")
 say_hello = fn(n) puts("hello {n}")
+say_hello = fn { |n| puts("hello {n}") }
 say_hello = { |n| puts("hello {n}") }
 sum = (a, b) -> a + b
 a = 1
@@ -116,6 +117,13 @@ Kernel = {
   }
 }
 
+(a = (1, 2, 3); b = 2)
+
+(
+  a = (1, 2, 3)
+  b = 2
+)
+
 
 mean = arr -> List.sum(arr) / List.length(arr)
 # should be equivalent to
@@ -126,16 +134,9 @@ notes = List.map([0, 0, 0], -> gets())
 notes |> mean |> puts
 
 successors = map((1, 2, 3), i -> i + 1 )
-
-(a = (1, 2, 3); b = 2)
-(
-  a = (1, 2, 3)
-  b = 2
-)
-
-map((1, 2, 3), i -> {
-  return i + 1
-})
+successors = map((1, 2, 3), fn(i) i + 1 )
+successors = map((1, 2, 3), { |i| i + 1 })
+successors = map((1, 2, 3), { (i) i + 1 })
 
 # Maybe without parens and ruby-like blocks?
 (1, 2, 3).map { |i| return i + 1 }
