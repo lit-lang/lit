@@ -1,3 +1,3 @@
 module Lit
-  KEYWORDS = %w[if else]
+  KEYWORDS = %w[if else return let fn]
 end
