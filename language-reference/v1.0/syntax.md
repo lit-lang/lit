@@ -11,6 +11,7 @@
 
 - All statements are ended with a `;`;
 - All numbers are `Float`;
+- Variables are actually mutable;
 
 # Variables
 
@@ -62,7 +63,7 @@ let sOMETHING_elSe = "really?"
 There's no difference between single-quoted and double-quoted strings. They both can be interpolated:
 
 ```r
-var n = 42;
+let n = 42;
 
 "N is {n}" == 'N is {n}'
 # => true
