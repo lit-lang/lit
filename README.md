@@ -65,8 +65,9 @@ declaration -> fnDecl | varDecl | statement
 fnDecl      -> "fn" function;
 varDecl
 statement -->
-
+```
 primary = "true" | "false" | "nil" | NUMBER | STRING | IDENTIFIER | "(" expression ")"
+```
 
 ## Development
 
