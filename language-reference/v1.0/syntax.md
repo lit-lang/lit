@@ -11,6 +11,8 @@
 
 - All statements are ended with a `;`;
 - All numbers are `Float`;
+- Variable declaration require the `let` keyword;
+- Function declaration require the `fn` keyword;
 - Variables are actually mutable;
 
 # Variables
