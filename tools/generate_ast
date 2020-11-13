@@ -1,0 +1,102 @@
+#!/usr/bin/env ruby
+
+module AstGenerator
+  extend self
+
+  def run
+    output_dir = ARGV.first || "src/lit"
+
+    define_ast(output_dir, "Expr", [
+      # "Assign   = name : Token, value : Expr",
+      # "Binary   = left : Expr, operator : Token, right : Expr",
+      # "Grouping = expression : Expr",
+      "Literal  = value : Union(String | Float64 | Bool | Nil)",
+      # "Logical  = left : Expr, operator : Token , right : Expr",
+      # "Unary    = operator : Token, right : Expr",
+      # "Variable = name : Token",
+    ])
+
+    # define_ast(output_dir, "Stmt", [
+    #   "Block      = statements : Array(Stmt)",
+    #   "Expression = expression : Expr",
+    #   "If         = condition : Expr, then_branch : Stmt, else_branch : Stmt?",
+    #   "Print      = expression : Expr",
+    #   "Var        = name : Token, initializer : Expr",
+    #   "While      = condition : Expr, body : Stmt",
+    # ])
+  end
+
+  private def define_ast(output_dir, base_name, types)
+    path = output_dir + "/" + base_name.downcase + ".cr"
+
+    File.open(path, "w") do |file|
+      file.puts "require \"./token\""
+      file.puts
+      file.puts "module Lit"
+      file.puts "  abstract class #{base_name}"
+
+      define_visitor_interface(file, base_name, types)
+      define_ast_types(file, base_name, types)
+
+      file.puts
+      file.puts "    abstract def accept(visitor : Visitor)"
+
+      file.puts "  end"
+      file.puts "end"
+    end
+  end
+
+  private def define_visitor_interface(file, base_name, types)
+    file.puts "    module Visitor"
+
+    types.each do |type|
+      type_name, _ = type.split("=").map(&:strip)
+      file.puts "      abstract def visit_#{type_name.downcase}_#{base_name.downcase}(#{base_name.downcase} : #{type_name})"
+    end
+    file.puts "    end"
+    file.puts
+  end
+
+  private def define_ast_types(file, base_name, types)
+    types.each_with_index do |type, index|
+      class_name, fields = type.split("=").map(&:strip)
+      is_last = index == (types.size - 1)
+
+      define_type(file, base_name, class_name, fields, is_last)
+    end
+  end
+
+  private def define_type(file, base_name, class_name, field_list, is_last)
+    file.puts "    class #{class_name} < #{base_name}"
+
+    fields = field_list.split(", ")
+
+    define_getters(file, fields)
+    define_initializer(file, fields)
+    define_visitor(file, class_name, base_name)
+
+    file.puts "    end"
+    file.puts unless is_last
+  end
+
+  private def define_getters(file, fields)
+    fields.each do |field|
+      file.puts "      getter #{field}"
+    end
+    file.puts
+  end
+
+  private def define_initializer(file, fields)
+    instance_variables = fields.map { |field| "@" + field.split(":").first.strip }
+    file.puts "      def initialize(#{instance_variables.join(", ")}); end"
+  end
+
+  private def define_visitor(file, class_name, base_name)
+    file.puts
+    file.puts "      def accept(visitor : Visitor)"
+    file.puts "        visitor.visit_#{class_name.downcase}_#{base_name.downcase}(self)"
+    file.puts "      end"
+  end
+end
+
+AstGenerator.run
