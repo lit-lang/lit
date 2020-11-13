@@ -9,7 +9,10 @@ describe Lit::Lit do
     context "when file is found" do
       it "runs the file" do
         Lit::Lit.had_error = false
-        Lit::Lit.run_file("./examples/hello_world.lit").should be_a String
+        Lit::Lit.run_file("./examples/hello_world.lit").should eq(
+          "[<IDENTIFIER 'print'>, <LEFT_PAREN '('>, <STRING '\"Hello world!\"': Hello world!>, " \
+          "<RIGHT_PAREN ')'>, <SEMICOLON ';'>, <EOF ''>]"
+        )
       end
     end
 
