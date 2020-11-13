@@ -35,7 +35,7 @@ This is my first attempt on language design. My initial goals are:
   - I want to keep the language consistent, yet.
 - **Don't take it too serious**:
   - This is my first language, so I want it to be fun (and learn from experience).
-  - Speed will be nice (since it's implemented in Crystal), but it's priority.
+  - Speed will be nice (since it's implemented in Crystal), but it's not priority.
 
 ## Installation
 
