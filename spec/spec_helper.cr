@@ -2,10 +2,6 @@ require "spec"
 require "stdio"
 require "../src/lit"
 
-macro token(type)
-  Lit::TokenType::{{type}}
-end
-
 def output_of
   Stdio.capture do |io|
     yield
