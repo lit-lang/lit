@@ -1,8 +1,6 @@
-say_hello = n -> puts("hello {n}")
-say_hello = fn(n) puts("hello {n}")
 say_hello = fn { |n| puts("hello {n}") }
-say_hello = { |n| puts("hello {n}") }
-sum = (a, b) -> a + b
+say_hello = { |n| puts("hello {n}") } # Future
+sum = fn { |a, b| a + b }
 a = 1
 b = 2
 c = sum(a, b)
@@ -11,7 +9,7 @@ expressions = 'yay', 'wow'
 first, _ = expressions
 ((first == 'yay') == true) != false
 
-expressions_with_emotion = map(expressions, exp -> exp + '!')
+expressions_with_emotion = map(expressions, fn { |exp| exp + '!' })
 expressions_with_emotion = map(expressions, it + '!')
 
 github_user_names = {
