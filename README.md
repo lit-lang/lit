@@ -1,8 +1,24 @@
-# LIT lang
+<p align="center">
+  <img src="assets/icon.png" height=150>
 
-<!-- The logo will be a flame. Kinda like Elixir's -->
+  <h3 align="center">LIT</h3>
 
-My first attempt on language design. My initial goals are:
+  <p align="center">
+    <a href="https://github.com/MatheusRich/lit/blob/master/language-reference/v1.0/syntax.md">
+      <strong>Take a look at the Documentation &raquo</strong>
+    </a>
+    <br><br>
+    <a href="https://github.com/MatheusRich/lit/blob/master/language-reference/FAQ.md">FAQ</a>
+    &middot;
+    <a href="https://github.com/MatheusRich/lit-vscode">VS Code extension</a>
+    &middot;
+    <a href="https://github.com/MatheusRich/lit/issues/new">Report a Problem</a>
+  </p>
+</p>
+
+---
+
+This is my first attempt on language design. My initial goals are:
 
 - **Be pretty straightforward and simple**:
   - If the same concept/syntax could be used in other parts of the language, great!
@@ -19,6 +35,7 @@ My first attempt on language design. My initial goals are:
   - I want to keep the language consistent, yet.
 - **Don't take it too serious**:
   - This is my first language, so I want it to be fun (and learn from experience).
+  - Speed will be nice (since it's implemented in Crystal), but it's priority.
 
 ## Installation
 
@@ -65,6 +82,7 @@ declaration -> fnDecl | varDecl | statement
 fnDecl      -> "fn" function;
 varDecl
 statement -->
+
 ```
 primary = "true" | "false" | "nil" | NUMBER | STRING | IDENTIFIER | "(" expression ")"
 ```
