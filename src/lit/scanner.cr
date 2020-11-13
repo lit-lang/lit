@@ -87,7 +87,7 @@ module Lit
       when '\n'
         @line += 1
       when '#'
-        consume_comment
+        match?('=') ? consume_block_comment : consume_line_comment
       when ' ', '\r', '\t'
         # ignore whitespaces
       when '"', '\''
@@ -134,10 +134,25 @@ module Lit
       add_token(TokenType::NUMBER, current_token_string.to_f)
     end
 
-    private def consume_comment
+    private def consume_line_comment
       until peek == '\n' || at_end?
         advance
       end
+    end
+
+    private def consume_block_comment
+      until (peek == '=' && peek_next == '#') || at_end?
+        @line += 1 if peek == '\n'
+        advance
+      end
+
+      if at_end?
+        Lit.error(@line, "Unterminated block comment")
+        return
+      end
+
+      advance # consume the remaining =
+      advance # consume the remaining #
     end
 
     private def consume_string(quote)

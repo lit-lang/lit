@@ -1,16 +1,5 @@
 require "../spec_helper"
 
-private def it_scans(str, to_type, to_literal = nil)
-  it "scans #{str}" do
-    token = Lit::Scanner.scan(str).first
-    token.should be_a Lit::Token
-    token.type.should eq to_type
-    token.lexeme.should eq str
-    token.literal.should eq to_literal
-    token.line.should eq 1
-  end
-end
-
 describe Lit::Scanner do
   ((0..10).to_a + [504, 69.420]).each do |n|
     it_scans n.to_s, to_type: token(NUMBER), to_literal: n
@@ -44,7 +33,8 @@ describe Lit::Scanner do
   it_scans "!", to_type: token(BANG)
   it_scans "!=", to_type: token(BANG_EQUAL)
   it_scans "silverchair!?", to_type: token(IDENTIFIER)
-  it_scans "if", to_type: token(KEYWORD)
+
+  it_scans_keywords
 
   it "scans strings" do
     str = %("This is a string. 1 + 1")
@@ -88,13 +78,22 @@ describe Lit::Scanner do
     token.line.should eq 1
   end
 
-  it "scans comments" do
+  it "scans one-line comments" do
     token = Lit::Scanner.scan("# This is a comment.\n###### 1 + 1\n1").first
     token.should be_a Lit::Token
     token.type.should eq token(NUMBER)
     token.lexeme.should eq "1"
     token.literal.should eq 1
     token.line.should eq 3
+  end
+
+  it "scans block comments" do
+    token = Lit::Scanner.scan("#=\nThis\n2\nShould\nBe\nIgnored\n# Commentception\n= #\n=#\n1").first
+    token.should be_a Lit::Token
+    token.type.should eq token(NUMBER)
+    token.lexeme.should eq "1"
+    token.literal.should eq 1
+    token.line.should eq 10
   end
 
   it "scans new lines" do
@@ -112,11 +111,34 @@ describe Lit::Scanner do
     ])
   end
 
+  it "errors on unterminated comment" do
+    error = output_of { Lit::Scanner.scan("#=Unterminated\ncomment#") }
+
+    error.should contain("[Line 2] Error: Unterminated block comment")
+  end
+
   it "errors on unterminated string" do
     output_of { Lit::Scanner.scan(%("Unterminated \nstring')) }.should contain("[Line 2] Error: Unterminated string")
   end
 
   it "errors on unexpected chars" do
     output_of { Lit::Scanner.scan("?") }.should contain("[Line 1] Error: Unexpected character '?'")
+  end
+end
+
+private def it_scans(str, to_type, to_literal = nil)
+  it "scans #{str}" do
+    token = Lit::Scanner.scan(str).first
+    token.should be_a Lit::Token
+    token.type.should eq to_type
+    token.lexeme.should eq str
+    token.literal.should eq to_literal
+    token.line.should eq 1
+  end
+end
+
+private def it_scans_keywords
+  Lit::KEYWORDS.each do |keyword|
+    it_scans keyword, to_type: token(KEYWORD)
   end
 end
