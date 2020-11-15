@@ -21,17 +21,21 @@ module Lit
       return Expr::Literal.new(false) if match?(TokenType::FALSE)
       return Expr::Literal.new(true) if match?(TokenType::TRUE)
       return Expr::Literal.new(nil) if match?(TokenType::NIL)
-      return Expr::Literal.new(previous.literal) if match?(TokenType::NUMBER)
+      return Expr::Literal.new(previous.literal) if match?(TokenType::NUMBER, TokenType::STRING)
 
       Expr::Literal.new(nil)
     end
 
-    private def match?(type : TokenType)
-      return false unless check(type)
+    private def match?(*types) : Bool
+      types.each do |type|
+        if check(type)
+          advance
 
-      advance
+          return true
+        end
+      end
 
-      true
+      false
     end
 
     private def check(type : TokenType)
