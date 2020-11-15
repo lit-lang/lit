@@ -4,6 +4,8 @@ require "./expr"
 
 module Lit
   class Parser
+    class ParserError < Exception; end
+
     getter tokens : Array(Token)
     getter current : Int32 = 0
 
@@ -23,7 +25,7 @@ module Lit
       return Expr::Literal.new(nil) if match?(TokenType::NIL)
       return Expr::Literal.new(previous.literal) if match?(TokenType::NUMBER, TokenType::STRING)
 
-      Expr::Literal.new(nil)
+      raise error(peek, "I was expecting an expression here.")
     end
 
     private def match?(*types) : Bool
@@ -52,6 +54,12 @@ module Lit
 
     private def advance
       @current += 1
+    end
+
+    private def error(token, msg)
+      Lit.error(token, msg)
+
+      ParserError.new
     end
   end
 end

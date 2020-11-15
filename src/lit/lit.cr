@@ -36,6 +36,14 @@ module Lit
       report(line, "", message)
     end
 
+    def self.error(token : Token, message : String)
+      if token.type.eof?
+        report(token.line, " at end", message)
+      else
+        report(token.line, " at #{token.lexeme.inspect}", message)
+      end
+    end
+
     private def self.report(line : Int, where : String, message : String)
       puts(Format.error("[Line #{line}] Error#{where}: #{message}"))
 
