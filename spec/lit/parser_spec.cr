@@ -1,6 +1,6 @@
 require "../spec_helper"
 
-describe Lit::Parser, focus: true do
+describe Lit::Parser do
   it_parses :false, to_literal: false
   it_parses :true, to_literal: true
   it_parses :nil, to_literal: nil
