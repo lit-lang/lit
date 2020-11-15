@@ -1,5 +1,6 @@
 require "readline"
 require "./scanner"
+require "./parser"
 require "./token"
 require "./repl"
 require "./macros"
