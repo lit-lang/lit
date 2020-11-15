@@ -10,8 +10,7 @@ describe Lit::Lit do
       it "runs the file" do
         Lit::Lit.had_error = false
         Lit::Lit.run_file("./examples/hello_world.lit").should eq(
-          "[<IDENTIFIER 'print'>, <LEFT_PAREN '('>, <STRING '\"Hello world!\"': Hello world!>, " \
-          "<RIGHT_PAREN ')'>, <SEMICOLON ';'>, <EOF ''>]"
+          "[<PRINT 'print'>, <LEFT_PAREN '('>, <STRING '\"Hello world!\"': Hello world!>, <RIGHT_PAREN ')'>, <SEMICOLON ';'>, <EOF ''>]"
         )
       end
     end

@@ -138,7 +138,7 @@ private def it_scans(str, to_type, to_literal = nil)
 end
 
 private def it_scans_keywords
-  Lit::KEYWORDS.each do |keyword|
-    it_scans keyword, to_type: token(KEYWORD)
+  Lit::KEYWORDS.each do |keyword_name, token_type|
+    it_scans keyword_name, to_type: token_type
   end
 end

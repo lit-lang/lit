@@ -179,7 +179,7 @@ module Lit
       end
 
       text = @src[@token_start_pos...@current_pos]
-      type = keyword?(text) ? TokenType::KEYWORD : TokenType::IDENTIFIER
+      type = keyword_from(text) || TokenType::IDENTIFIER
 
       add_token(type)
     end
@@ -224,8 +224,8 @@ module Lit
       alpha?(c) || digit?(c) || c.in? ['?', '!']
     end
 
-    private def keyword?(identifier : String) : Bool
-      identifier.in? KEYWORDS
+    private def keyword_from(text : String)
+      KEYWORDS[text]?
     end
   end
 end
