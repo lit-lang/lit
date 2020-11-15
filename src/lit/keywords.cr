@@ -3,7 +3,7 @@ module Lit
     "and"    => TokenType::AND,
     "else"   => TokenType::ELSE,
     "false"  => TokenType::FALSE,
-    "fn"     => TokenType::FUN,
+    "fn"     => TokenType::FN,
     "if"     => TokenType::IF,
     "let"    => TokenType::LET,
     "nil"    => TokenType::NIL,
