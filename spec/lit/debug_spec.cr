@@ -17,5 +17,13 @@ describe Lit::Debug do
         Lit::Debug.s_expr(expr).should eq "(group 1.0)"
       end
     end
+
+    context "with multiple expressions" do
+      it do
+        expr = [Create.expr(:grouping), Create.expr(:literal, "a string")]
+
+        Lit::Debug.s_expr(expr).should eq "(group 1.0); a string"
+      end
+    end
   end
 end
