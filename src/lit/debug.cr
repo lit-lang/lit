@@ -4,6 +4,10 @@ module Lit
   module Debug
     extend self
 
+    def s_expr(exprs : Array(Expr)) : String
+      exprs.map { |expr| s_expr(expr) }.join("; ")
+    end
+
     def s_expr(expr : Expr::Literal) : String
       expr.value.to_s
     end

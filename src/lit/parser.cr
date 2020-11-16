@@ -15,8 +15,14 @@ module Lit
       new(tokens).parse
     end
 
-    def parse : Expr
-      expression
+    def parse : Array(Expr)
+      exprs = [] of Expr
+
+      until at_end?
+        exprs.push(expression)
+      end
+
+      exprs
     end
 
     private def expression

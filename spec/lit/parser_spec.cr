@@ -10,7 +10,7 @@ describe Lit::Parser do
   describe "grouping expression" do
     it "parses a grouping expression" do
       group = Create.tokens(:left_paren, :number, :right_paren, :eof)
-      expr = Lit::Parser.parse(group).as(Lit::Expr::Grouping)
+      expr = Lit::Parser.parse(group).first.as(Lit::Expr::Grouping)
 
       expr.expression.as(Lit::Expr::Literal).value.should eq 1
     end
@@ -58,7 +58,7 @@ end
 
 private def it_parses(type : Symbol, to_literal)
   it "parses literal #{type}" do
-    expr = Lit::Parser.parse([Create.token(type)]).as(Lit::Expr::Literal)
+    expr = Lit::Parser.parse([Create.token(type), Create.token(:eof)]).first.as(Lit::Expr::Literal)
     expr.value.should eq to_literal
   end
 end
