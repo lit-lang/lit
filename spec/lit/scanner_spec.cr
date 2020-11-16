@@ -96,6 +96,15 @@ describe Lit::Scanner do
     token.line.should eq 10
   end
 
+  it "scans inlined block comments" do
+    token = Lit::Scanner.scan("#=2=#1").first
+    token.should be_a Lit::Token
+    token.type.should eq token(NUMBER)
+    token.lexeme.should eq "1"
+    token.literal.should eq 1
+    token.line.should eq 1
+  end
+
   it "scans new lines" do
     token = Lit::Scanner.scan("\n\n\n1").first
     token.should be_a Lit::Token
