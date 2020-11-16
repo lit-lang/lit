@@ -45,7 +45,7 @@ end
 
 private def it_parses(type : Symbol, to_literal)
   it "parses literal #{type}" do
-    expr = Lit::Parser.parse([Create.token(type), Create.token(:eof)]).first.as(Lit::Expr::Literal)
+    expr = Lit::Parser.parse(Create.tokens(type, :eof)).first.as(Lit::Expr::Literal)
     expr.value.should eq to_literal
   end
 end
