@@ -16,6 +16,10 @@ module Lit
     end
 
     def parse : Expr
+      expression
+    end
+
+    private def expression
       primary
     end
 
@@ -24,6 +28,13 @@ module Lit
       return Expr::Literal.new(true) if match?(TokenType::TRUE)
       return Expr::Literal.new(nil) if match?(TokenType::NIL)
       return Expr::Literal.new(previous.literal) if match?(TokenType::NUMBER, TokenType::STRING)
+
+      if match?(TokenType::LEFT_PAREN)
+        expr = expression
+        consume(TokenType::RIGHT_PAREN, "I was expecting a ')' here.")
+
+        return Expr::Grouping.new(expr)
+      end
 
       raise error(peek, "I was expecting an expression here.")
     end
@@ -41,6 +52,8 @@ module Lit
     end
 
     private def check(type : TokenType)
+      return false if at_end?
+
       peek.type == type
     end
 
@@ -53,7 +66,19 @@ module Lit
     end
 
     private def advance
-      @current += 1
+      @current += 1 unless at_end?
+
+      previous
+    end
+
+    private def at_end?
+      peek.type.eof?
+    end
+
+    private def consume(type, error_msg)
+      return advance if check(type)
+
+      raise error(peek, error_msg)
     end
 
     private def error(token, msg)
