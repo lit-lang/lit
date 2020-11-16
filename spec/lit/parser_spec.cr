@@ -18,12 +18,7 @@ describe Lit::Parser do
     context "when there's no expression inside parens" do
       it "parses a grouping expression" do
         group = Create.tokens(:left_paren, :right_paren, :eof)
-
-        error_msg = output_of do
-          expect_raises(Lit::Parser::ParserError) do
-            Lit::Parser.parse(group)
-          end
-        end
+        error_msg = output_of { Lit::Parser.parse(group) }
 
         error_msg.should contain("[Line 1] Error at \")\": I was expecting an expression here.")
       end
@@ -32,11 +27,7 @@ describe Lit::Parser do
     context "when there's no closing paren" do
       it "parses a grouping expression" do
         group = Create.tokens(:left_paren, :number, :eof)
-        error_msg = output_of do
-          expect_raises(Lit::Parser::ParserError) do
-            Lit::Parser.parse(group)
-          end
-        end
+        error_msg = output_of { Lit::Parser.parse(group) }
 
         error_msg.should contain "[Line 1] Error at end: I was expecting a ')' here."
       end
@@ -44,12 +35,8 @@ describe Lit::Parser do
   end
 
   context "when there's an unexpected token" do
-    it "raises an error and outputs a message" do
-      error_msg = output_of do
-        expect_raises(Lit::Parser::ParserError) do
-          Lit::Parser.parse([Create.token(:comma)])
-        end
-      end
+    it "outputs a message" do
+      error_msg = output_of { Lit::Parser.parse(Create.tokens(:comma, :eof)) }
 
       error_msg.should contain("[Line 1] Error at \",\": I was expecting an expression here.")
     end

@@ -27,6 +27,10 @@ module Lit
 
     private def expression
       primary
+    rescue ParserError
+      synchronize
+
+      Expr::Literal.new("ERROR")
     end
 
     private def primary
@@ -91,6 +95,11 @@ module Lit
       Lit.error(token, msg)
 
       ParserError.new
+    end
+
+    private def synchronize
+      # TODO: Make this right
+      advance
     end
   end
 end
