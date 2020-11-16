@@ -3,7 +3,18 @@ require "./token"
 module Lit
   abstract class Expr
     module Visitor
+      abstract def visit_grouping_expr(expr : Grouping)
       abstract def visit_literal_expr(expr : Literal)
+    end
+
+    class Grouping < Expr
+      getter expression : Expr
+
+      def initialize(@expression); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_grouping_expr(self)
+      end
     end
 
     class Literal < Expr
