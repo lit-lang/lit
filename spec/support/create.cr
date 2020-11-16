@@ -25,4 +25,15 @@ module Create
   def tokens(*types) : Array(Lit::Token)
     types.map { |type| self.token(type) }.to_a
   end
+
+  def expr(type : Symbol, value = nil) : Lit::Expr
+    case type
+    when :literal
+      Lit::Expr::Literal.new(value || 1.0)
+    when :grouping
+      Lit::Expr::Grouping.new(expr :literal)
+    else
+      raise "Don't know hot to build expression with type '#{type}'"
+    end
+  end
 end
