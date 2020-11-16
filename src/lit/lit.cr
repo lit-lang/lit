@@ -5,6 +5,7 @@ require "./token"
 require "./repl"
 require "./macros"
 require "./format"
+require "./debug"
 
 module Lit
   class Lit
@@ -12,11 +13,12 @@ module Lit
 
     def self.run(src : String) : String?
       tokens = Scanner.scan(src)
+      expressions = Parser.parse(tokens)
 
       return if had_error
       return if had_runtime_error
 
-      %([#{tokens.map(&.inspect).join(", ")}])
+      Debug.s_expr(expressions)
     end
 
     def self.run_repl
