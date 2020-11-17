@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/icon.png" height=150>
+  <img src="assets/icon-circle.png" height=150>
 
   <h3 align="center">LIT</h3>
 
