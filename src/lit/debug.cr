@@ -5,7 +5,7 @@ module Lit
     extend self
 
     def s_expr(exprs : Array(Expr)) : String
-      exprs.map { |expr| s_expr(expr) }.join("; ")
+      exprs.map { |expr| s_expr(expr) }.join("\n")
     end
 
     def s_expr(expr : Expr::Binary) : String
