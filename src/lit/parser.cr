@@ -9,7 +9,7 @@ module Lit
     getter tokens : Array(Token)
     getter current : Int32 = 0
 
-    def initialize(@tokens : Array(Token)); end
+    def initialize(@tokens); end
 
     def self.parse(tokens)
       new(tokens).parse
