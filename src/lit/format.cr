@@ -31,6 +31,10 @@ module Lit
       format_as(str, red, bold)
     end
 
+    def hint(str : String)
+      format_as(str, italic)
+    end
+
     private def as_black(str : String) : String
       "\e[30m#{str}\e[0m"
     end
