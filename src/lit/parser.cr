@@ -30,6 +30,7 @@ module Lit
     rescue ParserError
       synchronize
 
+      # NOTE: Since there's an error, return this dumb expr just to get going
       Expr::Literal.new("ERROR")
     end
 
