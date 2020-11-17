@@ -16,7 +16,7 @@ describe Lit::Parser do
       expr.right.as(Lit::Expr::Literal).value.should eq 1.0
     end
   end
-  
+
   describe "grouping expression" do
     it "parses a grouping expression" do
       group = Create.tokens(:left_paren, :number, :right_paren, :eof)
