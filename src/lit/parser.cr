@@ -26,11 +26,22 @@ module Lit
     end
 
     private def expression
-      primary
+      unary
     rescue ParserError
       synchronize
 
       Expr::Literal.new("ERROR")
+    end
+
+    private def unary
+      if match?(TokenType::MINUS, TokenType::BANG)
+        operator = previous
+        right = unary
+
+        return Expr::Unary.new(operator, right)
+      end
+
+      primary
     end
 
     private def primary

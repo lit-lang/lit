@@ -8,8 +8,12 @@ module Lit
       exprs.map { |expr| s_expr(expr) }.join("; ")
     end
 
+    def s_expr(expr : Expr::Unary) : String
+      parenthesize(expr.operator.lexeme, expr.right)
+    end
+
     def s_expr(expr : Expr::Literal) : String
-      expr.value.to_s
+      expr.value.inspect
     end
 
     def s_expr(expr : Expr::Grouping) : String

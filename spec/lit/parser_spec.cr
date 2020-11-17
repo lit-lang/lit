@@ -7,6 +7,16 @@ describe Lit::Parser do
   it_parses :number, to_literal: 1.0
   it_parses :string, to_literal: "some text"
 
+  describe "unary expression" do
+    it "parses a unary expression" do
+      tokens = Create.tokens(:minus, :number, :eof)
+      expr = Lit::Parser.parse(tokens).first.as(Lit::Expr::Unary)
+
+      expr.operator.type.minus?.should be_true
+      expr.right.as(Lit::Expr::Literal).value.should eq 1.0
+    end
+  end
+  
   describe "grouping expression" do
     it "parses a grouping expression" do
       group = Create.tokens(:left_paren, :number, :right_paren, :eof)

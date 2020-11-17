@@ -12,7 +12,7 @@ module AstGenerator
       "Grouping = expression : Expr",
       "Literal  = value : Union(String | Float64 | Bool | Nil)",
       # "Logical  = left : Expr, operator : Token , right : Expr",
-      # "Unary    = operator : Token, right : Expr",
+      "Unary    = operator : Token, right : Expr",
       # "Variable = name : Token",
     ])
 

@@ -13,10 +13,12 @@ module Create
       Lit::Token.new(token(STRING), %("some text"), "some text", 1)
     when :false, :true, :nil
       Lit::Token.new(Lit::TokenType.parse(type.to_s), type.to_s, nil, 1)
-    when :eof
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), "", nil, 1)
     when :comma
       Lit::Token.new(Lit::TokenType.parse(type.to_s), ",", nil, 1)
+    when :minus
+      Lit::Token.new(Lit::TokenType.parse(type.to_s), "-", nil, 1)
+    when :eof
+      Lit::Token.new(Lit::TokenType.parse(type.to_s), "", nil, 1)
     else
       raise "Don't know hot to build token with type '#{type}'"
     end
@@ -32,6 +34,8 @@ module Create
       Lit::Expr::Literal.new(value || 1.0)
     when :grouping
       Lit::Expr::Grouping.new(expr :literal)
+    when :unary
+      Lit::Expr::Unary.new(self.token(:minus), expr(:literal))
     else
       raise "Don't know hot to build expression with type '#{type}'"
     end
