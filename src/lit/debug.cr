@@ -8,6 +8,10 @@ module Lit
       exprs.map { |expr| s_expr(expr) }.join("; ")
     end
 
+    def s_expr(expr : Expr::Binary) : String
+      parenthesize(expr.operator.lexeme, expr.left, expr.right)
+    end
+
     def s_expr(expr : Expr::Unary) : String
       parenthesize(expr.operator.lexeme, expr.right)
     end

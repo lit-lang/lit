@@ -3,9 +3,22 @@ require "./token"
 module Lit
   abstract class Expr
     module Visitor
+      abstract def visit_binary_expr(expr : Binary)
       abstract def visit_grouping_expr(expr : Grouping)
       abstract def visit_literal_expr(expr : Literal)
       abstract def visit_unary_expr(expr : Unary)
+    end
+
+    class Binary < Expr
+      getter left : Expr
+      getter operator : Token
+      getter right : Expr
+
+      def initialize(@left, @operator, @right); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_binary_expr(self)
+      end
     end
 
     class Grouping < Expr

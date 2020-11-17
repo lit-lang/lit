@@ -17,6 +17,8 @@ module Create
       Lit::Token.new(Lit::TokenType.parse(type.to_s), ",", nil, 1)
     when :minus
       Lit::Token.new(Lit::TokenType.parse(type.to_s), "-", nil, 1)
+    when :plus
+      Lit::Token.new(Lit::TokenType.parse(type.to_s), "+", nil, 1)
     when :eof
       Lit::Token.new(Lit::TokenType.parse(type.to_s), "", nil, 1)
     else
@@ -36,6 +38,8 @@ module Create
       Lit::Expr::Grouping.new(expr :literal)
     when :unary
       Lit::Expr::Unary.new(self.token(:minus), expr(:literal))
+    when :binary
+      Lit::Expr::Binary.new(expr(:literal), self.token(:plus), expr(:literal))
     else
       raise "Don't know hot to build expression with type '#{type}'"
     end

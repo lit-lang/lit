@@ -26,6 +26,14 @@ describe Lit::Debug do
       end
     end
 
+    context "with binary expressions" do
+      it do
+        expr = Create.expr(:binary)
+
+        Lit::Debug.s_expr(expr).should eq "(+ 1.0 1.0)"
+      end
+    end
+
     context "with multiple expressions" do
       it do
         expr = [Create.expr(:grouping), Create.expr(:literal, "a string")]
