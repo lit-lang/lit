@@ -1,3 +1,8 @@
 require "./lit"
+require "./lit/formatter"
 
-Lit.run
+if ARGV.first? == "format"
+  Lit::Formatter.format
+else
+  Lit.run
+end

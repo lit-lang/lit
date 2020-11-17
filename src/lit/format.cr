@@ -1,4 +1,5 @@
 module Lit
+  # TODO: Rename this module. Maybe `Text`?
   module Format
     extend self
 
