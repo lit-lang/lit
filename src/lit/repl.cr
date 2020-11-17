@@ -20,7 +20,7 @@ module Lit
         print_output(output)
       end
 
-      puts "Bye! Cya..."
+      display_goodbye
     end
 
     private def read_line
@@ -52,7 +52,7 @@ module Lit
     end
 
     private def display_lit_version
-      puts %(LIT #{VERSION} - REPL)
+      puts "LIT #{VERSION} - REPL"
     end
 
     private def display_hint
@@ -64,6 +64,10 @@ module Lit
       puts "  quit | exit    exits repl"
       puts "  help           displays this message"
       puts
+    end
+
+    private def display_goodbye
+      puts "Bye, cya!"
     end
   end
 end
