@@ -1,6 +1,7 @@
-puts('Formatting...')  
- 
-        
-sum=fn{  ( 1+1  )   }
+puts('Formatting...')
+
+sum=fn { ( 1+1 ) }
+
 
 puts('Formatted!')
+

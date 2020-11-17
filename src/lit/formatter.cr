@@ -12,12 +12,14 @@ module Lit
       else
         File.write(ARGV[1], format_pipeline(File.read(ARGV[1])))
       end
-    rescue
+    rescue File::NotFoundError
       error("File not found")
     end
 
     private def format_pipeline(src)
       remove_trailing_whitespaces(src)
+        .try { |result| remove_multiple_spaces(result) }
+        .try { |result| add_space_between_operators(result) }
         .try { |result| remove_multiple_new_lines(result) }
         .try { |result| add_newline_at_end(result) }
     end
@@ -27,11 +29,22 @@ module Lit
     end
 
     private def remove_multiple_new_lines(src)
-      src.gsub(/(\n)+/m, "\n")
+      src.gsub(/([\n]$){2,}/m, "\n")
+    end
+
+    private def remove_multiple_spaces(src)
+      src.gsub(/(?<!^)[ \t]{2,}/m, " ")
+    end
+
+    private def add_space_between_operators(src)
+      with_space_before = src.gsub(/([_a-zA-Z0-9]+)[+\-=\/]/m) { |s| asdf(s) }
+      with_space_after = with_space_before.gsub(/[+\-=\/]([_a-zA-Z0-9]+)/m) { |s| asdf(s) }
+
+      with_space_after
     end
 
     private def add_newline_at_end(src)
-      src + "\n"
+      src.ends_with?("\n") ? src : src + "\n"
     end
 
     private def error(msg)
@@ -41,6 +54,10 @@ module Lit
 
     private def no_input?(input)
       input.nil? && ARGV[1]?.nil?
+    end
+
+    private def asdf(str)
+      str.strip.split(/([+\-=\/])/).reject!(&.empty?).join(" ")
     end
   end
 end
