@@ -23,6 +23,8 @@ module Create
       Lit::Token.new(Lit::TokenType.parse(type.to_s), "/", nil, 1)
     when :star
       Lit::Token.new(Lit::TokenType.parse(type.to_s), "*", nil, 1)
+    when :less
+      Lit::Token.new(Lit::TokenType.parse(type.to_s), "<", nil, 1)
     when :eof
       Lit::Token.new(Lit::TokenType.parse(type.to_s), "", nil, 1)
     else

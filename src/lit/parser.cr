@@ -26,12 +26,24 @@ module Lit
     end
 
     private def expression
-      term
+      comparison
     rescue ParserError
       synchronize
 
       # NOTE: Since there's an error, return this dumb expr just to get going
       Expr::Literal.new("ERROR")
+    end
+
+    private def comparison
+      expr = term
+
+      while match?(TokenType::GREATER, TokenType::GREATER_EQUAL, TokenType::LESS, TokenType::LESS_EQUAL)
+        operator = previous
+        right = term
+        expr = Expr::Binary.new(expr, operator, right)
+      end
+
+      expr
     end
 
     private def term
