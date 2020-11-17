@@ -52,7 +52,7 @@ module Lit
     end
 
     private def display_lit_version
-      puts %(Lit #{VERSION} - REPL)
+      puts %(LIT #{VERSION} - REPL)
     end
 
     private def display_hint
