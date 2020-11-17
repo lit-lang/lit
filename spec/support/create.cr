@@ -28,7 +28,7 @@ module Create
     else
       if type.to_s.starts_with?("number_")
         number = type.to_s.lchop("number_")
-        
+
         return Lit::Token.new(token(NUMBER), number, number.to_f, 1)
       end
       raise "Don't know hot to build token with type '#{type}'"
