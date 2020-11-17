@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+# Copied from https://stackoverflow.com/a/15104926/8650655
+def count_lines(paths)
+  return puts "ERROR: no paths given" if paths.empty?
+
+  file_count = 0 # Number of files
+  line_count = 0 # Number of lines of code
+  comment_count = 0 # Number of lines of comments
+
+  files = Dir.glob(paths)
+
+  files.each do |f|
+    next if f.index("vendor")
+    next if File.directory?(f)
+    file_count += 1
+    loc = 0
+    File.read(f).each_line do |line|
+      if line.strip.start_with? "#"
+        comment_count += 1
+        next
+      end
+      next if line.strip.empty?
+      loc += 1
+    end
+    line_count += loc
+  end
+
+  puts "#{file_count} files."
+  puts "#{line_count} lines of code."
+  puts "#{(line_count.to_f/file_count.to_f).round(2)} LOC/file."
+  puts "#{comment_count} lines of comments."
+end
+
+count_lines(ARGV&.first&.split || ["src/**/*.cr"])
