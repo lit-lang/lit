@@ -19,9 +19,18 @@ module Create
       Lit::Token.new(Lit::TokenType.parse(type.to_s), "-", nil, 1)
     when :plus
       Lit::Token.new(Lit::TokenType.parse(type.to_s), "+", nil, 1)
+    when :slash
+      Lit::Token.new(Lit::TokenType.parse(type.to_s), "/", nil, 1)
+    when :star
+      Lit::Token.new(Lit::TokenType.parse(type.to_s), "*", nil, 1)
     when :eof
       Lit::Token.new(Lit::TokenType.parse(type.to_s), "", nil, 1)
     else
+      if type.to_s.starts_with?("number_")
+        number = type.to_s.lchop("number_")
+        
+        return Lit::Token.new(token(NUMBER), number, number.to_f, 1)
+      end
       raise "Don't know hot to build token with type '#{type}'"
     end
   end

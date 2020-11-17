@@ -26,11 +26,37 @@ module Lit
     end
 
     private def expression
-      unary
+      term
     rescue ParserError
       synchronize
 
       Expr::Literal.new("ERROR")
+    end
+
+    private def term
+      expr = factor
+
+      while match?(TokenType::PLUS, TokenType::MINUS)
+        operator = previous
+        right = factor
+
+        expr = Expr::Binary.new(expr, operator, right)
+      end
+
+      expr
+    end
+
+    private def factor
+      expr = unary
+
+      while match?(TokenType::STAR, TokenType::SLASH)
+        operator = previous
+        right = unary
+
+        expr = Expr::Binary.new(expr, operator, right)
+      end
+
+      expr
     end
 
     private def unary
