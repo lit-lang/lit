@@ -1,0 +1,27 @@
+let Node = fn { |value, next|
+  return (
+    value = value
+    next = next
+  )
+}
+
+let LinkedList = (
+  new = fn { |value| Node(value, nil) }
+  head = fn { |value| node.value }
+  tail = fn { |node| node.next }
+  push = fn { |value, node|
+    let newNode = Node(value, nil)
+    node.next = Node(value, newNode)
+  }
+  length = fn { |node|
+    if (node.value == nil) return 0
+
+    1 + list |> tail |> length
+  }
+)
+
+let list = LinkedList.new(3)
+LinkedList.push(2, list)
+LinkedList.push(1, list)
+
+puts(LinkedList.length(list))
