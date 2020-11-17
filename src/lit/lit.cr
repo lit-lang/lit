@@ -26,7 +26,7 @@ module Lit
     end
 
     def self.run_file(path : String)
-      run(File.read(path))
+      puts run(File.read(path))
     rescue File::NotFoundError
       puts Format.error("Error: File not found!")
     ensure
