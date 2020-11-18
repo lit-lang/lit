@@ -39,7 +39,12 @@ module Lit
     end
 
     private def remove_multiple_new_lines_at_begin(src)
-      src.gsub(/(^[\s])+[\S]/) { |match| match[-1] }
+      if src.starts_with?("\n")
+        src = src.lchop("\n")
+        src = remove_multiple_new_lines_at_begin(src)
+      end
+
+      src
     end
 
     private def remove_multiple_spaces(src)
