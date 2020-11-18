@@ -27,6 +27,7 @@ module Lit
         .try { |s| add_space_between_operators(s) }
         .try { |s| remove_multiple_new_lines(s) }
         .try { |s| remove_multiple_new_lines_at_begin(s) }
+        .try { |s| remove_unecessary_curly_brackets(s) }
         .try { |s| add_newline_at_end(s) }
     end
 
@@ -52,10 +53,14 @@ module Lit
     end
 
     private def add_space_between_operators(src)
-      with_space_before = src.gsub(/([_a-zA-Z0-9]+)[+\-=\/]/m) { |s| asdf(s) }
-      with_space_before_and_after = with_space_before.gsub(/[+\-=\/]([_a-zA-Z0-9]+)/m) { |s| asdf(s) }
+      with_space_before = src.gsub(/([_a-zA-Z0-9]+)[+\-=\/]/m) { |s| add_space(s) }
+      with_space_before_and_after = with_space_before.gsub(/[+\-=\/]([_a-zA-Z0-9]+)/m) { |s| add_space(s) }
 
       with_space_before_and_after
+    end
+
+    private def remove_unecessary_curly_brackets(src)
+      src.gsub(/\{[\s]*return.*;\s*\}/) { |s| s[1..-2] }
     end
 
     private def add_newline_at_end(src)
@@ -71,7 +76,7 @@ module Lit
       input.nil? && ARGV[1]?.nil?
     end
 
-    private def asdf(str)
+    private def add_space(str)
       str.strip.split(/([+\-=\/])/).reject!(&.empty?).join(" ")
     end
   end
