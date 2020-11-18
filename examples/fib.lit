@@ -1,0 +1,10 @@
+let fib = fn { |n|
+  if (n < 2) { return n; }
+
+  return fib(n - 1) + fib(n - 2);
+}
+
+let n = read;
+
+print("The #{n} fibonacci is {fib(n)}")
+puts('The #{n} fibonacci is {fib(n)}')
