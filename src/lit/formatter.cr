@@ -2,8 +2,8 @@ require "./format"
 
 module Lit
   # TODO:
-  # This module makes very simple formatting on lit files.
-  # It is regex based, so it's not very elegant, but gets the job done.
+  # This module makes very simple formatting on LIT files.
+  # It's regex based, so it's not very elegant, but it gets the job done.
   # In the future I'll parse the code and "pretty print" it. It should
   # be more powerful.
   module Formatter
