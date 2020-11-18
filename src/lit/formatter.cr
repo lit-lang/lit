@@ -48,9 +48,9 @@ module Lit
 
     private def add_space_between_operators(src)
       with_space_before = src.gsub(/([_a-zA-Z0-9]+)[+\-=\/]/m) { |s| asdf(s) }
-      with_space_after = with_space_before.gsub(/[+\-=\/]([_a-zA-Z0-9]+)/m) { |s| asdf(s) }
+      with_space_before_and_after = with_space_before.gsub(/[+\-=\/]([_a-zA-Z0-9]+)/m) { |s| asdf(s) }
 
-      with_space_after
+      with_space_before_and_after
     end
 
     private def add_newline_at_end(src)
