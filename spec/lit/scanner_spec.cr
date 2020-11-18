@@ -6,6 +6,7 @@ describe Lit::Scanner do
   end
 
   it_scans "", to_type: token(EOF)
+  it_scans "\n", to_type: token(EOF), to_lexeme: "", at_line: 2
   it_scans "(", to_type: token(LEFT_PAREN)
   it_scans ")", to_type: token(RIGHT_PAREN)
   it_scans "[", to_type: token(LEFT_BRACKET)
@@ -135,14 +136,14 @@ describe Lit::Scanner do
   end
 end
 
-private def it_scans(str, to_type, to_literal = nil)
-  it "scans #{str}" do
+private def it_scans(str, to_type, to_literal = nil, to_lexeme = str, at_line = 1)
+  it "scans #{str.inspect}" do
     token = Lit::Scanner.scan(str).first
     token.should be_a Lit::Token
     token.type.should eq to_type
-    token.lexeme.should eq str
+    token.lexeme.should eq to_lexeme
     token.literal.should eq to_literal
-    token.line.should eq 1
+    token.line.should eq at_line
   end
 end
 
