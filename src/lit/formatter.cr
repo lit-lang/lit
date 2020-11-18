@@ -53,8 +53,8 @@ module Lit
     end
 
     private def add_space_between_operators(src)
-      with_space_before = src.gsub(/([_a-zA-Z0-9]+)[+\-=\/]/m) { |s| add_space(s) }
-      with_space_before_and_after = with_space_before.gsub(/[+\-=\/]([_a-zA-Z0-9]+)/m) { |s| add_space(s) }
+      with_space_before = src.gsub(/([_a-zA-Z0-9]+)[+\-=\/<>]/m) { |s| add_space(s) }
+      with_space_before_and_after = with_space_before.gsub(/[+\-=\/<>]([_a-zA-Z0-9]+)/m) { |s| add_space(s) }
 
       with_space_before_and_after
     end
@@ -77,7 +77,7 @@ module Lit
     end
 
     private def add_space(str)
-      str.strip.split(/([+\-=\/])/).reject!(&.empty?).join(" ")
+      str.strip.split(/([+\-=\/<>])/).reject!(&.empty?).join(" ")
     end
   end
 end

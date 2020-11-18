@@ -8,8 +8,10 @@ describe Lit::Formatter do
 
     formatted_text.should eq <<-LIT
     Math = {
-      sum = fn { |a, b|
-        (a + b)
+      div = fn { |a, b|
+        if (b < 0) return nil;
+
+        (a / b)
       }
     }
 
