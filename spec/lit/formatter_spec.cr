@@ -7,7 +7,6 @@ describe Lit::Formatter do
     formatted_text = Lit::Formatter.format(src)
 
     formatted_text.should eq <<-LIT
-
     Math = {
       sum = fn { |a, b|
         (a + b)

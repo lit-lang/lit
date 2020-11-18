@@ -23,10 +23,11 @@ module Lit
 
     private def format_pipeline(src)
       remove_trailing_whitespaces(src)
-        .try { |result| remove_multiple_spaces(result) }
-        .try { |result| add_space_between_operators(result) }
-        .try { |result| remove_multiple_new_lines(result) }
-        .try { |result| add_newline_at_end(result) }
+        .try { |s| remove_multiple_spaces(s) }
+        .try { |s| add_space_between_operators(s) }
+        .try { |s| remove_multiple_new_lines(s) }
+        .try { |s| remove_multiple_new_lines_at_begin(s) }
+        .try { |s| add_newline_at_end(s) }
     end
 
     private def remove_trailing_whitespaces(src)
@@ -35,6 +36,10 @@ module Lit
 
     private def remove_multiple_new_lines(src)
       src.gsub(/([\n]$){2,}/m, "\n")
+    end
+
+    private def remove_multiple_new_lines_at_begin(src)
+      src.gsub(/(^[\s])+[\S]/) { |match| match[-1] }
     end
 
     private def remove_multiple_spaces(src)
