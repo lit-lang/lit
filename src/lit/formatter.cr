@@ -1,4 +1,4 @@
-require "./format"
+require "./text"
 
 module Lit
   # TODO:
@@ -68,7 +68,7 @@ module Lit
     end
 
     private def error(msg)
-      puts Format.error(msg)
+      puts Text.error(msg)
       exit(1)
     end
 

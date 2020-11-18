@@ -1,4 +1,4 @@
-require "./format"
+require "./text"
 
 module Lit
   module REPL
@@ -56,7 +56,7 @@ module Lit
     end
 
     private def display_hint
-      puts Format.hint("Hint: Type 'help' to see available commands\n\n")
+      puts Text.hint("Hint: Type 'help' to see available commands\n\n")
     end
 
     private def display_help : Nil

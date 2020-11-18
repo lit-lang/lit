@@ -4,7 +4,7 @@ require "./parser"
 require "./token"
 require "./repl"
 require "./macros"
-require "./format"
+require "./text"
 require "./debug"
 
 module Lit
@@ -28,7 +28,7 @@ module Lit
     def self.run_file(path : String)
       puts run(File.read(path))
     rescue File::NotFoundError
-      puts Format.error("Error: File not found!")
+      puts Text.error("Error: File not found!")
     ensure
       exit(65) if had_error
       exit(70) if had_runtime_error
@@ -47,7 +47,7 @@ module Lit
     end
 
     private def self.report(line : Int, where : String, message : String)
-      puts(Format.error("[Line #{line}] Error#{where}: #{message}"))
+      puts(Text.error("[Line #{line}] Error#{where}: #{message}"))
 
       self.had_error = true
     end

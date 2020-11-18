@@ -1,6 +1,5 @@
 module Lit
-  # TODO: Rename this module. Maybe `Text`?
-  module Format
+  module Text
     extend self
 
     macro format_as(str, *opts)
