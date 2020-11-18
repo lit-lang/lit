@@ -21,10 +21,6 @@ module Lit
       add_eof_token
 
       @tokens
-    rescue e
-      puts Format.error(e.to_s)
-
-      [] of Token
     end
 
     private def scan_tokens
