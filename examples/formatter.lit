@@ -1,7 +1,8 @@
-puts('Formatting...')
+  
+Math = {
+  sum=fn { |a,  b|  
+    (a+b)
+  } 
+} 
 
-sum=fn { ( 1+1 ) }
-
-
-puts('Formatted!')
-
+ 
