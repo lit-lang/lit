@@ -2,14 +2,6 @@ module Lit
   module Text
     extend self
 
-    macro format_as(str, *opts)
-      {% for opt in opts %}
-        str = as_{{opt}}(str)
-      {% end %}
-
-      str
-    end
-
     def keyword(str)
       as_green(str)
     end
@@ -32,6 +24,14 @@ module Lit
 
     def hint(str : String)
       format_as(str, italic)
+    end
+
+    private macro format_as(str, *opts)
+      {% for opt in opts %}
+        str = as_{{opt}}(str)
+      {% end %}
+
+      str
     end
 
     private def as_black(str : String) : String
