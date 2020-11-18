@@ -25,9 +25,9 @@ module Lit
       remove_trailing_whitespaces(src)
         .try { |s| remove_multiple_spaces(s) }
         .try { |s| add_space_between_operators(s) }
+        .try { |s| remove_unecessary_curly_brackets(s) }
         .try { |s| remove_multiple_new_lines(s) }
         .try { |s| remove_multiple_new_lines_at_begin(s) }
-        .try { |s| remove_unecessary_curly_brackets(s) }
         .try { |s| add_newline_at_end(s) }
     end
 
@@ -60,7 +60,7 @@ module Lit
     end
 
     private def remove_unecessary_curly_brackets(src)
-      src.gsub(/\{[\s]*return.*;\s*\}/) { |s| s[1..-2] }
+      src.gsub(/\{[\s]*return.*;\s*\}/) { |s| s.delete("{}").strip }
     end
 
     private def add_newline_at_end(src)

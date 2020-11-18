@@ -1,7 +1,9 @@
   
 Math = {
   div=fn { |a,  b|  
-    if (b<0) {return nil;}
+    if (b<0) {return nil;
+    
+    }
    
     (a/b)
   } 
