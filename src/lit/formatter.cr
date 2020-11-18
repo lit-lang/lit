@@ -38,7 +38,7 @@ module Lit
     end
 
     private def remove_multiple_spaces(src)
-      src.gsub(/(?<!^)[ \t]{2,}/m, " ")
+      src.gsub(/\S\K[ \t]{2,}/m, " ")
     end
 
     private def add_space_between_operators(src)

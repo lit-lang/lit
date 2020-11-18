@@ -6,6 +6,14 @@ describe Lit::Formatter do
     src = File.read("examples/formatter.lit")
     formatted_text = Lit::Formatter.format(src)
 
-    formatted_text.should eq "puts('Formatting...')\n\nsum = fn { ( 1 + 1 ) }\n\nputs('Formatted!')\n"
+    formatted_text.should eq <<-LIT
+
+    Math = {
+      sum = fn { |a, b|
+        (a + b)
+      }
+    }
+
+    LIT
   end
 end
