@@ -8,6 +8,12 @@ describe Lit::Debug do
 
         Lit::Debug.s_expr(expr).should eq "1.0"
       end
+
+      it do
+        expr = Create.expr(:literal, true)
+
+        Lit::Debug.s_expr(expr).should eq "true"
+      end
     end
 
     context "with grouping expressions" do
