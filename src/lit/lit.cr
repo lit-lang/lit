@@ -1,9 +1,10 @@
 require "readline"
+require "./macros"
+require "./token"
 require "./scanner"
 require "./parser"
-require "./token"
+require "./interpreter"
 require "./repl"
-require "./macros"
 require "./text"
 require "./debug"
 
