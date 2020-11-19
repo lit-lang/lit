@@ -5,4 +5,3 @@ Metrics/CyclomaticComplexity:
   Severity: Convention
   Excluded:
   - src/lit/scanner.cr
-  - spec/support/create.cr

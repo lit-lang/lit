@@ -1,5 +1,22 @@
 module Create
   extend self
+  TOKENS = {
+    false:       "false",
+    true:        "true",
+    nil:         "nil",
+    left_paren:  "(",
+    right_paren: ")",
+    equal_equal: "==",
+    bang_equal:  "!=",
+    comma:       ",",
+    minus:       "-",
+    plus:        "+",
+    slash:       "/",
+    star:        "*",
+    less:        "<",
+    greater:     ">",
+    eof:         "",
+  }
 
   def token(type : Symbol) : Lit::Token
     case type
@@ -7,36 +24,15 @@ module Create
       Lit::Token.new(Lit::TokenType.parse(type.to_s), "1", 1.0, 1)
     when :string
       Lit::Token.new(Lit::TokenType.parse(type.to_s), %("some text"), "some text", 1)
-    when :false, :true, :nil
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), type.to_s, nil, 1)
-    when :left_paren
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), "(", nil, 1)
-    when :right_paren
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), ")", nil, 1)
-    when :equal_equal
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), "==", nil, 1)
-    when :bang_equal
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), "!=", nil, 1)
-    when :comma
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), ",", nil, 1)
-    when :minus
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), "-", nil, 1)
-    when :plus
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), "+", nil, 1)
-    when :slash
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), "/", nil, 1)
-    when :star
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), "*", nil, 1)
-    when :less
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), "<", nil, 1)
-    when :eof
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), "", nil, 1)
     else
-      if type.to_s.starts_with?("number_")
+      if TOKENS.has_key?(type)
+        return Lit::Token.new(Lit::TokenType.parse(type.to_s), TOKENS[type], nil, 1)
+      elsif type.to_s.starts_with?("number_")
         number = type.to_s.lchop("number_")
 
         return Lit::Token.new(token(NUMBER), number, number.to_f, 1)
       end
+
       raise "Don't know hot to build token with type '#{type}'"
     end
   end
