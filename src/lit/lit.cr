@@ -35,6 +35,12 @@ module Lit
       exit(70) if had_runtime_error
     end
 
+    def self.runtime_error(error)
+      puts Text.error("#{error.message}\n[line #{error.token.line}]")
+
+      self.had_runtime_error = true
+    end
+
     def self.error(line : Int, message : String)
       report(line, "", message)
     end
@@ -48,7 +54,7 @@ module Lit
     end
 
     private def self.report(line : Int, where : String, message : String)
-      puts(Text.error("[Line #{line}] Error#{where}: #{message}"))
+      puts Text.error("[Line #{line}] Error#{where}: #{message}")
 
       self.had_error = true
     end

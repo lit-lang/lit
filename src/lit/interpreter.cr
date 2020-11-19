@@ -1,5 +1,7 @@
+require "./lit"
 require "./expr"
 require "./obj"
+require "./runtime_error"
 
 module Lit
   class Interpreter
@@ -13,6 +15,8 @@ module Lit
 
     def interpret
       @exprs.each { |expr| evaluate(expr) }
+    rescue e : RuntimeError
+      Lit.runtime_error(e)
     end
 
     def visit_literal_expr(expr) : Obj
@@ -24,13 +28,14 @@ module Lit
 
       case expr.operator.type
       when .minus?
+        check_number_operand(expr.operator, right)
+
         return -right.as(Float64)
       when .bang?
         return !truthy?(right)
       end
 
-      # raise
-      nil
+      raise RuntimeError.new(expr.operator, "Unknown unary operator. This is probably a parsing error. My bad =(")
     end
 
     def visit_binary_expr(expr) : Obj
@@ -43,6 +48,12 @@ module Lit
 
     def evaluate(expr) : Obj
       expr.accept(self)
+    end
+
+    private def check_number_operand(operator, operand : Obj)
+      return if operand.is_a? Float64
+
+      raise RuntimeError.new(operator, "Operand must be a number.")
     end
 
     private def truthy?(obj : Obj) : Bool

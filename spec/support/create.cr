@@ -1,5 +1,6 @@
 module Create
   extend self
+
   TOKENS = {
     false:       "false",
     true:        "true",

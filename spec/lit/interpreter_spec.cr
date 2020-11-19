@@ -26,11 +26,28 @@ describe Lit::Interpreter, focus: true do
       interpreter.evaluate(expr).should eq false
     end
 
-    # context "when is an invalid operation" do
-    #   it "raises a runtime error" do
-    #     expr = Create.expr(:unary)
-    #     interpreter.evaluate(expr).should eq -1.0
-    #   end
-    # end
+    context "when is an invalid operation" do
+      it "raises a runtime error" do
+        minus = Create.token(:minus)
+        string_literal = Create.expr(:literal, "a string")
+        expr = Create.expr(:unary, operator: minus, right: string_literal)
+
+        expect_raises(Lit::RuntimeError, /Operand must be a number/) do
+          interpreter.evaluate(expr)
+        end
+      end
+    end
+
+    context "when is an unkown operation" do
+      it "raises a runtime error" do
+        plus = Create.token(:plus)
+        string_literal = Create.expr(:literal, "a string")
+        expr = Create.expr(:unary, operator: plus, right: string_literal)
+
+        expect_raises(Lit::RuntimeError, /Unknown unary operator/) do
+          interpreter.evaluate(expr)
+        end
+      end
+    end
   end
 end
