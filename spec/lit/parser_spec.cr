@@ -8,6 +8,15 @@ describe Lit::Parser do
   it_parses :string, to_literal: "some text"
 
   describe "binary expression" do
+    it "parses equalities" do
+      tokens = Create.tokens(:number, :equal_equal, :number_2, :eof)
+      expr = Lit::Parser.parse(tokens).first.as(Lit::Expr::Binary)
+
+      expr.operator.type.equal_equal?.should be_true
+      expr.left.as(Lit::Expr::Literal).value.should eq 1.0
+      expr.right.as(Lit::Expr::Literal).value.should eq 2.0
+    end
+
     it "parses comparissons" do
       tokens = Create.tokens(:number, :less, :number_2, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Expr::Binary)
@@ -37,12 +46,13 @@ describe Lit::Parser do
 
     # NOTE: This test depends on Debug.s_expr
     it "has correct precedence" do
+      # 1 + (2 - 3 * 4) < 0 == true
       tokens = Create.tokens(
         :number_1, :plus, :left_paren, :number_2, :minus, :number_3, :star,
-        :number_4, :right_paren, :less, :number_0, :eof
+        :number_4, :right_paren, :less, :number_0, :equal_equal, :true, :eof
       )
       s_expr = Lit::Debug.s_expr(Lit::Parser.parse(tokens))
-      s_expr.should eq "(< (+ 1.0 (group (- 2.0 (* 3.0 4.0)))) 0.0)"
+      s_expr.should eq "(== (< (+ 1.0 (group (- 2.0 (* 3.0 4.0)))) 0.0) true)"
     end
 
     it "parses multiple expressions" do
