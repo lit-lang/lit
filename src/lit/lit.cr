@@ -19,6 +19,7 @@ module Lit
       return if had_error
       return if had_runtime_error
 
+      Interpreter.interpret(expressions)
       Debug.s_expr(expressions)
     end
 
@@ -27,7 +28,7 @@ module Lit
     end
 
     def self.run_file(path : String)
-      puts run(File.read(path))
+      run(File.read(path))
     rescue File::NotFoundError
       puts Text.error("Error: File not found!")
     ensure

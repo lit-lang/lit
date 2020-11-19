@@ -50,4 +50,12 @@ describe Lit::Interpreter, focus: true do
       end
     end
   end
+
+  describe "#visit_grouping_expr" do
+    it "evaluates its internal expression" do
+      expr = Create.expr(:grouping)
+
+      interpreter.evaluate(expr).should eq 1.0
+    end
+  end
 end

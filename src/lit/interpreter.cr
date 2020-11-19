@@ -14,7 +14,7 @@ module Lit
     end
 
     def interpret
-      @exprs.each { |expr| evaluate(expr) }
+      @exprs.each { |expr| pp evaluate(expr) }
     rescue e : RuntimeError
       Lit.runtime_error(e)
     end
@@ -39,11 +39,11 @@ module Lit
     end
 
     def visit_binary_expr(expr) : Obj
-      1.0
+      "binary_expr"
     end
 
     def visit_grouping_expr(expr) : Obj
-      1.0
+      evaluate(expr.expression)
     end
 
     def evaluate(expr) : Obj
