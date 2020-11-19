@@ -149,6 +149,6 @@ end
 
 private def it_scans_keywords
   Lit::KEYWORDS.each do |keyword_name, token_type|
-    it_scans keyword_name, to_type: token_type
+    it_scans keyword_name.to_s, to_type: token_type
   end
 end
