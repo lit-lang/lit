@@ -157,6 +157,48 @@ describe Lit::Interpreter do
       end
     end
 
+    context "when operator is >" do
+      it do
+        greater = Create.token(:greater)
+        number_1 = Create.expr(:literal, 1.0)
+        number_2 = Create.expr(:literal, 2.0)
+        expr = Create.expr(:binary, operator: greater, left: number_2, right: number_1)
+
+        interpreter.evaluate(expr).should be_true
+      end
+    end
+
+    context "when operator is >=" do
+      it do
+        greater_equal = Create.token(:greater_equal)
+        number_2 = Create.expr(:literal, 2.0)
+        expr = Create.expr(:binary, operator: greater_equal, left: number_2, right: number_2)
+
+        interpreter.evaluate(expr).should be_true
+      end
+    end
+
+    context "when operator is <" do
+      it do
+        less = Create.token(:less)
+        number_1 = Create.expr(:literal, 1.0)
+        number_2 = Create.expr(:literal, 2.0)
+        expr = Create.expr(:binary, operator: less, left: number_1, right: number_2)
+
+        interpreter.evaluate(expr).should be_true
+      end
+    end
+
+    context "when operator is <=" do
+      it do
+        less_equal = Create.token(:less_equal)
+        number_2 = Create.expr(:literal, 2.0)
+        expr = Create.expr(:binary, operator: less_equal, left: number_2, right: number_2)
+
+        interpreter.evaluate(expr).should be_true
+      end
+    end
+
     context "when is an invalid operation" do
       it "raises an error" do
         less = Create.token(:less)

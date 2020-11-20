@@ -16,7 +16,9 @@ module Create
     slash:         "/",
     star:          "*",
     less:          "<",
+    less_equal:    "<=",
     greater:       ">",
+    greater_equal: ">=",
     pipe_operator: "|>",
     eof:           "",
   }

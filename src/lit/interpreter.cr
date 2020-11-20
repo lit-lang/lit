@@ -43,6 +43,22 @@ module Lit
       right = evaluate(expr.right)
 
       case expr.operator.type
+      when .greater?
+        check_number_operands(expr.operator, left, right)
+
+        return left.as(Float64) > right.as(Float64)
+      when .greater_equal?
+        check_number_operands(expr.operator, left, right)
+
+        return left.as(Float64) >= right.as(Float64)
+      when .less?
+        check_number_operands(expr.operator, left, right)
+
+        return left.as(Float64) < right.as(Float64)
+      when .less_equal?
+        check_number_operands(expr.operator, left, right)
+
+        return left.as(Float64) <= right.as(Float64)
       when .bang_equal?
         return !equal?(left, right)
       when .equal_equal?
@@ -53,7 +69,7 @@ module Lit
         end
 
         if left.is_a? String && right.is_a? String
-          return left.to_s + right.to_s
+          return left.as(String) + right.as(String)
         end
 
         runtime_error(expr.operator, "Operands must be two numbers or two strings.")
