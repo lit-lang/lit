@@ -60,10 +60,49 @@ describe Lit::Interpreter do
   end
 
   describe "#visit_binary_expr" do
-    it "interprets the binary expression" do
-      expr = Create.expr(:binary)
+    context "when operator is +" do
+      it "sums numbers" do
+        expr = Create.expr(:binary)
 
-      interpreter.evaluate(expr).should eq 2.0
+        interpreter.evaluate(expr).should eq 2.0
+      end
+
+      it "sums strings" do
+        string1 = Create.expr(:literal, "a")
+        string2 = Create.expr(:literal, "b")
+        expr = Create.expr(:binary, left: string1, right: string2)
+
+        interpreter.evaluate(expr).should eq "ab"
+      end
+    end
+
+    context "when operator is -" do
+      it do
+        minus = Create.token(:minus)
+        expr = Create.expr(:binary, operator: minus)
+
+        interpreter.evaluate(expr).should eq 0
+      end
+    end
+
+    context "when operator is *" do
+      it "multiplies numbers" do
+        star = Create.token(:star)
+        number_2 = Create.expr(:literal, 2.0)
+        expr = Create.expr(:binary, operator: star, left: number_2, right: number_2)
+
+        interpreter.evaluate(expr).should eq 4.0
+      end
+    end
+
+    context "when operator is /" do
+      it "multiplies numbers" do
+        slash = Create.token(:slash)
+        number_2 = Create.expr(:literal, 2.0)
+        expr = Create.expr(:binary, operator: slash, left: number_2, right: number_2)
+
+        interpreter.evaluate(expr).should eq 1.0
+      end
     end
 
     context "when is an invalid operation" do
@@ -74,7 +113,7 @@ describe Lit::Interpreter do
 
         expr = Create.expr(:binary, left: number, right: string_literal, operator: plus)
 
-        expect_raises(Lit::RuntimeError, /Operands must be numbers/) do
+        expect_raises(Lit::RuntimeError, /Operands must be two numbers or two strings/) do
           interpreter.evaluate(expr)
         end
       end
