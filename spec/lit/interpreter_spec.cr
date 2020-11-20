@@ -105,6 +105,44 @@ describe Lit::Interpreter do
       end
     end
 
+    context "when operator is ==" do
+      it "compares equal values" do
+        equal_equal = Create.token(:equal_equal)
+        number_2 = Create.expr(:literal, 2.0)
+        expr = Create.expr(:binary, operator: equal_equal, left: number_2, right: number_2)
+
+        interpreter.evaluate(expr).should be_true
+      end
+
+      it "compares different values" do
+        equal_equal = Create.token(:equal_equal)
+        number_1 = Create.expr(:literal, 1.0)
+        number_2 = Create.expr(:literal, 2.0)
+        expr = Create.expr(:binary, operator: equal_equal, left: number_1, right: number_2)
+
+        interpreter.evaluate(expr).should be_false
+      end
+    end
+
+    context "when operator is !=" do
+      it "compares equal values" do
+        bang_equal = Create.token(:bang_equal)
+        number_2 = Create.expr(:literal, 2.0)
+        expr = Create.expr(:binary, operator: bang_equal, left: number_2, right: number_2)
+
+        interpreter.evaluate(expr).should be_false
+      end
+
+      it "compares different values" do
+        bang_equal = Create.token(:bang_equal)
+        number_1 = Create.expr(:literal, 1.0)
+        number_2 = Create.expr(:literal, 2.0)
+        expr = Create.expr(:binary, operator: bang_equal, left: number_1, right: number_2)
+
+        interpreter.evaluate(expr).should be_true
+      end
+    end
+
     context "when is an invalid operation" do
       it "raises an error" do
         plus = Create.token(:plus)

@@ -43,6 +43,10 @@ module Lit
       right = evaluate(expr.right)
 
       case expr.operator.type
+      when .bang_equal?
+        return !equal?(left, right)
+      when .equal_equal?
+        return equal?(left, right)
       when .plus?
         if left.is_a? Float64 && right.is_a? Float64
           return left.as(Float64) + right.as(Float64)
@@ -92,6 +96,13 @@ module Lit
 
     private def truthy?(obj : Obj) : Bool
       !!obj
+    end
+
+    private def equal?(a : Obj, b : Obj) : Bool
+      return true if a.nil? && b.nil?
+      return false if a.nil?
+
+      a == b
     end
 
     private def runtime_error(token, msg)
