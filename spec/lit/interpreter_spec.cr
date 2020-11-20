@@ -1,6 +1,6 @@
 require "../spec_helper"
 
-describe Lit::Interpreter, focus: true do
+describe Lit::Interpreter do
   interpreter = Lit::Interpreter.new([] of Lit::Expr)
 
   describe "#visit_literal_expr" do
@@ -56,6 +56,42 @@ describe Lit::Interpreter, focus: true do
       expr = Create.expr(:grouping)
 
       interpreter.evaluate(expr).should eq 1.0
+    end
+  end
+
+  describe "#visit_binary_expr" do
+    it "interprets the binary expression" do
+      expr = Create.expr(:binary)
+
+      interpreter.evaluate(expr).should eq 2.0
+    end
+
+    context "when is an invalid operation" do
+      it "raises an error" do
+        plus = Create.token(:plus)
+        string_literal = Create.expr(:literal, "a string")
+        number = Create.expr(:literal, 1.0)
+
+        expr = Create.expr(:binary, left: number, right: string_literal, operator: plus)
+
+        expect_raises(Lit::RuntimeError, /Operands must be numbers/) do
+          interpreter.evaluate(expr)
+        end
+      end
+    end
+
+    context "when is an unknown operation" do
+      it "raises an error" do
+        pipe_operator = Create.token(:pipe_operator)
+        number1 = Create.expr(:literal)
+        number2 = Create.expr(:literal)
+
+        expr = Create.expr(:binary, left: number2, right: number1, operator: pipe_operator)
+
+        expect_raises(Lit::RuntimeError, /Unknown binary operator/) do
+          interpreter.evaluate(expr)
+        end
+      end
     end
   end
 end

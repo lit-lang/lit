@@ -2,22 +2,23 @@ module Create
   extend self
 
   TOKENS = {
-    false:       "false",
-    true:        "true",
-    nil:         "nil",
-    left_paren:  "(",
-    right_paren: ")",
-    equal_equal: "==",
-    bang_equal:  "!=",
-    bang:        "!",
-    comma:       ",",
-    minus:       "-",
-    plus:        "+",
-    slash:       "/",
-    star:        "*",
-    less:        "<",
-    greater:     ">",
-    eof:         "",
+    false:         "false",
+    true:          "true",
+    nil:           "nil",
+    left_paren:    "(",
+    right_paren:   ")",
+    equal_equal:   "==",
+    bang_equal:    "!=",
+    bang:          "!",
+    comma:         ",",
+    minus:         "-",
+    plus:          "+",
+    slash:         "/",
+    star:          "*",
+    less:          "<",
+    greater:       ">",
+    pipe_operator: "|>",
+    eof:           "",
   }
 
   def token(type : Symbol) : Lit::Token
@@ -43,16 +44,16 @@ module Create
     types.map { |type| self.token(type) }.to_a
   end
 
-  def expr(type : Symbol, left = nil, right = nil, operator = nil) : Lit::Expr
+  def expr(type : Symbol, value = nil, left : Lit::Expr? = nil, right : Lit::Expr? = nil, operator : Lit::Token? = nil) : Lit::Expr
     case type
     when :literal
-      Lit::Expr::Literal.new(left || 1.0)
+      Lit::Expr::Literal.new(value || 1.0)
     when :grouping
       Lit::Expr::Grouping.new(expr :literal)
     when :unary
       Lit::Expr::Unary.new(operator || self.token(:minus), right || expr(:literal))
     when :binary
-      Lit::Expr::Binary.new(expr(:literal), self.token(:plus), expr(:literal))
+      Lit::Expr::Binary.new(left || expr(:literal), operator || self.token(:plus), right || expr(:literal))
     else
       raise "Don't know hot to build expression with type '#{type}'"
     end
