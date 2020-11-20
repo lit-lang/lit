@@ -74,6 +74,20 @@ describe Lit::Interpreter do
 
         interpreter.evaluate(expr).should eq "ab"
       end
+
+      context "when is an invalid operation" do
+        it "raises an error" do
+          plus = Create.token(:plus)
+          string_literal = Create.expr(:literal, "a string")
+          number = Create.expr(:literal, 1.0)
+
+          expr = Create.expr(:binary, left: number, right: string_literal, operator: plus)
+
+          expect_raises(Lit::RuntimeError, /Operands must be two numbers or two strings/) do
+            interpreter.evaluate(expr)
+          end
+        end
+      end
     end
 
     context "when operator is -" do
@@ -145,13 +159,13 @@ describe Lit::Interpreter do
 
     context "when is an invalid operation" do
       it "raises an error" do
-        plus = Create.token(:plus)
+        less = Create.token(:less)
         string_literal = Create.expr(:literal, "a string")
         number = Create.expr(:literal, 1.0)
 
-        expr = Create.expr(:binary, left: number, right: string_literal, operator: plus)
+        expr = Create.expr(:binary, left: number, right: string_literal, operator: less)
 
-        expect_raises(Lit::RuntimeError, /Operands must be two numbers or two strings/) do
+        expect_raises(Lit::RuntimeError, /Operands must be numbers/) do
           interpreter.evaluate(expr)
         end
       end
