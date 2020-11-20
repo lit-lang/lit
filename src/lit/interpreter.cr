@@ -44,35 +44,19 @@ module Lit
 
       case expr.operator.type
       when .greater?
-        check_number_operands(expr.operator, left, right)
-
-        return left.as(Float64) > right.as(Float64)
+        return run_on_numbers_or_strings(">", expr.operator, left, right)
       when .greater_equal?
-        check_number_operands(expr.operator, left, right)
-
-        return left.as(Float64) >= right.as(Float64)
+        return run_on_numbers_or_strings(">=", expr.operator, left, right)
       when .less?
-        check_number_operands(expr.operator, left, right)
-
-        return left.as(Float64) < right.as(Float64)
+        return run_on_numbers_or_strings("<", expr.operator, left, right)
       when .less_equal?
-        check_number_operands(expr.operator, left, right)
-
-        return left.as(Float64) <= right.as(Float64)
+        return run_on_numbers_or_strings("<=", expr.operator, left, right)
       when .bang_equal?
         return !equal?(left, right)
       when .equal_equal?
         return equal?(left, right)
       when .plus?
-        if left.is_a? Float64 && right.is_a? Float64
-          return left.as(Float64) + right.as(Float64)
-        end
-
-        if left.is_a? String && right.is_a? String
-          return left.as(String) + right.as(String)
-        end
-
-        runtime_error(expr.operator, "Operands must be two numbers or two strings.")
+        return run_on_numbers_or_strings("+", expr.operator, left, right)
       when .minus?
         check_number_operands(expr.operator, left, right)
 
@@ -123,6 +107,18 @@ module Lit
 
     private def runtime_error(token, msg)
       raise RuntimeError.new(token, msg)
+    end
+
+    private macro run_on_numbers_or_strings(operation, expr_token, left, right)
+      if left.is_a? Float64 && right.is_a? Float64
+        return left.as(Float64) {{ operation.id }} right.as(Float64)
+      end
+
+      if left.is_a? String && right.is_a? String
+        return left.as(String) {{ operation.id }} right.as(String)
+      end
+
+      runtime_error({{ expr_token }}, "Operands must be two numbers or two strings.")
     end
   end
 end

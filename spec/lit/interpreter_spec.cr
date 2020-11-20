@@ -201,11 +201,11 @@ describe Lit::Interpreter do
 
     context "when is an invalid operation" do
       it "raises an error" do
-        less = Create.token(:less)
+        minus = Create.token(:minus)
         string_literal = Create.expr(:literal, "a string")
         number = Create.expr(:literal, 1.0)
 
-        expr = Create.expr(:binary, left: number, right: string_literal, operator: less)
+        expr = Create.expr(:binary, left: number, right: string_literal, operator: minus)
 
         expect_raises(Lit::RuntimeError, /Operands must be numbers/) do
           interpreter.evaluate(expr)
