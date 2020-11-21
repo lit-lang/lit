@@ -40,7 +40,7 @@ describe Lit::Debug do
       end
     end
 
-    context "with logical expressions", focus: true do
+    context "with logical expressions" do
       it do
         expr = Create.expr(:logical)
 

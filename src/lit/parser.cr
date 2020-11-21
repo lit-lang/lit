@@ -26,12 +26,36 @@ module Lit
     end
 
     private def expression
-      equality
+      or_expr
     rescue ParserError
       synchronize
 
       # NOTE: Since there's an error, return this dumb expr just to get going
       Expr::Literal.new("ERROR")
+    end
+
+    private def or_expr
+      expr = and_expr
+
+      while match?(TokenType::OR)
+        operator = previous
+        right = and_expr
+        expr = Expr::Logical.new(expr, operator, right)
+      end
+
+      expr
+    end
+
+    private def and_expr
+      expr = equality
+
+      while match?(TokenType::AND)
+        operator = previous
+        right = equality
+        expr = Expr::Logical.new(expr, operator, right)
+      end
+
+      expr
     end
 
     private def equality

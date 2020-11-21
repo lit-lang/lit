@@ -7,6 +7,26 @@ describe Lit::Parser do
   it_parses :number, to_literal: 1.0
   it_parses :string, to_literal: "some text"
 
+  describe "logical expression" do
+    it "parses 'and' expressions" do
+      tokens = Create.tokens(:number, :and, :number_2, :eof)
+      expr = Lit::Parser.parse(tokens).first.as(Lit::Expr::Logical)
+
+      expr.operator.type.and?.should be_true
+      expr.left.as(Lit::Expr::Literal).value.should eq 1.0
+      expr.right.as(Lit::Expr::Literal).value.should eq 2.0
+    end
+
+    it "parses 'or' expressions" do
+      tokens = Create.tokens(:number, :or, :number_2, :eof)
+      expr = Lit::Parser.parse(tokens).first.as(Lit::Expr::Logical)
+
+      expr.operator.type.or?.should be_true
+      expr.left.as(Lit::Expr::Literal).value.should eq 1.0
+      expr.right.as(Lit::Expr::Literal).value.should eq 2.0
+    end
+  end
+
   describe "binary expression" do
     it "parses equalities" do
       tokens = Create.tokens(:number, :equal_equal, :number_2, :eof)
@@ -46,13 +66,14 @@ describe Lit::Parser do
 
     # NOTE: This test depends on Debug.s_expr
     it "has correct precedence" do
-      # 1 + (2 - 3 * 4) < 0 == true
+      # 1 + (2 - 3 * 4) < 0 == true or true and false
       tokens = Create.tokens(
         :number_1, :plus, :left_paren, :number_2, :minus, :number_3, :star,
-        :number_4, :right_paren, :less, :number_0, :equal_equal, :true, :eof
+        :number_4, :right_paren, :less, :number_0, :equal_equal, :true, :or,
+        :true, :and, :false, :eof
       )
       s_expr = Lit::Debug.s_expr(Lit::Parser.parse(tokens))
-      s_expr.should eq "(== (< (+ 1.0 (group (- 2.0 (* 3.0 4.0)))) 0.0) true)"
+      s_expr.should eq "(or (== (< (+ 1.0 (group (- 2.0 (* 3.0 4.0)))) 0.0) true) (and true false))"
     end
 
     it "parses multiple expressions" do
