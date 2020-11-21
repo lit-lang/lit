@@ -10,7 +10,7 @@ require "./debug"
 
 module Lit
   class Lit
-    class_property had_error : Bool = false, had_runtime_error : Bool = false
+    class_property had_error : Bool = false, had_runtime_error : Bool = false, interpreter = Interpreter.new
 
     def self.run(src : String) : String?
       tokens = Scanner.scan(src)
@@ -20,7 +20,7 @@ module Lit
       return if had_runtime_error
 
       puts Text.hint Debug.s_expr(expressions)
-      Interpreter.interpret(expressions)
+      interpreter.interpret(expressions)
     end
 
     def self.run_repl
