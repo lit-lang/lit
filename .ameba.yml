@@ -1,7 +1,7 @@
 Metrics/CyclomaticComplexity:
   Description: Disallows methods with a cyclomatic complexity higher than `MaxComplexity`
   MaxComplexity: 10
-  Enabled: true
+  Enabled: false
   Severity: Convention
   Excluded:
-  - src/lit/scanner.cr
+    - src/lit/scanner.cr
