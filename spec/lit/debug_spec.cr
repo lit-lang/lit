@@ -40,6 +40,14 @@ describe Lit::Debug do
       end
     end
 
+    context "with logical expressions", focus: true do
+      it do
+        expr = Create.expr(:logical)
+
+        Lit::Debug.s_expr(expr).should eq "(and true true)"
+      end
+    end
+
     context "with multiple expressions" do
       it do
         expr = [Create.expr(:grouping), Create.expr(:literal, "a string")]

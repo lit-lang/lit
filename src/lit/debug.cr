@@ -24,6 +24,10 @@ module Lit
       parenthesize("group", expr.expression)
     end
 
+    def s_expr(expr : Expr::Logical) : String
+      parenthesize(expr.operator.lexeme, expr.left, expr.right)
+    end
+
     private def parenthesize(name : String, *exprs) : String
       str = "(#{name}"
 

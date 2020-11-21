@@ -5,6 +5,8 @@ module Create
     false:         "false",
     true:          "true",
     nil:           "nil",
+    and:           "and",
+    or:            "or",
     left_paren:    "(",
     right_paren:   ")",
     equal_equal:   "==",
@@ -56,6 +58,8 @@ module Create
       Lit::Expr::Unary.new(operator || self.token(:minus), right || expr(:literal))
     when :binary
       Lit::Expr::Binary.new(left || expr(:literal), operator || self.token(:plus), right || expr(:literal))
+    when :logical
+      Lit::Expr::Logical.new(left || expr(:literal, true), operator || self.token(:and), right || expr(:literal, true))
     else
       raise "Don't know hot to build expression with type '#{type}'"
     end
