@@ -1,7 +1,7 @@
 require "../spec_helper"
 
 describe Lit::Interpreter do
-  interpreter = Lit::Interpreter.new([] of Lit::Expr)
+  interpreter = Lit::Interpreter.new
 
   describe "#visit_literal_expr" do
     it "interprets literals" do

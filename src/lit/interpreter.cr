@@ -7,14 +7,12 @@ module Lit
   class Interpreter
     include Expr::Visitor
 
-    def initialize(@exprs : Array(Expr)); end
-
-    def self.interpret(exprs)
-      new(exprs).interpret
+    def self.interpret(exprs : Array(Expr))
+      new.interpret(exprs)
     end
 
-    def interpret
-      @exprs.each { |expr| pp evaluate(expr) }
+    def interpret(exprs)
+      exprs.each { |expr| pp evaluate(expr) }
     rescue e : RuntimeError
       Lit.runtime_error(e)
     end
