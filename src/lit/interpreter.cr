@@ -32,7 +32,7 @@ module Lit
 
         return -right.as(Float64)
       when .bang?
-        return !truthy?(right)
+        return falsey?(right)
       end
 
       runtime_error(expr.operator, "Unknown unary operator. This is probably a parsing error. My bad =(")
@@ -78,6 +78,21 @@ module Lit
       evaluate(expr.expression)
     end
 
+    def visit_logical_expr(expr) : Obj
+      left = evaluate(expr.left)
+
+      case expr.operator.type
+      when .or?
+        return left if truthy?(left)
+      when .and?
+        return left if falsey?(left)
+      else
+        runtime_error(expr.operator, "Unknown logical operator. This is probably a parsing error. My bad =(")
+      end
+
+      evaluate(expr.right)
+    end
+
     def evaluate(expr) : Obj
       expr.accept(self)
     end
@@ -96,6 +111,10 @@ module Lit
 
     private def truthy?(obj : Obj) : Bool
       !!obj
+    end
+
+    private def falsey?(obj : Obj) : Bool
+      !obj
     end
 
     private def equal?(a : Obj, b : Obj) : Bool

@@ -227,4 +227,28 @@ describe Lit::Interpreter do
       end
     end
   end
+
+  describe "#visit_logical_expr" do
+    context "when operator is 'and'" do
+      it do
+        and_token = Create.token(:and)
+        true_literal = Create.expr(:literal, true)
+        number = Create.expr(:literal)
+        expr = Create.expr(:logical, operator: and_token, left: true_literal, right: number)
+
+        interpreter.evaluate(expr).should eq 1.0
+      end
+    end
+
+    context "when operator is 'or'" do
+      it do
+        or_token = Create.token(:or)
+        false_literal = Create.expr(:literal, false)
+        number = Create.expr(:literal)
+        expr = Create.expr(:logical, operator: or_token, left: false_literal, right: number)
+
+        interpreter.evaluate(expr).should eq 1.0
+      end
+    end
+  end
 end

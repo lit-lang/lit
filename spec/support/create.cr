@@ -51,7 +51,9 @@ module Create
   def expr(type : Symbol, value = nil, left : Lit::Expr? = nil, right : Lit::Expr? = nil, operator : Lit::Token? = nil) : Lit::Expr
     case type
     when :literal
-      Lit::Expr::Literal.new(value || 1.0)
+      value ||= 1.0
+
+      Lit::Expr::Literal.new(value)
     when :grouping
       Lit::Expr::Grouping.new(expr :literal)
     when :unary
