@@ -59,6 +59,7 @@ module Lit
       when '+'
         add_token(TokenType::PLUS)
       when '-'
+        # TODO: Should I keep this arrow token?
         match?('>') ? add_token(TokenType::ARROW) : add_token(TokenType::MINUS)
       when '/'
         add_token(TokenType::SLASH)
@@ -74,12 +75,14 @@ module Lit
         match?('=') ? add_token(TokenType::BANG_EQUAL) : add_token(TokenType::BANG)
       when '|'
         if match?('|')
+          # TODO: Desugar to "or"
           add_token(TokenType::BAR_BAR)
         elsif match?('>')
           add_token(TokenType::PIPE_OPERATOR)
         else
           add_token(TokenType::BAR)
         end
+        # TODO: Scan "&&"
       when '\n'
         @line += 1
       when '#'
