@@ -11,10 +11,13 @@ module Lit
       new.interpret(exprs)
     end
 
-    def interpret(exprs)
-      exprs.each { |expr| pp evaluate(expr) }
+    def interpret(exprs) : String
+      exprs.map do |expr|
+        stringify(evaluate(expr))
+      end.join("\n")
     rescue e : RuntimeError
       Lit.runtime_error(e)
+      ""
     end
 
     def visit_literal_expr(expr) : Obj
@@ -120,6 +123,13 @@ module Lit
       return false if a.nil?
 
       a == b
+    end
+
+    private def stringify(obj : Obj) : String
+      return "nil" if obj.nil?
+      return obj.to_s.rchop(".0") if obj.is_a? Float64
+
+      obj.to_s
     end
 
     private def runtime_error(token, msg)

@@ -19,8 +19,8 @@ module Lit
       return if had_error
       return if had_runtime_error
 
+      puts Text.hint Debug.s_expr(expressions)
       Interpreter.interpret(expressions)
-      Debug.s_expr(expressions)
     end
 
     def self.run_repl
