@@ -16,14 +16,14 @@ module AstGenerator
       # "Variable = name : Token",
     ])
 
-    # define_ast(output_dir, "Stmt", [
+    define_ast(output_dir, "Stmt", [
     #   "Block      = statements : Array(Stmt)",
-    #   "Expression = expression : Expr",
+      "Expression = expression : Expr",
     #   "If         = condition : Expr, then_branch : Stmt, else_branch : Stmt?",
-    #   "Print      = expression : Expr",
+      "Print      = expression : Expr",
     #   "Var        = name : Token, initializer : Expr",
     #   "While      = condition : Expr, body : Stmt",
-    # ])
+    ])
   end
 
   private def define_ast(output_dir, base_name, types)
