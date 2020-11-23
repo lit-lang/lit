@@ -20,7 +20,7 @@ module Lit
     end
 
     def visit_print_stmt(stmt) : Nil
-      puts evaluate(stmt.expression)
+      puts stringify(evaluate(stmt.expression))
     end
 
     def visit_expression_stmt(stmt) : Nil

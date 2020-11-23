@@ -7,7 +7,7 @@ describe Lit::Interpreter do
     it "interprets literals" do
       stmt = Create.stmt(:print, :literal)
 
-      output_of { interpreter.execute(stmt) }.should eq "1.0\n"
+      output_of { interpreter.execute(stmt) }.should eq "1\n"
     end
   end
 
