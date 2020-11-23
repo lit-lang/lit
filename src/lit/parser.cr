@@ -39,7 +39,7 @@ module Lit
 
     private def print_statement
       expr = expression
-      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the print expression.")
+      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the print statement.")
 
       Stmt::Print.new(expr)
     end

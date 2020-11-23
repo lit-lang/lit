@@ -21,7 +21,7 @@ describe Lit::Parser do
 
         output_of {
           Lit::Parser.parse(tokens)
-        }.should contain("I was expecting a semicolon after the print expression")
+        }.should contain("I was expecting a semicolon after the print statement")
       end
     end
   end
