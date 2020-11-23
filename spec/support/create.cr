@@ -72,4 +72,15 @@ module Create
   def exprs(*types) : Array(Lit::Expr)
     types.map { |type| expr(type) }.to_a
   end
+
+  def stmt(type : Symbol, *opts)
+    case type
+    when :expression
+      Lit::Stmt::Expression.new(self.expr(*opts))
+    when :print
+      Lit::Stmt::Print.new(self.expr(*opts))
+    else
+      raise "Don't know hot to build statement with type '#{type}'"
+    end
+  end
 end

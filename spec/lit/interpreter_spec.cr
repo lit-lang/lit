@@ -3,6 +3,22 @@ require "../spec_helper"
 describe Lit::Interpreter do
   interpreter = Lit::Interpreter.new
 
+  describe "#visit_print_stmt" do
+    it "interprets literals" do
+      stmt = Create.stmt(:print, :literal)
+
+      output_of { interpreter.execute(stmt) }.should eq "1.0\n"
+    end
+  end
+
+  describe "#visit_expression_stmt" do
+    it "interprets literals" do
+      stmt = Create.stmt(:expression, :literal)
+
+      interpreter.execute(stmt).should eq nil
+    end
+  end
+
   describe "#visit_literal_expr" do
     it "interprets literals" do
       expr = Create.expr(:literal)

@@ -1,23 +1,30 @@
 require "./lit"
 require "./expr"
+require "./stmt"
 require "./obj"
 require "./runtime_error"
 
 module Lit
   class Interpreter
     include Expr::Visitor
+    include Stmt::Visitor
 
-    def self.interpret(exprs : Array(Expr))
-      new.interpret(exprs)
+    def self.interpret(stmts : Array(Stmt))
+      new.interpret(stmts)
     end
 
-    def interpret(exprs) : String
-      exprs.map do |expr|
-        stringify(evaluate(expr))
-      end.join("\n")
+    def interpret(stmts) : Nil
+      stmts.each { |stmt| execute(stmt) }
     rescue e : RuntimeError
       Lit.runtime_error(e)
-      ""
+    end
+
+    def visit_print_stmt(stmt) : Nil
+      puts evaluate(stmt.expression)
+    end
+
+    def visit_expression_stmt(stmt) : Nil
+      evaluate(stmt.expression)
     end
 
     def visit_literal_expr(expr) : Obj
@@ -94,7 +101,11 @@ module Lit
       evaluate(expr.right)
     end
 
-    def evaluate(expr) : Obj
+    def execute(stmt : Stmt) : Obj
+      stmt.accept(self)
+    end
+
+    def evaluate(expr : Expr) : Obj
       expr.accept(self)
     end
 
