@@ -1,6 +1,7 @@
 require "./token"
 require "./token_type"
 require "./expr"
+require "./stmt"
 
 module Lit
   class Parser
@@ -15,23 +16,43 @@ module Lit
       new(tokens).parse
     end
 
-    def parse : Array(Expr)
-      exprs = [] of Expr
+    def parse : Array(Stmt)
+      stmts = [] of Stmt
 
       until at_end?
-        exprs.push(expression)
+        stmts.push(statement)
       end
 
-      exprs
+      stmts
     end
 
-    private def expression
-      or_expr
+    private def statement
+      return print_statement if match?(TokenType::PRINT)
+
+      expression_statement
     rescue ParserError
       synchronize
 
       # NOTE: Since there's an error, return this dumb expr just to get going
-      Expr::Literal.new("ERROR")
+      Stmt::Expression.new(Expr::Literal.new("ERROR"))
+    end
+
+    private def print_statement
+      expr = expression
+      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the print expression.")
+
+      Stmt::Print.new(expr)
+    end
+
+    private def expression_statement
+      expr = expression
+      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the expression.")
+
+      Stmt::Expression.new(expr)
+    end
+
+    private def expression
+      or_expr
     end
 
     private def or_expr

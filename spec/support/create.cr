@@ -22,6 +22,8 @@ module Create
     greater:       ">",
     greater_equal: ">=",
     pipe_operator: "|>",
+    print:         "print",
+    semicolon:     ";",
     eof:           "",
   }
 

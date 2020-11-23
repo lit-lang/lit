@@ -19,7 +19,7 @@ module Lit
       return if had_error
       return if had_runtime_error
 
-      puts Text.hint Debug.s_expr(expressions)
+      # puts Text.hint Debug.s_expr(expressions)
       interpreter.interpret(expressions)
     end
 
