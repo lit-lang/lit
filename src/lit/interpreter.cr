@@ -3,6 +3,7 @@ require "./expr"
 require "./stmt"
 require "./obj"
 require "./runtime_error"
+require "./environment"
 
 module Lit
   class Interpreter

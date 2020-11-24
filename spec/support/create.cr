@@ -36,7 +36,7 @@ module Create
     when :string
       Lit::Token.new(Lit::TokenType.parse(type.to_s), %("some text"), "some text", 1)
     when :identifier
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), "my_var", nil, 1)
+      Lit::Token.new(Lit::TokenType.parse(type.to_s), value || "my_var", nil, 1)
     else
       if TOKENS.has_key?(type)
         return Lit::Token.new(Lit::TokenType.parse(type.to_s), TOKENS[type], nil, 1)
