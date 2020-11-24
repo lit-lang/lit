@@ -7,8 +7,44 @@ describe Lit::Parser do
   it_parses :number, to_literal: 1.0
   it_parses :string, to_literal: "some text"
 
+  describe "let statements" do
+    it "parses let statements" do
+      tokens = Create.tokens(:let, :identifier, :semicolon, :eof)
+      stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Let)
+
+      stmt.name.lexeme.should eq "my_var"
+      stmt.initializer.as(Lit::Expr::Literal).value.should eq nil
+    end
+
+    it "parses let statements with initializer" do
+      tokens = Create.tokens(:let, :identifier, :equal, :number, :semicolon, :eof)
+      stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Let)
+
+      stmt.name.lexeme.should eq "my_var"
+      stmt.initializer.as(Lit::Expr::Literal).value.should eq 1.0
+    end
+
+    context "when there's no variable name" do
+      it do
+        tokens = Create.tokens(:let, :semicolon, :eof)
+        error_msg = output_of { Lit::Parser.parse(tokens) }
+
+        error_msg.should contain("I was expecting a variable name here")
+      end
+    end
+
+    context "when there's no semicolon after variable declaration" do
+      it do
+        tokens = Create.tokens(:let, :identifier, :eof)
+        error_msg = output_of { Lit::Parser.parse(tokens) }
+
+        error_msg.should contain("I was expecting a semicolon after variable declaration")
+      end
+    end
+  end
+
   describe "print statements" do
-    it do
+    it "parses print statements" do
       tokens = Create.tokens(:print, :number_1, :semicolon, :eof)
       stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Print)
 
@@ -141,12 +177,19 @@ describe Lit::Parser do
 
     context "when there's no closing paren" do
       it "errors" do
-        group = Create.tokens(:left_paren, :number, :semicolon, :eof)
-        error_msg = output_of { Lit::Parser.parse(group) }
+        tokens = Create.tokens(:left_paren, :number, :semicolon, :eof)
+        error_msg = output_of { Lit::Parser.parse(tokens) }
 
         error_msg.should contain "I was expecting a ')' here."
       end
     end
+  end
+
+  it "parses variable expressions" do
+    tokens = Create.tokens(:identifier, :semicolon, :eof)
+    expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Variable)
+
+    expr.name.lexeme.should eq "my_var"
   end
 
   context "when there's an unexpected token" do

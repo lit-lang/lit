@@ -7,6 +7,7 @@ module Lit
     module Visitor
       abstract def visit_expression_stmt(stmt : Expression)
       abstract def visit_print_stmt(stmt : Print)
+      abstract def visit_let_stmt(stmt : Let)
     end
 
     class Expression < Stmt
@@ -26,6 +27,17 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_print_stmt(self)
+      end
+    end
+
+    class Let < Stmt
+      getter name : Token
+      getter initializer : Expr
+
+      def initialize(@name, @initializer); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_let_stmt(self)
       end
     end
 

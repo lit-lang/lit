@@ -48,6 +48,14 @@ describe Lit::Debug do
       end
     end
 
+    context "with variable expressions" do
+      it do
+        expr = Create.expr(:variable)
+
+        Lit::Debug.s_expr(expr).should eq "my_var"
+      end
+    end
+
     context "with multiple expressions" do
       it do
         expr = [Create.expr(:grouping), Create.expr(:literal, "a string")]

@@ -10,6 +10,7 @@ module Lit
       abstract def visit_literal_expr(expr : Literal)
       abstract def visit_logical_expr(expr : Logical)
       abstract def visit_unary_expr(expr : Unary)
+      abstract def visit_variable_expr(expr : Variable)
     end
 
     class Binary < Expr
@@ -64,6 +65,16 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_unary_expr(self)
+      end
+    end
+
+    class Variable < Expr
+      getter name : Token
+
+      def initialize(@name); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_variable_expr(self)
       end
     end
 

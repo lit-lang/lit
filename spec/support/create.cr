@@ -21,18 +21,22 @@ module Create
     less_equal:    "<=",
     greater:       ">",
     greater_equal: ">=",
+    equal:         "=",
     pipe_operator: "|>",
     print:         "print",
+    let:           "let",
     semicolon:     ";",
     eof:           "",
   }
 
-  def token(type : Symbol) : Lit::Token
+  def token(type : Symbol, value = nil) : Lit::Token
     case type
     when :number
       Lit::Token.new(Lit::TokenType.parse(type.to_s), "1", 1.0, 1)
     when :string
       Lit::Token.new(Lit::TokenType.parse(type.to_s), %("some text"), "some text", 1)
+    when :identifier
+      Lit::Token.new(Lit::TokenType.parse(type.to_s), "my_var", nil, 1)
     else
       if TOKENS.has_key?(type)
         return Lit::Token.new(Lit::TokenType.parse(type.to_s), TOKENS[type], nil, 1)
@@ -64,6 +68,8 @@ module Create
       Lit::Expr::Binary.new(left || expr(:literal), operator || self.token(:plus), right || expr(:literal))
     when :logical
       Lit::Expr::Logical.new(left || expr(:literal, true), operator || self.token(:and), right || expr(:literal, true))
+    when :variable
+      Lit::Expr::Variable.new(self.token(:identifier, "my_var"))
     else
       raise "Don't know hot to build expression with type '#{type}'"
     end

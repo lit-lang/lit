@@ -20,21 +20,35 @@ module Lit
       stmts = [] of Stmt
 
       until at_end?
-        stmts.push(statement)
+        stmts.push(declaration)
       end
 
       stmts
+    end
+
+    private def declaration
+      return let_declaration if match?(TokenType::LET)
+
+      statement
+    rescue ParserError
+      synchronize
+
+      # NOTE: Since there's an error, return this dumb expr just to get going
+      Stmt::Expression.new(Expr::Literal.new("ERROR"))
+    end
+
+    private def let_declaration
+      name = consume(TokenType::IDENTIFIER, "I was expecting a variable name here.")
+      initializer = match?(TokenType::EQUAL) ? expression : Expr::Literal.new(nil)
+      consume(TokenType::SEMICOLON, "I was expecting a semicolon after variable declaration.")
+
+      Stmt::Let.new(name, initializer)
     end
 
     private def statement
       return print_statement if match?(TokenType::PRINT)
 
       expression_statement
-    rescue ParserError
-      synchronize
-
-      # NOTE: Since there's an error, return this dumb expr just to get going
-      Stmt::Expression.new(Expr::Literal.new("ERROR"))
     end
 
     private def print_statement
@@ -145,6 +159,7 @@ module Lit
       return Expr::Literal.new(true) if match?(TokenType::TRUE)
       return Expr::Literal.new(nil) if match?(TokenType::NIL)
       return Expr::Literal.new(previous.literal) if match?(TokenType::NUMBER, TokenType::STRING)
+      return Expr::Variable.new(previous) if match?(TokenType::IDENTIFIER)
 
       if match?(TokenType::LEFT_PAREN)
         expr = expression

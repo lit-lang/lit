@@ -23,6 +23,10 @@ module Lit
       puts stringify(evaluate(stmt.expression))
     end
 
+    def visit_let_stmt(stmt) : Nil
+      ""
+    end
+
     def visit_expression_stmt(stmt) : Nil
       evaluate(stmt.expression)
     end
@@ -99,6 +103,10 @@ module Lit
       end
 
       evaluate(expr.right)
+    end
+
+    def visit_variable_expr(expr) : Obj
+      "visit_variable_expr"
     end
 
     def execute(stmt : Stmt) : Obj

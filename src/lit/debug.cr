@@ -28,6 +28,10 @@ module Lit
       parenthesize(expr.operator.lexeme, expr.left, expr.right)
     end
 
+    def s_expr(expr : Expr::Variable) : String
+      expr.name.lexeme
+    end
+
     private def parenthesize(name : String, *exprs) : String
       str = "(#{name}"
 
