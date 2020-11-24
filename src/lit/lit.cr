@@ -37,7 +37,7 @@ module Lit
     end
 
     def self.runtime_error(error)
-      puts Text.error("#{error.message}\n[line #{error.token.line}]")
+      puts Text.error("[line #{error.token.line}] #{error.message}\n")
 
       self.had_runtime_error = true
     end

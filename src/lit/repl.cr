@@ -30,6 +30,7 @@ module Lit
     private def evaluate(line : String, runner) : String?
       result = runner.run(line)
       runner.had_error = false
+      runner.had_runtime_error = false
 
       result
     end
