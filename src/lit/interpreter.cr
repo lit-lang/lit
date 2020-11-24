@@ -10,6 +10,10 @@ module Lit
     include Expr::Visitor
     include Stmt::Visitor
 
+    # TODO: Exclude this after e2e tests
+    getter environment
+    @environment = Environment.new
+
     def self.interpret(stmts : Array(Stmt))
       new.interpret(stmts)
     end
@@ -25,7 +29,7 @@ module Lit
     end
 
     def visit_let_stmt(stmt) : Nil
-      ""
+      @environment.define(stmt.name.lexeme, evaluate(stmt.initializer))
     end
 
     def visit_expression_stmt(stmt) : Nil
@@ -107,7 +111,7 @@ module Lit
     end
 
     def visit_variable_expr(expr) : Obj
-      "visit_variable_expr"
+      @environment.get(expr.name)
     end
 
     def execute(stmt : Stmt) : Obj

@@ -3,11 +3,24 @@ require "../spec_helper"
 describe Lit::Interpreter do
   interpreter = Lit::Interpreter.new
 
+  describe "#visit_var_stmt" do
+    # TODO: Exclude this after e2e tests
+    it "defines a new variable" do
+      name = Create.token(:identifier, "some_var")
+      value = Create.expr(:literal, value: 2.0)
+      stmt = Lit::Stmt::Let.new(name, value)
+
+      interpreter.execute(stmt)
+
+      interpreter.environment.values["some_var"].should eq 2.0
+    end
+  end
+
   describe "#visit_print_stmt" do
     it "interprets literals" do
-      stmt = Create.stmt(:print, :literal)
+      stmt = Create.stmt(:print, :literal, true)
 
-      output_of { interpreter.execute(stmt) }.should eq "1\n"
+      output_of { interpreter.execute(stmt) }.should eq "true\n"
     end
   end
 
@@ -265,6 +278,15 @@ describe Lit::Interpreter do
 
         interpreter.evaluate(expr).should eq 1.0
       end
+    end
+  end
+
+  describe "#visit_variable_expr" do
+    it "gets an variable from the environment" do
+      interpreter.environment.values["my_var"] = "some value"
+      expr = Create.expr(:variable)
+
+      interpreter.evaluate(expr).should eq "some value"
     end
   end
 end
