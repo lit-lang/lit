@@ -1,6 +1,6 @@
 require "../spec_helper"
 
-describe Lit::Environment, focus: true do
+describe Lit::Environment do
   describe "#define" do
     it "defines a new variable" do
       env = Lit::Environment.new
