@@ -140,18 +140,32 @@ module Lit
     end
 
     private def consume_block_comment
-      until (peek == '=' && peek_next == '#') || at_end?
+      nesting = 1
+
+      while nesting > 0
+        if at_end?
+          Lit.error(@line, "Unterminated block comment")
+          return
+        end
+
+        if closing_comment_next?
+          nesting -= 1
+          advance # consume the =
+          advance # consume the #
+          next
+        end
+
+        if opening_block_comment_next?
+          nesting += 1
+          advance # consume the #
+          advance # consume the =
+          next
+        end
+
+        # Regular comment char
         @line += 1 if peek == '\n'
         advance
       end
-
-      if at_end?
-        Lit.error(@line, "Unterminated block comment")
-        return
-      end
-
-      advance # consume the remaining =
-      advance # consume the remaining #
     end
 
     private def consume_string(quote)
@@ -190,7 +204,7 @@ module Lit
     end
 
     private def peek_next : Char
-      return '\0' if (@current_pos + 1) > @src.size
+      return '\0' if (@current_pos + 1) >= @src.size
 
       @src[@current_pos + 1]
     end
@@ -225,6 +239,14 @@ module Lit
 
     private def keyword_from(text : String)
       KEYWORDS[text]?
+    end
+
+    private def closing_comment_next?
+      peek == '=' && peek_next == '#'
+    end
+
+    private def opening_block_comment_next?
+      peek == '#' && peek_next == '='
     end
   end
 end

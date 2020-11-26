@@ -79,31 +79,42 @@ describe Lit::Scanner do
     token.line.should eq 1
   end
 
-  it "scans one-line comments" do
-    token = Lit::Scanner.scan("# This is a comment.\n###### 1 + 1\n1").first
-    token.should be_a Lit::Token
-    token.type.should eq token(NUMBER)
-    token.lexeme.should eq "1"
-    token.literal.should eq 1
-    token.line.should eq 3
-  end
+  context "when found comment" do
+    it "scans one-line comments" do
+      token = Lit::Scanner.scan("# This is a comment.\n###### 1 + 1\n1").first
+      token.should be_a Lit::Token
+      token.type.should eq token(NUMBER)
+      token.lexeme.should eq "1"
+      token.literal.should eq 1
+      token.line.should eq 3
+    end
 
-  it "scans block comments" do
-    token = Lit::Scanner.scan("#=\nThis\n2\nShould\nBe\nIgnored\n# Commentception\n= #\n=#\n1").first
-    token.should be_a Lit::Token
-    token.type.should eq token(NUMBER)
-    token.lexeme.should eq "1"
-    token.literal.should eq 1
-    token.line.should eq 10
-  end
+    it "scans block comments" do
+      token = Lit::Scanner.scan("#=\nThis\n2\nShould\nBe\nIgnored\n# Commentception\n= #\n=#\n1").first
+      token.should be_a Lit::Token
+      token.type.should eq token(NUMBER)
+      token.lexeme.should eq "1"
+      token.literal.should eq 1
+      token.line.should eq 10
+    end
 
-  it "scans inlined block comments" do
-    token = Lit::Scanner.scan("#=2=#1").first
-    token.should be_a Lit::Token
-    token.type.should eq token(NUMBER)
-    token.lexeme.should eq "1"
-    token.literal.should eq 1
-    token.line.should eq 1
+    it "scans nested comments" do
+      token = Lit::Scanner.scan("#=\n #=\n  Nested comments!\n =#\n=#1").first
+      token.should be_a Lit::Token
+      token.type.should eq token(NUMBER)
+      token.lexeme.should eq "1"
+      token.literal.should eq 1
+      token.line.should eq 5
+    end
+
+    it "scans inlined block comments" do
+      token = Lit::Scanner.scan("#=2=#1").first
+      token.should be_a Lit::Token
+      token.type.should eq token(NUMBER)
+      token.lexeme.should eq "1"
+      token.literal.should eq 1
+      token.line.should eq 1
+    end
   end
 
   it "scans new lines" do

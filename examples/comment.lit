@@ -10,4 +10,10 @@
   = #
 =#
 
+#=
+  #=
+    Nested comments!
+  =#
+=#
+
 # Ignored =#
