@@ -79,6 +79,7 @@ module Lit
 
         return left.as(Float64) - right.as(Float64)
       when .star?
+        # TODO: Add support for string * number
         check_number_operands(expr.operator, left, right)
 
         return left.as(Float64) * right.as(Float64)
