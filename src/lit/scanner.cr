@@ -59,8 +59,7 @@ module Lit
       when '+'
         add_token(TokenType::PLUS)
       when '-'
-        # TODO: Should I keep this arrow token?
-        match?('>') ? add_token(TokenType::ARROW) : add_token(TokenType::MINUS)
+        add_token(TokenType::MINUS)
       when '/'
         add_token(TokenType::SLASH)
       when '*'
