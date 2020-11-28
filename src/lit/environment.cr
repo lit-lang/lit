@@ -16,5 +16,14 @@ module Lit
 
       raise RuntimeError.new(name, "Undefined variable '#{name.lexeme}'.")
     end
+
+    def assign(name, value) : Nil
+      if @values.has_key? name.lexeme
+        @values[name.lexeme] = value
+        return
+      end
+
+      raise RuntimeError.new(name, "Undefined variable '#{name.lexeme}'.")
+    end
   end
 end

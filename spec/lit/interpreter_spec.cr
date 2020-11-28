@@ -289,4 +289,25 @@ describe Lit::Interpreter do
       interpreter.evaluate(expr).should eq "some value"
     end
   end
+
+  # TODO: Exclude this after e2e tests
+  describe "#visit_assign_expr" do
+    it "changes the value of a variable" do
+      interpreter.environment.values["my_var"] = "some value"
+      expr = Create.expr(:assign)
+      interpreter.evaluate(expr).should eq 1.0
+      interpreter.environment.values["my_var"].should eq 1.0
+    end
+
+    context "when variable does not exist in context" do
+      it "errors" do
+        interpreter.environment.values.delete("my_var")
+        expr = Create.expr(:assign)
+
+        expect_raises(Lit::RuntimeError, /Undefined variable 'my_var'/) do
+          interpreter.evaluate(expr)
+        end
+      end
+    end
+  end
 end

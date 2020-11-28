@@ -95,6 +95,13 @@ module Lit
       evaluate(expr.expression)
     end
 
+    def visit_assign_expr(expr) : Obj
+      value = evaluate(expr.value)
+      environment.assign(expr.name, value)
+
+      value
+    end
+
     def visit_logical_expr(expr) : Obj
       left = evaluate(expr.left)
 
