@@ -15,7 +15,10 @@ describe Lit::Scanner do
   it_scans "}", to_type: token(RIGHT_BRACE)
   it_scans ",", to_type: token(COMMA)
   it_scans ".", to_type: token(DOT)
+  it_scans ":", to_type: token(COLON)
   it_scans ";", to_type: token(SEMICOLON)
+  it_scans "!", to_type: token(BANG)
+  it_scans "?", to_type: token(QUESTION)
   it_scans "+", to_type: token(PLUS)
   it_scans "-", to_type: token(MINUS)
   it_scans "/", to_type: token(SLASH)
@@ -31,7 +34,6 @@ describe Lit::Scanner do
   it_scans "||", to_type: token(OR)
   it_scans "&&", to_type: token(AND)
   it_scans "|>", to_type: token(PIPE_OPERATOR)
-  it_scans "!", to_type: token(BANG)
   it_scans "!=", to_type: token(BANG_EQUAL)
   it_scans "silverchair!?", to_type: token(IDENTIFIER)
 
@@ -143,7 +145,7 @@ describe Lit::Scanner do
   end
 
   it "errors on unexpected chars" do
-    output_of { Lit::Scanner.scan("?") }.should contain("[Line 1] Error: Unexpected character '?'")
+    output_of { Lit::Scanner.scan("@") }.should contain("[Line 1] Error: Unexpected character '@'")
   end
 end
 

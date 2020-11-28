@@ -54,6 +54,8 @@ module Lit
         add_token(TokenType::COMMA)
       when '.'
         add_token(TokenType::DOT)
+      when ':'
+        add_token(TokenType::COLON)
       when ';'
         add_token(TokenType::SEMICOLON)
       when '+'
@@ -62,6 +64,8 @@ module Lit
         add_token(TokenType::MINUS)
       when '/'
         add_token(TokenType::SLASH)
+      when '?'
+        add_token(TokenType::QUESTION)
       when '*'
         match?('*') ? add_token(TokenType::STAR_STAR) : add_token(TokenType::STAR)
       when '='
