@@ -81,7 +81,6 @@ module Lit
         else
           add_token(TokenType::BAR)
         end
-        # TODO: Scan "&&"
       when '&'
         if match?('&')
           add_token(TokenType::AND)
