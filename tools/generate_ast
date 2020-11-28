@@ -7,7 +7,7 @@ module AstGenerator
     output_dir = ARGV.first || "src/lit"
 
     define_ast(output_dir, "Expr", [
-      # "Assign   = name : Token, value : Expr",
+      "Assign   = name : Token, value : Expr",
       "Binary   = left : Expr, operator : Token, right : Expr",
       "Grouping = expression : Expr",
       "Literal  = value : Union(String | Float64 | Bool | Nil)",

@@ -62,6 +62,23 @@ describe Lit::Parser do
     end
   end
 
+  describe "assignment expression" do
+    it "parses the assignment" do
+      tokens = Create.tokens(:identifier, :equal, :number, :semicolon, :eof)
+      expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Assign)
+
+      expr.name.type.identifier?.should be_true
+      expr.name.lexeme.should eq "my_var"
+      expr.value.as(Lit::Expr::Literal).value.should eq 1.0
+    end
+
+    context "when left hand is not a variable expression" do
+      tokens = Create.tokens(:number, :equal, :number, :semicolon, :eof)
+
+      output_of { Lit::Parser.parse(tokens) }.should contain("I was expecting a variable before the equal sign")
+    end
+  end
+
   describe "logical expression" do
     it "parses 'and' expressions" do
       tokens = Create.tokens(:number, :and, :number_2, :semicolon, :eof)

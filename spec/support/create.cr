@@ -70,6 +70,8 @@ module Create
       Lit::Expr::Logical.new(left || expr(:literal, true), operator || self.token(:and), right || expr(:literal, true))
     when :variable
       Lit::Expr::Variable.new(self.token(:identifier, "my_var"))
+    when :assign
+      Lit::Expr::Assign.new(self.token(:identifier, "my_var"), expr(:literal))
     else
       raise "Don't know hot to build expression with type '#{type}'"
     end

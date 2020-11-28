@@ -56,6 +56,14 @@ describe Lit::Debug do
       end
     end
 
+    context "with assign expression" do
+      it do
+        expr = Create.expr(:assign)
+
+        Lit::Debug.s_expr(expr).should eq "(= my_var 1.0)"
+      end
+    end
+
     context "with multiple expressions" do
       it do
         expr = [Create.expr(:grouping), Create.expr(:literal, "a string")]

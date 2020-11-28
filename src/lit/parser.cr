@@ -66,7 +66,26 @@ module Lit
     end
 
     private def expression
-      or_expr
+      assignment
+    end
+
+    private def assignment
+      expr = or_expr
+
+      if match?(TokenType::EQUAL)
+        equals = previous
+        value = assignment
+
+        if expr.is_a? Expr::Variable
+          name = expr.as(Expr::Variable).name
+
+          return Expr::Assign.new(name, value)
+        end
+
+        error(equals, "I was expecting a variable before the equal sign.")
+      end
+
+      expr
     end
 
     private def or_expr

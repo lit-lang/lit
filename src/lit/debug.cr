@@ -32,6 +32,10 @@ module Lit
       expr.name.lexeme
     end
 
+    def s_expr(expr : Expr::Assign) : String
+      parenthesize("= #{expr.name.lexeme}", expr.value)
+    end
+
     private def parenthesize(name : String, *exprs) : String
       str = "(#{name}"
 
