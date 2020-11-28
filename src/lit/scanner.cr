@@ -75,14 +75,19 @@ module Lit
         match?('=') ? add_token(TokenType::BANG_EQUAL) : add_token(TokenType::BANG)
       when '|'
         if match?('|')
-          # TODO: Desugar to "or"
-          add_token(TokenType::BAR_BAR)
+          add_token(TokenType::OR)
         elsif match?('>')
           add_token(TokenType::PIPE_OPERATOR)
         else
           add_token(TokenType::BAR)
         end
         # TODO: Scan "&&"
+      when '&'
+        if match?('&')
+          add_token(TokenType::AND)
+        else
+          Lit.error(@line, "Unexpected character #{c.inspect}")
+        end
       when '\n'
         @line += 1
       when '#'
