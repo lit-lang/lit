@@ -1,4 +1,6 @@
-# Variables
+# syntax
+
+## Variables
 
 ```ruby
 a = 1
@@ -22,9 +24,9 @@ if = 123
 # ERROR: SOMETHING BAD HAPPENED
 ```
 
-## Allowed variable names
+### Allowed variable names
 
-Variable names must begin with a letter (A-Z or a-z) or underscore. After that any letter, number or ? and ! is allowed.
+Variable names must begin with a letter \(A-Z or a-z\) or underscore. After that any letter, number or ? and ! is allowed.
 
 ```ruby
 camelCase = 1
@@ -38,18 +40,19 @@ _private = 8
 sOMETHING_elSe = "really?"
 ```
 
-# Numbers
+## Numbers
 
-# Mathematical Operations and Elementary Functions
+## Mathematical Operations and Elementary Functions
 
-# Strings
+## Strings
 
-# Functions
+## Functions
 
-# Control Flow
+## Control Flow
 
-# Types?
+## Types?
 
-# Data Structures (better name)
+## Data Structures \(better name\)
 
-# Modules
+## Modules
+

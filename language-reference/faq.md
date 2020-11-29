@@ -16,6 +16,7 @@ If "for real" means if I take this language serious and want keep it nice, clean
 
 > "It works on my machine" - Every developer ever
 
-Currently LIT has one user (_me_ o/), so it is tested only on my machine. I should work everywhere Crystal runs, so... most UNIX systems.
+Currently LIT has one user \(_me_ o/\), so it is tested only on my machine. I should work everywhere Crystal runs, so... most UNIX systems.
 
 ## How can I contribute?
+

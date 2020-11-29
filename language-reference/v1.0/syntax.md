@@ -1,21 +1,22 @@
-# Overall syntax
+# syntax
+
+## Overall syntax
 
 > **DESIGN NOTE:**
 >
-> In LIT v1.0, the syntax is not so easy on eyes as I'd like to. There's limitations in my current
-> knowledge about compilers, so I'll make some compromisses. However, in v2.0, I'll (hopefully) be able to get rid of them.
+> In LIT v1.0, the syntax is not so easy on eyes as I'd like to. There's limitations in my current knowledge about compilers, so I'll make some compromisses. However, in v2.0, I'll \(hopefully\) be able to get rid of them.
 >
 > Check [v2.0 docs](../v2.0/syntax.md) for the syntax I'm aiming for.
 
-## Comprimisses of v1.0:
+### Comprimisses of v1.0:
 
-- All statements are ended with a `;`;
-- All numbers are `Float`;
-- Variable declaration require the `let` keyword;
-- Function declaration require the `fn` keyword;
-- Variables are actually mutable;
+* All statements are ended with a `;`;
+* All numbers are `Float`;
+* Variable declaration require the `let` keyword;
+* Function declaration require the `fn` keyword;
+* Variables are actually mutable;
 
-# Variables
+## Variables
 
 In version 1.0, LIT will require the keyword `let` for declaring variables.
 
@@ -41,9 +42,9 @@ let if = 123
 # ERROR: SOMETHING BAD HAPPENED
 ```
 
-## Allowed variable names
+### Allowed variable names
 
-Variable names must begin with a letter (A-Z or a-z) or underscore. After that any letter, number or ? and ! is allowed.
+Variable names must begin with a letter \(A-Z or a-z\) or underscore. After that any letter, number or ? and ! is allowed.
 
 ```ruby
 let camelCase = 1
@@ -57,11 +58,12 @@ let _private = 8
 let sOMETHING_elSe = "really?"
 ```
 
-# Numbers
+## Numbers
 
-# Mathematical Operations and Elementary Functions
+## Mathematical Operations and Elementary Functions
 
-# Strings
+## Strings
+
 There's no difference between single-quoted and double-quoted strings. They both can be interpolated:
 
 ```r
@@ -71,12 +73,13 @@ let n = 42;
 # => true
 ```
 
-# Functions
+## Functions
 
-# Control Flow
+## Control Flow
 
-# Types?
+## Types?
 
-# Data Structures (better name)
+## Data Structures \(better name\)
 
-# Modules
+## Modules
+

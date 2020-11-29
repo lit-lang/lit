@@ -1,41 +1,35 @@
-<p align="center">
-  <img src="assets/icon-circle.png" height=150>
-
-  <h3 align="center">LIT</h3>
-
-  <p align="center">
-    <a href="https://github.com/MatheusRich/lit/blob/master/language-reference/v1.0/syntax.md">
-      <strong>Take a look at the Documentation &raquo</strong>
-    </a>
-    <br><br>
-    <a href="https://github.com/MatheusRich/lit/blob/master/language-reference/FAQ.md">FAQ</a>
-    &middot;
-    <a href="https://github.com/MatheusRich/lit-vscode">VS Code extension</a>
-    &middot;
-    <a href="https://github.com/MatheusRich/lit/issues/new">Report a Problem</a>
-  </p>
-</p>
-
 ---
+description: 'LIT is a dynamically-typed, interpreted scripting language!'
+---
+
+# Welcome!
+
+![](.gitbook/assets/icon-circle.png)
+
+### LIT
+
+ [**Take a look at the Documentation »**](https://github.com/MatheusRich/lit/blob/master/language-reference/v1.0/syntax.md)  
+  
+ [FAQ](https://github.com/MatheusRich/lit/blob/master/language-reference/FAQ.md) · [VS Code extension](https://github.com/MatheusRich/lit-vscode) · [Report a Problem](https://github.com/MatheusRich/lit/issues/new)
 
 This is my first attempt on language design. My initial goals are:
 
-- **Be pretty straightforward and simple**:
-  - If the same concept/syntax could be used in other parts of the language, great!
-  - It will be interpreted, because this should keep things simpler.
-- **Be functional**:
-  - I wanna see how far I can go with functions and hashes.
-  - It has to have good function support (anonymous, composition, pipe operator).
-  - It has to be immutable.
-- **I don't know about types yet**:
-  - I'll keep them out just for simplicity.
-  - I'm not decided on how to handle null values.
-- **Be beautiful:**
-  - I'm a Rubyist, afterall. So, beautiful code matters.
-  - I want to keep the language consistent, yet.
-- **Don't take it too serious**:
-  - This is my first language, so I want it to be fun (and learn from experience).
-  - Speed will be nice (since it's implemented in Crystal), but it's not priority.
+* **Be pretty straightforward and simple**:
+  * If the same concept/syntax could be used in other parts of the language, great!
+  * It will be interpreted, because this should keep things simpler.
+* **Be functional**:
+  * I wanna see how far I can go with functions and hashes.
+  * It has to have good function support \(anonymous, composition, pipe operator\).
+  * It has to be immutable.
+* **I don't know about types yet**:
+  * I'll keep them out just for simplicity.
+  * I'm not decided on how to handle null values.
+* **Be beautiful:**
+  * I'm a Rubyist, afterall. So, beautiful code matters.
+  * I want to keep the language consistent, yet.
+* **Don't take it too serious**:
+  * This is my first language, so I want it to be fun \(and learn from experience\).
+  * Speed will be nice \(since it's implemented in Crystal\), but it's not priority.
 
 ## Installation
 
@@ -77,13 +71,7 @@ notes.mean.puts
 
 ## Grammar
 
-<!-- program     -> declaration* EOF
-declaration -> fnDecl | varDecl | statement
-fnDecl      -> "fn" function;
-varDecl
-statement -->
-
-```
+```text
 primary = "true" | "false" | "nil" | NUMBER | STRING | IDENTIFIER | "(" expression ")"
 ```
 
@@ -93,8 +81,9 @@ TODO: Write development instructions here
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/lit/fork>)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
+1. Fork it \([https://github.com/your-github-user/lit/fork](https://github.com/your-github-user/lit/fork)\)
+2. Create your feature branch \(`git checkout -b my-new-feature`\)
+3. Commit your changes \(`git commit -am 'Add some feature'`\)
+4. Push to the branch \(`git push origin my-new-feature`\)
 5. Create a new Pull Request
+
