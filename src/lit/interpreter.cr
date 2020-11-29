@@ -103,6 +103,12 @@ module Lit
       value
     end
 
+    def visit_ternary_expr(expr) : Obj
+      cond = evaluate(expr.condition)
+
+      truthy?(cond) ? evaluate(expr.left) : evaluate(expr.right)
+    end
+
     def visit_logical_expr(expr) : Obj
       left = evaluate(expr.left)
 

@@ -59,7 +59,7 @@ module Create
   def expr(type : Symbol, value = nil, left : Lit::Expr? = nil, right : Lit::Expr? = nil, operator : Lit::Token? = nil) : Lit::Expr
     case type
     when :literal
-      value ||= 1.0
+      value = 1.0 if value.nil?
 
       Lit::Expr::Literal.new(value)
     when :grouping
@@ -75,7 +75,13 @@ module Create
     when :assign
       Lit::Expr::Assign.new(self.token(:identifier, "my_var"), expr(:literal))
     when :ternary
-      Lit::Expr::Ternary.new(expr(:literal, true), expr(:literal), expr(:literal, 2.0), self.token(:question))
+      value = true if value.nil?
+
+      condition = expr(:literal, value)
+      left = left || expr(:literal)
+      right = right || expr(:literal, 2.0)
+
+      Lit::Expr::Ternary.new(condition, left, right, self.token(:question))
     else
       raise "Don't know hot to build expression with type '#{type}'"
     end

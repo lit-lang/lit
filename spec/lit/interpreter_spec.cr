@@ -310,4 +310,18 @@ describe Lit::Interpreter do
       end
     end
   end
+
+  describe "#visit_ternary_expr" do
+    it "evaluates to left branch on truthy conditions" do
+      expr = Create.expr(:ternary)
+      interpreter.evaluate(expr).should eq 1.0
+    end
+
+    it "evaluates to right branch on falsey conditions" do
+      left = Create.expr(:literal, 1.0)
+      right = Create.expr(:literal, 2.0)
+      expr = Create.expr(:ternary, false, left: left, right: right)
+      interpreter.evaluate(expr).should eq 2.0
+    end
+  end
 end
