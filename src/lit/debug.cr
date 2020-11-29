@@ -32,6 +32,10 @@ module Lit
       expr.name.lexeme
     end
 
+    def s_expr(expr : Expr::Ternary) : String
+      parenthesize("?", expr.condition, expr.left, expr.right)
+    end
+
     def s_expr(expr : Expr::Assign) : String
       parenthesize("= #{expr.name.lexeme}", expr.value)
     end

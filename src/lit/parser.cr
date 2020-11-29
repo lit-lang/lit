@@ -70,7 +70,7 @@ module Lit
     end
 
     private def assignment
-      expr = or_expr
+      expr = ternary
 
       if match?(TokenType::EQUAL)
         equals = previous
@@ -83,6 +83,21 @@ module Lit
         end
 
         error(equals, "I was expecting a variable before the equal sign.")
+      end
+
+      expr
+    end
+
+    private def ternary
+      expr = or_expr
+
+      if match?(TokenType::QUESTION)
+        question_mark = previous
+        left = ternary
+        consume(TokenType::COLON, "I was expecting a colon after the truthy condition on the ternary expression.")
+        right = ternary
+
+        return Expr::Ternary.new(expr, left, right, question_mark)
       end
 
       expr

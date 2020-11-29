@@ -11,6 +11,7 @@ module Create
     right_paren:   ")",
     equal_equal:   "==",
     bang_equal:    "!=",
+    question:      "?",
     bang:          "!",
     comma:         ",",
     minus:         "-",
@@ -25,6 +26,7 @@ module Create
     pipe_operator: "|>",
     print:         "print",
     let:           "let",
+    colon:         ":",
     semicolon:     ";",
     eof:           "",
   }
@@ -72,6 +74,8 @@ module Create
       Lit::Expr::Variable.new(self.token(:identifier, "my_var"))
     when :assign
       Lit::Expr::Assign.new(self.token(:identifier, "my_var"), expr(:literal))
+    when :ternary
+      Lit::Expr::Ternary.new(expr(:literal, true), expr(:literal), expr(:literal, 2.0), self.token(:question))
     else
       raise "Don't know hot to build expression with type '#{type}'"
     end

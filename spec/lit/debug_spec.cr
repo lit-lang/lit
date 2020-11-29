@@ -56,6 +56,14 @@ describe Lit::Debug do
       end
     end
 
+    context "with ternary expressions" do
+      it do
+        expr = Create.expr(:ternary)
+
+        Lit::Debug.s_expr(expr).should eq "(? true 1.0 2.0)"
+      end
+    end
+
     context "with assign expression" do
       it do
         expr = Create.expr(:assign)
