@@ -1,0 +1,25 @@
+let MyModule = {
+  let factorial_of = fn { |n|
+    if(n <= 1) return 1;
+
+    return n * factorial_of(n - 1);
+  }
+};
+
+describe("MyModule", fn {
+  describe(".factorial_of", fn {
+    it("returns the factorial of a number", fn {
+      assert(factorial_of(5) == 120)
+    })
+  })
+})
+
+# It could be this one day:
+#
+# describe "MyModule", {
+#   describe ".factorial_of", {
+#     it "returns the factorial of a number", {
+#       assert factorial_of(5) == 120
+#     }
+#   }
+}
