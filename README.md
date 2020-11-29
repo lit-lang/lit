@@ -1,12 +1,12 @@
 ---
-description: 'LIT is a dynamically-typed, interpreted scripting language!'
+description: 'Lit is a dynamically-typed, interpreted scripting language!'
 ---
 
 # Welcome!
 
 ![](.gitbook/assets/icon-circle.png)
 
-### LIT
+### Lit
 
  [**Take a look at the Documentation »**](https://github.com/MatheusRich/lit/blob/master/language-reference/v1.0/syntax.md)  
   

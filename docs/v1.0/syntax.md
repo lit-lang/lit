@@ -4,7 +4,7 @@
 
 > **DESIGN NOTE:**
 >
-> In LIT v1.0, the syntax is not so easy on eyes as I'd like to. There's limitations in my current knowledge about compilers, so I'll make some compromisses. However, in v2.0, I'll \(hopefully\) be able to get rid of them.
+> In Lit v1.0, the syntax is not so easy on eyes as I'd like to. There's limitations in my current knowledge about compilers, so I'll make some compromisses. However, in v2.0, I'll \(hopefully\) be able to get rid of them.
 >
 > Check [v2.0 docs](../v2.0/syntax.md) for the syntax I'm aiming for.
 
@@ -18,7 +18,7 @@
 
 ## Variables
 
-In version 1.0, LIT will require the keyword `let` for declaring variables.
+In version 1.0, Lit will require the keyword `let` for declaring variables.
 
 ```ruby
 let a = 1;

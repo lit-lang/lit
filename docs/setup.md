@@ -1,5 +1,5 @@
 ---
-description: How to get LIT up and running!
+description: How to get Lit up and running!
 ---
 
 # Setup
