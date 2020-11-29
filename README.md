@@ -8,9 +8,9 @@ description: 'Lit is a dynamically-typed, interpreted scripting language!'
 
 ### Lit
 
- [**Take a look at the Documentation »**](https://github.com/MatheusRich/lit/blob/master/language-reference/v1.0/syntax.md)  
-  
- [FAQ](https://github.com/MatheusRich/lit/blob/master/language-reference/FAQ.md) · [VS Code extension](https://github.com/MatheusRich/lit-vscode) · [Report a Problem](https://github.com/MatheusRich/lit/issues/new)
+[**Take a look at the Documentation »**](https://github.com/MatheusRich/lit/blob/master/language-reference/v1.0/syntax.md)
+
+[FAQ](https://github.com/MatheusRich/lit/blob/master/language-reference/FAQ.md) · [VS Code extension](https://github.com/MatheusRich/lit-vscode) · [Report a Problem](https://github.com/MatheusRich/lit/issues/new)
 
 This is my first attempt on language design. My initial goals are:
 
