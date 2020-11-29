@@ -4,11 +4,11 @@
   <h3 align="center">Lit</h3>
 
   <p align="center">
-    <a href="https://github.com/MatheusRich/lit/blob/master/language-reference/v1.0/syntax.md">
+    <a href="https://matheusrichardt.gitbook.io/lit/">
       <strong>Take a look at the Documentation &raquo</strong>
     </a>
     <br><br>
-    <a href="https://github.com/MatheusRich/lit/blob/master/language-reference/FAQ.md">FAQ</a>
+    <a href="https://matheusrichardt.gitbook.io/lit/faq">FAQ</a>
     &middot;
     <a href="https://github.com/MatheusRich/lit-vscode">VS Code extension</a>
     &middot;
