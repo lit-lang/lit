@@ -241,7 +241,7 @@ module Lit
     end
 
     private def alphanumeric?(c : Char) : Bool
-      alpha?(c) || digit?(c) || c.in? ['?', '!']
+      alpha?(c) || digit?(c) || c.in?({'?', '!'})
     end
 
     private def keyword_from(text : String)
