@@ -175,7 +175,7 @@ module Lit
       end
     end
 
-    private def consume_string(quote)
+    private def consume_string(quote) : Nil
       string = ""
 
       loop do
@@ -185,9 +185,7 @@ module Lit
 
         return add_token(TokenType::STRING, string) if c == quote
 
-        if c == '\n'
-          @line += 1
-        elsif c == '\\' # TODO: Maybe single quote strings shouldn't allow escapes and interpolation
+        if c == '\\' # TODO: Maybe single quote strings shouldn't allow escapes and interpolation
           return Lit.error(@line, "Unterminated string escape") if at_end?
 
           e = advance
@@ -207,6 +205,7 @@ module Lit
             return Lit.error(@line, "Unknown escape sequence #{e.inspect}")
           end
         else
+          @line += 1 if c == '\n'
           string += c # Normal character
         end
       end

@@ -62,14 +62,14 @@ describe Lit::Scanner do
   end
 
   it "scans multiline strings" do
-    str = %q("multi\nline\nstring")
+    str = %("multi\nline\nstring")
 
     token = Lit::Scanner.scan(str).first
     token.should be_a Lit::Token
     token.type.should eq token(STRING)
     token.lexeme.should eq str
     token.literal.should eq "multi\nline\nstring"
-    token.line.should eq 1
+    token.line.should eq 3
   end
 
   it "scans strings with escape sequences" do
