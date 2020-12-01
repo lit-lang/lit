@@ -73,13 +73,13 @@ describe Lit::Scanner do
   end
 
   it "scans strings with escape sequences" do
-    str = %("\\n\\t\\\\'")
+    str = %("\\n \\t \\\\ \\' \\"")
 
     token = Lit::Scanner.scan(str).first
     token.should be_a Lit::Token
     token.type.should eq token(STRING)
     token.lexeme.should eq str
-    token.literal.should eq "\n\t\\'"
+    token.literal.should eq %(\n \t \\ ' ")
     token.line.should eq 1
   end
 
@@ -161,6 +161,10 @@ describe Lit::Scanner do
 
   it "errors on unknown escape sequence" do
     output_of { Lit::Scanner.scan(%('\\x')) }.should contain("Unknown escape sequence 'x'")
+  end
+
+  it "errors on single '&'" do
+    output_of { Lit::Scanner.scan("&") }.should contain("[Line 1] Error: Unexpected character '&'")
   end
 
   it "errors on unexpected chars" do
