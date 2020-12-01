@@ -11,7 +11,7 @@ module Lit
     not:    TokenType::BANG,
     or:     TokenType::OR,
     print:  TokenType::PRINT,
-    puts:   TokenType::PUTS,
+    puts:   TokenType::PRINT, # TODO: Handle print and puts correctly
     return: TokenType::RETURN,
     true:   TokenType::TRUE,
     while:  TokenType::WHILE,
