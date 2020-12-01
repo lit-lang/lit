@@ -176,21 +176,40 @@ module Lit
     end
 
     private def consume_string(quote)
-      until peek == quote || at_end?
-        @line += 1 if peek == '\n'
-        advance
+      string = ""
+
+      loop do
+        return Lit.error(@line, "Unterminated string") if at_end?
+
+        c = advance
+
+        return add_token(TokenType::STRING, string) if c == quote
+
+        if c == '\n'
+          @line += 1
+        elsif c == '\\' # TODO: Maybe single quote strings shouldn't allow escapes and interpolation
+          return Lit.error(@line, "Unterminated string escape") if at_end?
+
+          e = advance
+
+          case e
+          when 'n'
+            string += "\n"
+          when '"'
+            string += '"'
+          when '\''
+            string += '\''
+          when '\\'
+            string += '\\'
+          when 't'
+            string += "\t"
+          else
+            return Lit.error(@line, "Unknown escape sequence #{e.inspect}")
+          end
+        else
+          string += c # Normal character
+        end
       end
-
-      if at_end?
-        Lit.error(@line, "Unterminated string")
-        return
-      end
-
-      advance # Consume the closing quote
-
-      value = current_token_string.delete(quote)
-
-      add_token(TokenType::STRING, value)
     end
 
     private def consume_identifier

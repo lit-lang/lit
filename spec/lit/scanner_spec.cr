@@ -62,14 +62,25 @@ describe Lit::Scanner do
   end
 
   it "scans multiline strings" do
-    str = %("multi\nline\nstring")
+    str = %q("multi\nline\nstring")
 
     token = Lit::Scanner.scan(str).first
     token.should be_a Lit::Token
     token.type.should eq token(STRING)
     token.lexeme.should eq str
     token.literal.should eq "multi\nline\nstring"
-    token.line.should eq 3
+    token.line.should eq 1
+  end
+
+  it "scans strings with escape sequences" do
+    str = %("\\n\\t\\\\'")
+
+    token = Lit::Scanner.scan(str).first
+    token.should be_a Lit::Token
+    token.type.should eq token(STRING)
+    token.lexeme.should eq str
+    token.literal.should eq "\n\t\\'"
+    token.line.should eq 1
   end
 
   it "scans spaces" do
@@ -142,6 +153,14 @@ describe Lit::Scanner do
 
   it "errors on unterminated string" do
     output_of { Lit::Scanner.scan(%("Unterminated \nstring')) }.should contain("[Line 2] Error: Unterminated string")
+  end
+
+  it "errors on unterminated string escape" do
+    output_of { Lit::Scanner.scan(%("Unterminated \\)) }.should contain("Unterminated string escape")
+  end
+
+  it "errors on unknown escape sequence" do
+    output_of { Lit::Scanner.scan(%('\\x')) }.should contain("Unknown escape sequence 'x'")
   end
 
   it "errors on unexpected chars" do
