@@ -202,7 +202,9 @@ module Lit
           when 't'
             string += "\t"
           else
-            return Lit.error(@line, "Unknown escape sequence #{e.inspect}")
+            Lit.error(@line, "Unknown escape sequence #{e.inspect}")
+            # Not returning so we can keep parsing the string
+            # NOTE: Ruby would simply return the given char here. What is nicer?
           end
         else
           @line += 1 if c == '\n'
