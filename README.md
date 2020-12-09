@@ -18,6 +18,8 @@
 
 ---
 
+> ATENTION: This project is a work in progress 
+
 This is my first attempt on language design. My initial goals are:
 
 - **Be pretty straightforward and simple**:
