@@ -87,6 +87,10 @@ module Lit
         check_number_operands(expr.operator, left, right)
 
         return left.as(Float64) / right.as(Float64)
+      when .percent?
+        check_number_operands(expr.operator, left, right)
+
+        return left.as(Float64) % right.as(Float64)
       end
 
       runtime_error(expr.operator, "Unknown binary operator. This is probably a parsing error. My bad =(")

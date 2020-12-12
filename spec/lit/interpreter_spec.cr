@@ -148,6 +148,16 @@ describe Lit::Interpreter do
       end
     end
 
+    context "when operator is %" do
+      it "gets the remainder between the numbers" do
+        percent = Create.token(:percent)
+        number_2 = Create.expr(:literal, 2.0)
+        expr = Create.expr(:binary, operator: percent, left: number_2, right: number_2)
+
+        interpreter.evaluate(expr).should eq 0
+      end
+    end
+
     context "when operator is ==" do
       it "compares equal values" do
         equal_equal = Create.token(:equal_equal)
