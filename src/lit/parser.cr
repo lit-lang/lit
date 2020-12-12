@@ -167,7 +167,7 @@ module Lit
     private def factor
       expr = unary
 
-      while match?(TokenType::STAR, TokenType::SLASH)
+      while match?(TokenType::STAR, TokenType::SLASH, TokenType::PERCENT)
         operator = previous
         right = unary
 

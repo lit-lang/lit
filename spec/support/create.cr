@@ -18,6 +18,7 @@ module Create
     plus:          "+",
     slash:         "/",
     star:          "*",
+    percent:       "%",
     less:          "<",
     less_equal:    "<=",
     greater:       ">",

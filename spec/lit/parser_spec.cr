@@ -146,6 +146,15 @@ describe Lit::Parser do
       expr.right.as(Lit::Expr::Literal).value.should eq 1.0
     end
 
+    it "parses mod" do
+      tokens = Create.tokens(:number, :percent, :number, :semicolon, :eof)
+      expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Binary)
+
+      expr.operator.type.percent?.should be_true
+      expr.left.as(Lit::Expr::Literal).value.should eq 1.0
+      expr.right.as(Lit::Expr::Literal).value.should eq 1.0
+    end
+
     it "parses terms" do
       tokens = Create.tokens(:number, :plus, :number, :semicolon, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Binary)
