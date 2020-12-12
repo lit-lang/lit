@@ -64,6 +64,8 @@ module Lit
         add_token(TokenType::MINUS)
       when '/'
         add_token(TokenType::SLASH)
+      when '%'
+        add_token(TokenType::PERCENT)
       when '?'
         add_token(TokenType::QUESTION)
       when '*'

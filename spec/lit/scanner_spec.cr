@@ -23,6 +23,7 @@ describe Lit::Scanner do
   it_scans "-", to_type: token(MINUS)
   it_scans "/", to_type: token(SLASH)
   it_scans "*", to_type: token(STAR)
+  it_scans "%", to_type: token(PERCENT)
   it_scans "**", to_type: token(STAR_STAR)
   it_scans "=", to_type: token(EQUAL)
   it_scans "==", to_type: token(EQUAL_EQUAL)
