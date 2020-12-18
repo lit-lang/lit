@@ -46,35 +46,15 @@ TODO: Write installation instructions here
 ## Usage
 
 ```ruby
-# Common functional approach
-sum = { |l| List.head(l) + sum(List.tail(l)) }
+let fib = fn { |n|
+  if (n < 2) { return n; }
 
-# OO-like syntax
-length = { |l| 1 + l.tail().length() }
+  return fib(n - 1) + fib(n - 2);
+}
 
-# Ruby blocks as anonymous functions
-mean = { |l| sum(l) / length(l) }
+let n = gets();
 
-notes = [1, 2, 3]
-
-# This
-notes |> mean |> puts
-# => 2
-
-# is equivalent to
-puts(mean(notes))
-# => 2
-
-# and it is equivalent to
-notes.mean().puts()
-# => 2
-
-# DESIGN NOTE:
-# The above expression is *not* beautiful.
-# If I want to keep this oo-like call, it shouldn't require parenthesis.
-# Maybe I cannot implement this in the first version.
-notes.mean.puts
-# => 2
+puts("The # {n} fibonacci number is {fib(n)}")
 ```
 
 ## Grammar
