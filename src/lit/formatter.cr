@@ -3,7 +3,7 @@ require "./text"
 module Lit
   # TODO:
   # This module makes very simple formatting on Lit files.
-  # It's regex based, so it's not very elegant, but it gets the job done.
+  # It's regex based, so it's not elegant, but it gets the job done.
   # In the future I'll parse the code and "pretty print" it. It should
   # be more powerful.
   module Formatter
