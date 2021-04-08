@@ -1,7 +1,7 @@
 require "./lit"
 require "./expr"
 require "./stmt"
-require "./obj"
+require "./value"
 require "./runtime_error"
 require "./environment"
 
@@ -36,11 +36,11 @@ module Lit
       evaluate(stmt.expression)
     end
 
-    def visit_literal_expr(expr) : Obj
+    def visit_literal_expr(expr) : Value
       expr.value
     end
 
-    def visit_unary_expr(expr) : Obj
+    def visit_unary_expr(expr) : Value
       right = evaluate(expr.right)
 
       case expr.operator.type
@@ -55,7 +55,7 @@ module Lit
       runtime_error(expr.operator, "Unknown unary operator. This is probably a parsing error. My bad =(")
     end
 
-    def visit_binary_expr(expr) : Obj
+    def visit_binary_expr(expr) : Value
       left = evaluate(expr.left)
       right = evaluate(expr.right)
 
@@ -96,24 +96,24 @@ module Lit
       runtime_error(expr.operator, "Unknown binary operator. This is probably a parsing error. My bad =(")
     end
 
-    def visit_grouping_expr(expr) : Obj
+    def visit_grouping_expr(expr) : Value
       evaluate(expr.expression)
     end
 
-    def visit_assign_expr(expr) : Obj
+    def visit_assign_expr(expr) : Value
       value = evaluate(expr.value)
       environment.assign(expr.name, value)
 
       value
     end
 
-    def visit_ternary_expr(expr) : Obj
+    def visit_ternary_expr(expr) : Value
       cond = evaluate(expr.condition)
 
       truthy?(cond) ? evaluate(expr.left) : evaluate(expr.right)
     end
 
-    def visit_logical_expr(expr) : Obj
+    def visit_logical_expr(expr) : Value
       left = evaluate(expr.left)
 
       case expr.operator.type
@@ -128,50 +128,50 @@ module Lit
       evaluate(expr.right)
     end
 
-    def visit_variable_expr(expr) : Obj
+    def visit_variable_expr(expr) : Value
       @environment.get(expr.name)
     end
 
-    def execute(stmt : Stmt) : Obj
+    def execute(stmt : Stmt) : Value
       stmt.accept(self)
     end
 
-    def evaluate(expr : Expr) : Obj
+    def evaluate(expr : Expr) : Value
       expr.accept(self)
     end
 
-    private def check_number_operand(operator, operand : Obj)
+    private def check_number_operand(operator, operand : Value)
       return if operand.is_a? Float64
 
       runtime_error(operator, "Operand must be a number.")
     end
 
-    private def check_number_operands(operator, left : Obj, right : Obj)
+    private def check_number_operands(operator, left : Value, right : Value)
       return if left.is_a? Float64 && right.is_a? Float64
 
       runtime_error(operator, "Operands must be numbers.")
     end
 
-    private def truthy?(obj : Obj) : Bool
-      !!obj
+    private def truthy?(value : Value) : Bool
+      !!value
     end
 
-    private def falsey?(obj : Obj) : Bool
-      !obj
+    private def falsey?(value : Value) : Bool
+      !value
     end
 
-    private def equal?(a : Obj, b : Obj) : Bool
+    private def equal?(a : Value, b : Value) : Bool
       return true if a.nil? && b.nil?
       return false if a.nil?
 
       a == b
     end
 
-    private def stringify(obj : Obj) : String
-      return "nil" if obj.nil?
-      return obj.to_s.rchop(".0") if obj.is_a? Float64
+    private def stringify(value : Value) : String
+      return "nil" if value.nil?
+      return value.to_s.rchop(".0") if value.is_a? Float64
 
-      obj.to_s
+      value.to_s
     end
 
     private def runtime_error(token, msg)

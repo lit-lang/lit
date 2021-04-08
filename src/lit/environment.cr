@@ -1,11 +1,11 @@
-require "./obj"
+require "./value"
 require "./token"
 require "./runtime_error"
 
 module Lit
   class Environment
     getter values
-    @values = {} of String => Obj
+    @values = {} of String => Value
 
     def initialize(@enclosing : Environment? = nil); end
 
