@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-        run: apt update && apt install -y libreadline-dev && shards install --ignore-crystal-version
+        run: apt update && apt install -y libreadline-dev && shards install
       - name: Run tests
         run: crystal spec
       - name: Run Linter
