@@ -34,7 +34,7 @@ This is my first attempt on language design. My initial goals are:
   - I'm not decided on how to handle null values.
 - **Be beautiful:**
   - I'm a Rubyist, afterall. So, beautiful code matters.
-  - I want to keep the language consistent, yet.
+  - I want to keep the language consistent, though.
 - **Don't take it too serious**:
   - This is my first language, so I want it to be fun (and learn from experience).
   - Speed is not a priority.
