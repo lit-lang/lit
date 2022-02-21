@@ -1,0 +1,77 @@
+let Enum = {
+  # fn each(enumerable, fun) {
+  #   while let next = enumerable.next!() {
+  #     fun(next)
+  #   }
+  # }
+
+  fn map(enumerable, fun) {
+    let acc = enumerable.type.init()
+
+    enumerable.each { |value|
+      acc << fun(value)
+    }
+
+    acc
+  }
+
+  fn filter(enumerable, fun) {
+    let acc = enumerable.init()
+
+    enumerable.each { |value|
+      if fun(value) {
+        acc << value
+      }
+    }
+
+    acc
+  }
+}
+
+type * {
+  fn tap(f){
+    f(self)
+
+    self
+  }
+}
+
+1.tap { println(it) }
+
+type Array {
+  fn each([], fun) {}
+  fn each([head, ...tail], fun) {
+    fun(head)
+    self.each(tail, fun)
+  }
+  ...Enum
+}
+
+type HashMap {
+  fn each({}, fun) {}
+  fn each({key: value, ...tail}, fun) {
+    fun([key, value])
+    self.each(tail, fun)
+  }
+  ...Enum
+}
+
+Enum.map([1, 2, 3]) { |x| x * 2 } |> Enum.each { println(it) } # 2 4 6
+
+[1, 2, 3].map { |x| x * 2 }.each { println(it) } # 2 4 6
+
+
+struct Tuple {
+  a = 0
+  b = 0
+
+  fn init() {
+    Tuple { a: 0, b: 0 }
+  }
+
+  fn each(fun) {
+    fun(self.a)
+    fun(self.b)
+  }
+  ...Enum
+}
