@@ -1,0 +1,31 @@
+# Simplified Wordle
+
+if let words = File.read!("wordle-answers.txt") {
+  let words = words.split
+  let word = words.sample
+  let guess = ""
+
+  while guess != word {
+    print "Guess: "
+    guess = readln
+
+    if guess.size != 5 {
+      println "Only 5 letter words allowed"
+      next
+    }
+
+    5.times { |i|
+      if word[i] == guess[i] {
+        print "🟩"
+      } elsif word.include?(guess[i]) {
+        print "🟨"
+      } else {
+        print "🟥"
+      }
+    }
+
+    println
+  }
+} else {
+  println "Could not read file"
+}

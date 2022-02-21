@@ -1,8 +1,20 @@
+# Not a good idea, since the function is available to all objects types
 let factorial_of = fn { |n|
   if(n <= 1) return 1;
 
   return n * factorial_of(n - 1);
 }
 
-puts factorial_of(5);
+println factorial_of(5);
+# => 120
+
+module Factorial {
+  fn of { |n|
+    if n <= 1 then return 1
+
+    n * Factorial.of(n - 1)
+  }
+}
+
+println Factorial.of(5)
 # => 120

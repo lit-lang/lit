@@ -1,0 +1,60 @@
+let double = fn {|n| n * 2}
+
+double(10) # 20
+
+# the dot syntax is a syntax sugar for the function call
+10.double() # 20
+
+let sum = fn {|n1, n2| n1 + n2}
+
+1.sum(2) # 3
+# the above is a sugar for
+sum(1, 2) # note that the lhs is the first argument
+
+
+type String {
+  fn empty { "" }
+}
+
+type Array {
+  fn empty { [] }
+}
+
+fn get_empty { it.empty() }
+
+# If a function is defined for multiple types, the runtime type of the argument is used to determine the function to call
+get_empty("what's the empty version of a string?") # ""
+get_empty(#= what's the empty version of an array? =# [1,2,3]) # []
+get_empty(true) # NoMethodError: undefined method `empty` for boolean `true`
+
+# a top-level function is defined for all types
+let debug = fn {
+  println("*" * 10)
+  it.inspect().println()
+  println("*" * 10)
+}
+
+# it's the same as
+type * {
+  fn debug {
+    # ...
+  }
+}
+# FIXME: alternative: introduce modules and use a Kernel module for top-level functions
+module Kernel {
+  fn debug {
+    # ...
+  }
+}
+
+1.debug()
+# prints
+# **********
+# 1
+# **********
+
+"hi".debug()
+# prints
+# **********
+# "hi"
+# **********

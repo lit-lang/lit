@@ -1,0 +1,29 @@
+type * {
+  fn tap { |f|
+    f(self)
+
+    self
+  }
+}
+
+1.tap { println(it) }
+# prints 1
+
+type Int {
+  fn times { |f|
+    self._times(f, 0)
+  }
+
+  fn _times { |f, current|
+    if current < self  {
+      f(current)
+      _times(f, current + 1)
+    }
+
+    self
+  }
+}
+
+3.times { |i| println(i) }
+# prints 0, 1, 2
+# => 3

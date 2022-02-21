@@ -1,15 +1,9 @@
-let Enum = {
-  # fn each(enumerable, fun) {
-  #   while let next = enumerable.next!() {
-  #     fun(next)
-  #   }
-  # }
-
-  fn is_empty?(enumerable) {
+module Enum {
+  fn is_empty? { |enumerable|
     enumerable == self.init()
   }
 
-  fn map(enumerable, fun) {
+  fn map { |enumerable, fun|
     let acc = enumerable.type.init()
 
     enumerable.each { |value|
@@ -19,7 +13,7 @@ let Enum = {
     acc
   }
 
-  fn filter(enumerable, fun) {
+  fn filter { |enumerable, fun|
     let acc = enumerable.init()
 
     enumerable.each { |value|
@@ -31,16 +25,6 @@ let Enum = {
     acc
   }
 }
-
-type * {
-  fn tap(f){
-    f(self)
-
-    self
-  }
-}
-
-1.tap { println(it) }
 
 type Array {
   fn each([], _fun) { self }
@@ -64,14 +48,13 @@ Array.map([1, 2, 3]) { |x| x * 2 } |> Array.each { println(it) } # 2 4 6
 
 [1, 2, 3].map { |x| x * 2 }.each { println(it) } # 2 4 6
 
-
 struct List {
+  ...Enum # include module
+
+  let vals
+
   fn new() {
     self.vals = []
-  }
-
-  fn push(val) {
-    self.vals = [val, self.vals]
   }
 
   fn init() {
@@ -86,5 +69,15 @@ struct List {
       tail.each(fun)
     }
   }
-  ...Enum
+
+  fn push(val) {
+    self.vals = [val, self.vals]
+  }
+
+  fn head! {
+    let [head!, ...tail] = self.vals
+
+    head!
+  }
 }
+

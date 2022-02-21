@@ -1,0 +1,26 @@
+# Modules are collections of functions. All values in a module are immutable.
+module Rand {
+  fn string {|size = 10|
+    size.times.map { "a".."z".sample() }.join()
+  }
+
+  fn int { |min: 0, max: 9|
+    rand(min..max)
+  }
+}
+
+Rand.string()
+# => "mnqrstvwyz"
+
+Rand.int()
+# => 4
+
+Rand.int({min: 1, max: 99})
+# => 56
+
+module Math {
+  let PI = 3.14159
+}
+
+Math.PI # => 3.14159
+Math.PI = 5 # => SomeError: Cannot reassign to immutable variable

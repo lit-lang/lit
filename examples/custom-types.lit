@@ -1,0 +1,23 @@
+struct Point {
+  let x
+  let y
+
+  fn new { |x, y|
+    self.x = x
+    self.y = y
+  }
+
+  fn + { |other|
+    Point.new(self.x + other.x, self.y + other.y)
+  }
+
+  fn to_s {
+    "({self.x}, {self.y})"
+  }
+}
+
+let point = Point.new(1, 1) + Point.new(2, 2)
+# => Point.new(3, 3)
+
+println point
+# (3, 3)

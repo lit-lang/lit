@@ -1,0 +1,5 @@
+if let content = File.read!("my-article.md") {
+  println content
+} else {
+  print("Could not read file")
+}

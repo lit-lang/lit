@@ -1,0 +1,14 @@
+type String {
+  fn uppercase? {
+    self.chars().all? { it.is_uppercase?() }
+  }
+
+  fn size { self.chars().size() }
+}
+
+let who = "Matz"
+println "{who} is awesome!" # Matz is awesome!
+
+# single quote strings don't have interpolation
+println '{who} is awesome!' # {who} is awesome!
+

@@ -1,0 +1,22 @@
+# with if/else/elsif
+(1..100).each { |n|
+  if n % 15 == 0 {
+    println "FizzBuzz"
+  } elsif n % 3 == 0 {
+    println "Fizz"
+  } elsif n % 5 == 0 {
+    println "Buzz"
+  } else {
+    println n
+  }
+}
+
+# with pattern matching
+(1..100).each { |number|
+  match number {
+    n if n % 15 == 0 then println "FizzBuzz"
+    n if n % 3 == 0 then println "Fizz"
+    n if n % 5 == 0 then println "Buzz"
+    _ then println n
+  }
+}
