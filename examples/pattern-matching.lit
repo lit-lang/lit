@@ -1,0 +1,29 @@
+# it also works on functions
+module Size {
+  fn of_array([]) { 0 }
+  fn of_array([first, ...rest]) {
+    1 + self.of_array(rest)
+  }
+
+  fn of_hash_map({}) { 0 }
+  fn of_hash_map({k: v, ...rest}) {
+    1 + self.of_hash_map(rest)
+  }
+
+  # it's possible to use guards
+  fn of(obj) if object.is_a?(Array) {
+    self.of_array(obj)
+  }
+  fn of(obj) if object.is_a?(HashMap) {
+    self.of_hash_map(obj)
+  }
+}
+
+Size.of_array([]) # => 0
+Size.of_array([1, 2, 3]) # => 3
+
+Size.of_hash_map({}) # => 0
+Size.of_hash_map({"a": 1, "b": 2}) # => 2
+
+Size.of({"a": 1, "b": 2}) # => 2
+Size.of([1, 2, 3]) # => 3

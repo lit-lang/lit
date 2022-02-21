@@ -1,0 +1,83 @@
+module Enumerable {
+  fn is_empty? { |enumerable|
+    enumerable == self.init()
+  }
+
+  fn map { |enumerable, fun|
+    let acc = enumerable.type.init()
+
+    enumerable.each { |value|
+      acc << fun(value)
+    }
+
+    acc
+  }
+
+  fn filter { |enumerable, fun|
+    let acc = enumerable.init()
+
+    enumerable.each { |value|
+      if fun(value) {
+        acc << value
+      }
+    }
+
+    acc
+  }
+}
+
+type Array {
+  fn each([], _fun) { self }
+  fn each([head, ...tail], fun) {
+    fun(head)
+    self.each(tail, fun)
+  }
+  ...Enumerable
+}
+
+type HashMap {
+  fn each({}, _fun) { self }
+  fn each({key: value, ...tail}, fun) {
+    fun([key, value])
+    self.each(tail, fun)
+  }
+  ...Enumerable
+}
+
+Array.map([1, 2, 3]) { |x| x * 2 } |> Array.each { println(it) } # 2 4 6
+
+[1, 2, 3].map { |x| x * 2 }.each { println(it) } # 2 4 6
+
+struct List {
+  ...Enumerable # include module
+
+  let vals
+
+  fn new() {
+    self.vals = []
+  }
+
+  fn init() {
+    List.new()
+  }
+
+  fn each(fun) {
+    if !self.is_empty?() {
+      [head, ...tail] = self.vals
+
+      fun(head)
+      tail.each(fun)
+    }
+  }
+
+  fn push(val) {
+    self.vals = [val, self.vals]
+  }
+
+  fn head! {
+    let [head!, ...tail] = self.vals
+
+    head!
+  }
+}
+

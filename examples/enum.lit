@@ -1,83 +1,47 @@
-module Enum {
-  fn is_empty? { |enumerable|
-    enumerable == self.init()
-  }
+enum List {
+  Cons(val, list)
+  Empty
 
-  fn map { |enumerable, fun|
-    let acc = enumerable.type.init()
-
-    enumerable.each { |value|
-      acc << fun(value)
-    }
-
-    acc
-  }
-
-  fn filter { |enumerable, fun|
-    let acc = enumerable.init()
-
-    enumerable.each { |value|
-      if fun(value) {
-        acc << value
-      }
-    }
-
-    acc
-  }
-}
-
-type Array {
-  fn each([], _fun) { self }
-  fn each([head, ...tail], fun) {
-    fun(head)
-    self.each(tail, fun)
-  }
-  ...Enum
-}
-
-type HashMap {
-  fn each({}, _fun) { self }
-  fn each({key: value, ...tail}, fun) {
-    fun([key, value])
-    self.each(tail, fun)
-  }
-  ...Enum
-}
-
-Array.map([1, 2, 3]) { |x| x * 2 } |> Array.each { println(it) } # 2 4 6
-
-[1, 2, 3].map { |x| x * 2 }.each { println(it) } # 2 4 6
-
-struct List {
-  ...Enum # include module
-
-  let vals
-
-  fn new() {
-    self.vals = []
-  }
-
-  fn init() {
-    List.new()
-  }
-
-  fn each(fun) {
-    if !self.is_empty?() {
-      [head, ...tail] = self.vals
-
-      fun(head)
-      tail.each(fun)
+  fn size {
+    match self {
+      Cons(_val, list) then 1 + list.size()
+      Empty then 0
     }
   }
+}
 
-  fn push(val) {
-    self.vals = [val, self.vals]
-  }
+List.Cons(1, List.Cons(2, List.Cons(3, List.Empty))).size()
+# => 3
 
-  fn head! {
-    let [head!, ...tail] = self.vals
+enum Action {
+  Quit
+  Move { x, y }
+  Write(message)
+  ChangeColor(r, g, b)
+}
 
-    head!
+fn perform_action(action) {
+  match action {
+    Quit then exit()
+    Move { x, y } {
+      println "Move to: {x} {y}"
+    }
+    Write(message) {
+      println message
+    }
+    ChangeColor(r, g, b) {
+      println "Change color to: {r} {g} {b}"
+    }
   }
 }
 
+if let n = readln.to_int!() {
+  match n {
+    1 then "one"
+    2 then "two"
+    3 then "three"
+    _ then "{n} is too big"
+  }
+} else {
+  println "Not a number"
+}
