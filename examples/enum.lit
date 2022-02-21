@@ -5,6 +5,10 @@ let Enum = {
   #   }
   # }
 
+  fn is_empty?(enumerable) {
+    enumerable == self.init()
+  }
+
   fn map(enumerable, fun) {
     let acc = enumerable.type.init()
 
@@ -39,7 +43,7 @@ type * {
 1.tap { println(it) }
 
 type Array {
-  fn each([], fun) {}
+  fn each([], _fun) { self }
   fn each([head, ...tail], fun) {
     fun(head)
     self.each(tail, fun)
@@ -48,7 +52,7 @@ type Array {
 }
 
 type HashMap {
-  fn each({}, fun) {}
+  fn each({}, _fun) { self }
   fn each({key: value, ...tail}, fun) {
     fun([key, value])
     self.each(tail, fun)
@@ -56,22 +60,31 @@ type HashMap {
   ...Enum
 }
 
-Enum.map([1, 2, 3]) { |x| x * 2 } |> Enum.each { println(it) } # 2 4 6
+Array.map([1, 2, 3]) { |x| x * 2 } |> Array.each { println(it) } # 2 4 6
 
 [1, 2, 3].map { |x| x * 2 }.each { println(it) } # 2 4 6
 
 
-struct Tuple {
-  a = 0
-  b = 0
+struct List {
+  fn new() {
+    self.vals = []
+  }
+
+  fn push(val) {
+    self.vals = [val, self.vals]
+  }
 
   fn init() {
-    Tuple { a: 0, b: 0 }
+    List.new()
   }
 
   fn each(fun) {
-    fun(self.a)
-    fun(self.b)
+    if !self.is_empty?() {
+      [head, ...tail] = self.vals
+
+      fun(head)
+      tail.each(fun)
+    }
   }
   ...Enum
 }

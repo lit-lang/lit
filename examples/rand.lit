@@ -1,0 +1,4 @@
+rand(); # 0.03221367033900724
+# NOTE: we could avoid multiple args with a range literal
+rand(0, 10); # 3
+rand('a', 'z'); # 'o'
