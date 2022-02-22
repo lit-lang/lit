@@ -2,6 +2,7 @@
   <img src=".gitbook/assets/icon-circle.png">
 
   <h3 align="center">Lit</h3>
+  <p align="center"><em>A simple scripting language</em></p>
 
   <p align="center">
     <a href="https://matheusrich.gitbook.io/lit/" target="_blank">
@@ -16,50 +17,151 @@
   </p>
 </p>
 
----
+<hr>
 
-> ATENTION: This project is a work in progress 
+> ATTENTION: This project is a work in progress! It's an experiment, and by no means a
+> production-ready language.
 
-This is my first attempt on language design. My initial goals are:
+```ruby
+module Factorial {
+  fn of { |n|
+    if n <= 1 then return 1
 
-- **Be pretty straightforward and simple**:
+    n * Factorial.of(n - 1)
+  }
+}
+
+if let n = readln.to_i!() {
+  println "Factorial of {n} is {Factorial.of(n)}"
+} else {
+  println "{n} is not a valid number"
+}
+```
+
+## Why?
+
+_So, yet another scripting language. What's the deal?_
+
+I'm primarily a Ruby developer, and I love the workflow of a scripting language!
+I never felt the need for type annotations in Ruby, but I often saw instances of
+`undefined method 'something' for nil` errors in production code.
+
+I thought _"How can I get rid of this kind of error without going all the way down to full static typing?"_.
+That's how Lit was born.
+
+### Enter Lit
+
+Lit indeed has some static typing, but it is _subtle_. Let's get back to the factorial example, in
+particular this part:
+
+```ruby
+if let n = readln.to_i!() {
+  println "Factorial of {n} is {Factorial.of(n)}"
+} else {
+  println "{n} is not a valid number"
+}
+```
+
+What happens is that `readln` returns a string, and `to_i!` tries to convert it to an integer. But
+what happens if the string is not a valid number? What should `"wut".to_i!()` do? I'm not sure, so
+`to_i!` returns an error. The exclamation mark at the end of `to_i!` is a _type annotation_ that
+means it's a _"dangerous"_ method.
+
+If a method is marked as dangerous we have to handle it. Here are some alternatives:
+
+1. Provide a default value:
+
+```rust
+let n = readln.to_i!() or 0
+```
+
+2. Panic/Exit the program:
+
+```rust
+let n = readln.to_i!() or { panic "not a valid number" }
+```
+
+3. Propagate the error:
+
+```rust
+fn read_number! {
+  let n = readln
+  n = n.to_i!() or { return err("{n} is not a number") } # caller decides how to handle the error
+
+  n
+}
+```
+
+4. You can also use `if let` and `while let` to handle errors:
+
+```rust
+if let n = readln.to_i!() {
+  println "{n} is a number"
+} else {
+  println "{n} is not a valid number"
+}
+
+while let n = readln.to_i!() {
+  println "Yay! {n} is a number"
+} else {
+  println "{n} is not a valid number"
+}
+```
+
+## Goals
+
+Lit is my first attempt at language design. My goals are:
+
+- **Be straightforward**:
   - If the same concept/syntax could be used in other parts of the language, great!
-  - It will be interpreted, because this should keep things simpler.
-- **Be functional**:
-  - I wanna see how far I can go with functions and hashes.
-  - It has to have good function support (anonymous, composition, pipe operator).
-  - It has to be immutable.
-- **I don't know about types yet**:
-  - I'll keep them out just for simplicity.
-  - I'm not decided on how to handle null values.
-- **Be beautiful:**
-  - I'm a Rubyist, afterall. So, beautiful code matters.
+  - It is interpreted because this keeps things simpler.
+- **Be functional-friendly**:
+  - It has to have good function support (anonymous functions, composition, pipe operator).
+  - Help with immutability.
+- **Light static typing**:
+  - No type annotations (in the usual sense);
+  - No `undefined method 'x' for nil` errors;
+  - It still has to feel like a scripting language.
+- **Be pretty:**
+  - I'm a Rubyist, after all. So, beautiful code matters.
   - I want to keep the language consistent, though.
 - **Don't take it too serious**:
-  - This is my first language, so I want it to be fun (and learn from experience).
+  - This is my first language, so I want it to be fun (and learn from experience);
   - Speed is not a priority.
 
 ## Installation
 
 TODO: Write installation instructions here
 
-## Usage
+## Docs
 
-```ruby
-let fib = fn { |n|
-  if (n < 2) { return n; }
-
-  return fib(n - 1) + fib(n - 2);
-}
-
-let n = gets();
-
-puts("The # {n} fibonacci number is {fib(n)}")
-```
+You can find the documentation [here](https://matheusrich.gitbook.io/lit/).
 
 ## Development
 
 TODO: Write development instructions here
+
+## Inspiration
+
+[Ruby], of course, is my main source of inspiration of how a scripting language should feel. Due to
+my limited knowledge with creating a programming language, I went with [JavaScript]-like syntax.
+There's also [Rust] and [V] sprinkled in the mix.
+
+[Ruby]: https://www.ruby-lang.org/en/
+[Rust]: https://www.rust-lang.org/
+[V]: https://vlang.io/
+[JavaScript]: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+
+## Acknowledgements
+
+First and foremost, I'd like to thank Bob Nystrom for his incredible book [Crafting Interpreters],
+which made possible for me to even start writing this language. If you can, please consider buying
+it.
+
+I also would like to thank all the [languages][#inspiration] that inspired me, and you for reading
+my this!
+
+[Crafting Interpreters]: https://craftinginterpreters.com/
 
 ## Contributing
 
