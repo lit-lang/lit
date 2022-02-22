@@ -1,6 +1,24 @@
 module Enumerable {
   fn is_empty? { |enumerable|
-    enumerable == self.init()
+    let is_empty? = true;
+
+    self.each { |element|
+      is_empty? = false;
+      break
+    }
+
+    is_empty?
+  }
+
+  fn first! {
+    let element! = nil
+
+    self.each { |first|
+      element! = first
+      break
+    }
+
+    element!
   }
 
   fn map { |enumerable, fun|
@@ -23,6 +41,18 @@ module Enumerable {
     }
 
     acc
+  }
+
+  fn reduce { |enumerable, acc, fun|
+    self.each { |value|
+      acc = fun(acc, value)
+    }
+
+    acc
+  }
+
+  fn sum { |initial_acc = 0|
+    self.reduce(initial_acc) { |acc, value| acc + fun(value) }
   }
 }
 
@@ -51,19 +81,15 @@ Array.map([1, 2, 3]) { |x| x * 2 } |> Array.each { println(it) } # 2 4 6
 struct List {
   ...Enumerable # include module
 
-  let vals
+  let vals = []
 
-  fn new() {
-    self.vals = []
-  }
-
-  fn init() {
+  fn init {
     List.new()
   }
 
   fn each(fun) {
-    if !self.is_empty?() {
-      [head, ...tail] = self.vals
+    if self.any?() {
+      let [head, ...tail] = self.vals
 
       fun(head)
       tail.each(fun)
@@ -75,9 +101,7 @@ struct List {
   }
 
   fn head! {
-    let [head!, ...tail] = self.vals
-
-    head!
+    self.vals.first!()
   }
 }
 

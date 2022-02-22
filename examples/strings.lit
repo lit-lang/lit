@@ -12,3 +12,4 @@ println "{who} is awesome!" # Matz is awesome!
 # single quote strings don't have interpolation
 println '{who} is awesome!' # {who} is awesome!
 
+assert_eq!(["M", "a", "t", "z"], who.chars()) or println "error"

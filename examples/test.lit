@@ -1,25 +1,132 @@
-let MyModule = {
-  let factorial_of = fn { |n|
-    if(n <= 1) return 1;
+module Factorial {
+  fn of { |n|
+    if n <= 1 then return 1
 
-    return n * factorial_of(n - 1);
+    n * Factorial.of(n - 1)
   }
-};
+}
 
-describe("MyModule", fn {
-  describe(".factorial_of", fn {
-    it("returns the factorial of a number", fn {
-      assert(factorial_of(5) == 120)
-    })
-  })
-})
+describe("MyModule") { |test, expect| # FIXME: not ideal, but self everywhere is ugly
+  test("returns the factorial of a number") {
+    let result = Factorial.of(5)
 
-# It could be this one day:
-#
-# describe "MyModule", {
-#   describe ".factorial_of", {
-#     it "returns the factorial of a number", {
-#       assert factorial_of(5) == 120
-#     }
-#   }
+    expect(result)
+      .to_eq(120)
+      .to_be_a(Integer)
+  }
+}
+
+struct TestRunner {
+  let test_suites = []
+
+  fn run {
+    let successful = self.test_suites.all? { |suite| suite.run().success?() }
+    let success_count = self.test_suites.sum { its.success_count }
+    let failure_count = self.test_suites.sum { its.failure_count }
+
+    println "Ran {success_count + failure_count}: {success_count} successful tests, {failure_count} failures"
+
+    if !successful {
+      exit(-1)
+    }
+  }
+
+  fn << { |test_suite|
+    self.test_suites << test_suite
+  }
+}
+
+let test_runner = TestRunner.new()
+
+fn describe { |suite_name, fun|
+  let suite = TestSuite.new(suite_name)
+
+  fun(suite.test, suite.expect)
+
+  test_runner << suite
+}
+
+struct TestSuite {
+  let name
+  let test_cases
+  let success_count
+  let failure_count
+
+  fn init { |name|
+    self.name = name
+    self.test_cases = {}
+    self.success_count = 0
+    self.failure_count = 0
+  }
+
+  fn test { |name, fun|
+    self.test_cases[name] = fun
+  }
+
+  fn expect { |expected|
+    Expectation.new(expected)
+  }
+
+  fn run {
+    println "Running suite #{self.name}"
+
+    let success? = self.test_cases.all? { |name, fun|
+      print "  Running test #{name}... "
+
+      let result = fun()
+      if result.failed? {
+        println "Failed: #{result.reason}"
+      } else {
+        println "Ok"
+      }
+
+      !result.failed?
+    }
+
+    if success? {
+      self.success_count += 1
+    } else {
+      self.failure_count += 1
+    }
+
+    self
+  }
+
+  fn success? {
+    self.failure_count == 0
+  }
+}
+
+struct Expectation {
+  let expected
+  let failed?
+  let reason
+
+  new { |expected|
+    self.expected = expected
+    self.failed? = false
+    self.reason = ""
+  }
+
+  fn to_eq { |actual|
+    if self.failed? then return
+
+    if actual != self.expected {
+      self.failed? = true
+      self.reason = "Expected {self.expected} to equal {actual}"
+    }
+
+    self
+  }
+
+  fn to_be_a { |actual|
+    if self.failed? then return
+
+    if actual != self.expected.type {
+      self.failed? = true
+      self.reason = "Expected {self.expected} to equal {actual}"
+    }
+
+    self
+  }
 }

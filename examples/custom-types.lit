@@ -2,7 +2,10 @@ struct Point {
   let x
   let y
 
-  fn new { |x, y|
+  # FIXME: why all the other methods are instance, while this one is on the type itself?
+  # Maybe well need special syntax for this?
+  # or we could do like Ruby and use `fn self.new()`
+  new { |x, y|
     self.x = x
     self.y = y
   }

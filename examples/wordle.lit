@@ -1,7 +1,7 @@
 # Simplified Wordle
 
 if let words = File.read!("wordle-answers.txt") {
-  let words = words.split
+  words = words.split
   let word = words.sample
   let guess = ""
 
@@ -26,6 +26,8 @@ if let words = File.read!("wordle-answers.txt") {
 
     println
   }
+
+  println "🎉🎉🎉"
 } else {
   println "Could not read file"
 }
