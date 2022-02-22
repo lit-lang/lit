@@ -19,7 +19,7 @@
 
 <hr>
 
-> ATTENTION: This project is a work in progress! It's an experiment, and by no means a
+> ATTENTION: This project is a work in progress! It's an experiment and by no means a
 > production-ready language.
 
 ```ruby
@@ -67,7 +67,7 @@ what happens if the string is not a valid number? What should `"wut".to_i!()` do
 `to_i!` returns an error. The exclamation mark at the end of `to_i!` is a _type annotation_ that
 means it's a _"dangerous"_ method.
 
-If a method is marked as dangerous we have to handle it. Here are some alternatives:
+If a method is marked as dangerous, we have to handle it. Here are some alternatives:
 
 1. Provide a default value:
 
@@ -143,8 +143,8 @@ TODO: Write development instructions here
 
 ## Inspiration
 
-[Ruby], of course, is my main source of inspiration of how a scripting language should feel. Due to
-my limited knowledge with creating a programming language, I went with [JavaScript]-like syntax.
+[Ruby], of course, is my primary source of inspiration for how a scripting language should feel. Due
+to my limited knowledge of creating a programming language, I went with [JavaScript]-like syntax.
 There's also [Rust] and [V] sprinkled in the mix.
 
 [Ruby]: https://www.ruby-lang.org/en/
@@ -155,10 +155,10 @@ There's also [Rust] and [V] sprinkled in the mix.
 ## Acknowledgements
 
 First and foremost, I'd like to thank Bob Nystrom for his incredible book [Crafting Interpreters],
-which made possible for me to even start writing this language. If you can, please consider buying
+which made it possible for me to start writing this language. If you can, please consider buying
 it.
 
-I also would like to thank all the [languages][#inspiration] that inspired me, and you for reading
+I also would like to thank all the [languages](#inspiration) that inspired me, and you for reading
 my this!
 
 [Crafting Interpreters]: https://craftinginterpreters.com/
