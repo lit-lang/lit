@@ -31,7 +31,7 @@ module Factorial {
   }
 }
 
-if let n = readln.to_i!() {
+if let n = readln.to_n!() {
   println "Factorial of {n} is {Factorial.of(n)}"
 } else {
   println "{n} is not a valid number"
@@ -55,16 +55,16 @@ Lit indeed has some static typing, but it is _subtle_. Let's get back to the fac
 particular this part:
 
 ```ruby
-if let n = readln.to_i!() {
+if let n = readln.to_n!() {
   println "Factorial of {n} is {Factorial.of(n)}"
 } else {
   println "{n} is not a valid number"
 }
 ```
 
-What happens is that `readln` returns a string, and `to_i!` tries to convert it to an integer. But
-what happens if the string is not a valid number? What should `"wut".to_i!()` do? I'm not sure, so
-`to_i!` returns an error. The exclamation mark at the end of `to_i!` is a _type annotation_ that
+What happens is that `readln` returns a string, and `to_n!` tries to convert it to an integer. But
+what happens if the string is not a valid number? What should `"wut".to_n!()` do? I'm not sure, so
+`to_n!` returns an error. The exclamation mark at the end of `to_n!` is a _type annotation_ that
 means it's a _"dangerous"_ method.
 
 If a method is marked as dangerous, we have to handle it. Here are some alternatives:
@@ -72,13 +72,13 @@ If a method is marked as dangerous, we have to handle it. Here are some alternat
 1. Provide a default value:
 
 ```rust
-let n = readln.to_i!() or 0
+let n = readln.to_n!() or 0
 ```
 
 2. Panic/Exit the program:
 
 ```rust
-let n = readln.to_i!() or { panic "not a valid number" }
+let n = readln.to_n!() or { panic "not a valid number" }
 ```
 
 3. Propagate the error:
@@ -86,7 +86,7 @@ let n = readln.to_i!() or { panic "not a valid number" }
 ```rust
 fn read_number! {
   let n = readln
-  n = n.to_i!() or { return err("{n} is not a number") } # caller decides how to handle the error
+  n = n.to_n!() or { return err("{n} is not a number") } # caller decides how to handle the error
 
   n
 }
@@ -95,13 +95,13 @@ fn read_number! {
 4. You can also use `if let` and `while let` to handle errors:
 
 ```rust
-if let n = readln.to_i!() {
+if let n = readln.to_n!() {
   println "{n} is a number"
 } else {
   println "{n} is not a valid number"
 }
 
-while let n = readln.to_i!() {
+while let n = readln.to_n!() {
   println "Yay! {n} is a number"
 } else {
   println "{n} is not a valid number"
