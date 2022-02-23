@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".gitbook/assets/icon-circle.png">
+  <img src="assets/icon.png" height="130px">
 
   <h3 align="center">Lit</h3>
   <p align="center"><em>A simple scripting language</em></p>
