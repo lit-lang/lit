@@ -5,4 +5,4 @@ let double = fn { it * 2 }
 let users = [{name: "John", age: 30}, {name: "Jane", age: 28}]
 
 users.each { println("{it.name} is {it.age}") }
-users.each { println("{its.name} is {its.age}") } # does same thing, but reads better
+users.each { println("{its.name} is {its.age} years old") } # does same thing, but reads better
