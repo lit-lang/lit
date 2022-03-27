@@ -17,6 +17,6 @@
     n if n % 15 == 0 then println "FizzBuzz"
     n if n % 3 == 0 then println "Fizz"
     n if n % 5 == 0 then println "Buzz"
-    _ then println n
+    n then println n
   }
 }
