@@ -34,7 +34,7 @@ module Factorial {
 if let n = readln.to_n!() {
   println "Factorial of {n} is {Factorial.of(n)}"
 } else {
-  println "{n} is not a valid number"
+  println "Not a valid number"
 }
 ```
 
@@ -58,7 +58,7 @@ particular this part:
 if let n = readln.to_n!() {
   println "Factorial of {n} is {Factorial.of(n)}"
 } else {
-  println "{n} is not a valid number"
+  println "Not a valid number"
 }
 ```
 
@@ -86,7 +86,7 @@ let n = readln.to_n!() or { panic "not a valid number" }
 ```rust
 fn read_number! {
   let n = readln
-  n = n.to_n!() or { return err("{n} is not a number") } # caller decides how to handle the error
+  n = n.to_n!() or { return err("Not a number") } # caller decides how to handle the error
 
   n
 }
@@ -98,13 +98,13 @@ fn read_number! {
 if let n = readln.to_n!() {
   println "{n} is a number"
 } else {
-  println "{n} is not a valid number"
+  println "Not a valid number"
 }
 
 while let n = readln.to_n!() {
   println "Yay! {n} is a number"
 } else {
-  println "{n} is not a valid number"
+  println "Not a valid number"
 }
 ```
 
