@@ -1,8 +1,8 @@
-require "../spec_helper"
+require "./spec_helper"
 
 describe "Examples" do
   describe "interpreting" do
-    example_files = Dir.glob("examples/tested/**/*.lit").sort
+    example_files = Dir.glob("spec/e2e/**/*.lit").sort
 
     example_files.each do |file|
       it "interprets #{file} correctly" do
