@@ -181,14 +181,14 @@ module Lit
       string = ""
 
       loop do
-        return Lit.error(@line, "Unterminated string") if at_end?
+        return Lit.error(@line, "Unterminated string.") if at_end?
 
         c = advance
 
         return add_token(TokenType::STRING, string) if c == quote
 
         if c == '\\' # TODO: Maybe single quote strings shouldn't allow escapes and interpolation
-          return Lit.error(@line, "Unterminated string escape") if at_end?
+          return Lit.error(@line, "Unterminated string escape.") if at_end?
 
           e = advance
 

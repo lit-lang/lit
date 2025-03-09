@@ -1,0 +1,8 @@
+# False and nil are false.
+println false or "ok"; # expect: ok
+println nil or "ok"; # expect: ok
+
+# Everything else is true.
+println true or "ok"; # expect: true
+println 0 or "ok"; # expect: 0
+println "s" or "ok"; # expect: s

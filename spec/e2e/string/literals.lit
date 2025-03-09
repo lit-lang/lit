@@ -1,0 +1,5 @@
+println "(" + "" + ")";   # expect: ()
+println "a string"; # expect: a string
+
+# Non-ASCII.
+println "A~¶Þॐஃ"; # expect: A~¶Þॐஃ

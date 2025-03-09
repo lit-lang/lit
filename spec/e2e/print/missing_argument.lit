@@ -1,0 +1,2 @@
+println; # error: [line 1] Error at ";": I was expecting an expression here.
+print; # error: [line 2] Error at ";": I was expecting an expression here.

@@ -1,0 +1,19 @@
+# Note: These tests implicitly depend on ints being truthy.
+
+# Return the first non-true argument.
+println false and 1; # expect: false
+println true and 1; # expect: 1
+println 1 and 2 and false; # expect: false
+
+# Return the last argument if all are true.
+println 1 and true; # expect: true
+println 1 and 2 and 3; # expect: 3
+
+# Short-circuit at the first false argument.
+let a = "before";
+let b = "before";
+(a = true) and
+    (b = false) and
+    (a = "bad");
+println a; # expect: true
+println b; # expect: false
