@@ -4,7 +4,7 @@ require "./support/create"
 require "./support/feature"
 require "../src/lit"
 
-def output_of
+def output_of(&)
   Stdio.capture do |io|
     yield
 
@@ -12,7 +12,7 @@ def output_of
   end
 end
 
-def silence_output
+def silence_output(&)
   Stdio.capture do
     yield
   end

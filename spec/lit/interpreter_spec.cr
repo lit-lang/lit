@@ -16,11 +16,19 @@ describe Lit::Interpreter do
     end
   end
 
+  describe "#visit_println_stmt" do
+    it "interprets literals" do
+      stmt = Create.stmt(:println, :literal, true)
+
+      output_of { interpreter.execute(stmt) }.should eq "true\n"
+    end
+  end
+
   describe "#visit_print_stmt" do
     it "interprets literals" do
       stmt = Create.stmt(:print, :literal, true)
 
-      output_of { interpreter.execute(stmt) }.should eq "true\n"
+      output_of { interpreter.execute(stmt) }.should eq "true"
     end
   end
 

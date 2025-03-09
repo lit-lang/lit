@@ -43,21 +43,21 @@ describe Lit::Parser do
     end
   end
 
-  describe "print statements" do
-    it "parses print statements" do
-      tokens = Create.tokens(:print, :number_1, :semicolon, :eof)
-      stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Print)
+  describe "println statements" do
+    it "parses println statements" do
+      tokens = Create.tokens(:println, :number_1, :semicolon, :eof)
+      stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Println)
 
       stmt.expression.as(Lit::Expr::Literal).value.should eq 1
     end
 
     context "when semicolon is missing" do
       it "errors" do
-        tokens = Create.tokens(:print, :number_1, :eof)
+        tokens = Create.tokens(:println, :number_1, :eof)
 
         output_of {
           Lit::Parser.parse(tokens)
-        }.should contain("I was expecting a semicolon after the print statement")
+        }.should contain("I was expecting a semicolon after the println statement")
       end
     end
   end

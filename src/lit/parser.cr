@@ -46,9 +46,17 @@ module Lit
     end
 
     private def statement
-      return print_statement if match?(TokenType::PRINTLN)
+      return println_statement if match?(TokenType::PRINTLN)
+      return print_statement if match?(TokenType::PRINT)
 
       expression_statement
+    end
+
+    private def println_statement
+      expr = expression
+      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the println statement.")
+
+      Stmt::Println.new(expr)
     end
 
     private def print_statement

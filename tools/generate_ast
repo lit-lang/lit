@@ -21,6 +21,7 @@ module AstGenerator
     #   "Block      = statements : Array(Stmt)",
       "Expression = expression : Expr",
     #   "If         = condition : Expr, then_branch : Stmt, else_branch : Stmt?",
+      "Println    = expression : Expr",
       "Print      = expression : Expr",
       "Let        = name : Token, initializer : Expr",
     #   "While      = condition : Expr, body : Stmt",

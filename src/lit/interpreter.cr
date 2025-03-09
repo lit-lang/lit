@@ -24,8 +24,12 @@ module Lit
       Lit.runtime_error(e)
     end
 
-    def visit_print_stmt(stmt) : Nil
+    def visit_println_stmt(stmt) : Nil
       puts stringify(evaluate(stmt.expression))
+    end
+
+    def visit_print_stmt(stmt) : Nil
+      print stringify(evaluate(stmt.expression))
     end
 
     def visit_let_stmt(stmt) : Nil
