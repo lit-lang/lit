@@ -139,7 +139,30 @@ You can find the documentation [here](https://matheusrich.gitbook.io/lit/).
 
 ## Development
 
-TODO: Write development instructions here
+To build the project, you need to have Crystal installed. If you use [asdf](https://asdf-vm.com/), you
+can install it with:
+
+```sh
+asdf install
+```
+
+Then, you can build the project with:
+
+```sh
+tools/build-dev
+```
+
+This will be a development build, and you can run the executable with:
+
+```sh
+bin/lit
+```
+
+For the release build, you can use:
+
+```sh
+tools/build
+```
 
 ## Inspiration
 
@@ -158,8 +181,7 @@ First and foremost, I'd like to thank Bob Nystrom for his incredible book [Craft
 which made it possible for me to start writing this language. If you can, please consider buying
 it.
 
-I also would like to thank all the [languages](#inspiration) that inspired me, and you for reading
-my this!
+I also would like to thank all the [languages](#inspiration) that inspired me, and you for reading this!
 
 [Crafting Interpreters]: https://craftinginterpreters.com/
 
