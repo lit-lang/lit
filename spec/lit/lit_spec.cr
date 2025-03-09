@@ -8,7 +8,10 @@ describe Lit::Lit do
   describe ".run_file" do
     context "when file is not found" do
       it "outputs the error" do
-        output_of { Process.fork { Lit::Lit.run_file("./unknown-path/what.tf") } }.should contain "File not found!"
+        output_of {
+          status = Process.fork { Lit::Lit.run_file("./unknown-path/what.tf") }.wait
+          status.exit_code.should eq ExitCode::NOINPUT
+        }.should contain "File not found!"
       end
     end
   end

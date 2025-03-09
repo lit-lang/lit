@@ -1,4 +1,5 @@
 require "readline"
+require "./exit_code"
 require "./macros"
 require "./token"
 require "./scanner"
@@ -32,13 +33,14 @@ module Lit
       run(File.read(path))
     rescue File::NotFoundError
       puts Text.error("Error: File not found!")
+      exit(ExitCode::NOINPUT)
     ensure
-      exit(65) if had_error?
-      exit(70) if had_runtime_error?
+      exit(ExitCode::DATAERR) if had_error?
+      exit(ExitCode::SOFTWARE) if had_runtime_error?
     end
 
     def self.runtime_error(error)
-      puts Text.error("[line #{error.token.line}] #{error.message}\n")
+      puts Text.error("[line #{error.token.line}] #{error.message}")
 
       self.had_runtime_error = true
     end

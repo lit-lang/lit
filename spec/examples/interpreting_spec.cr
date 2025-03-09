@@ -6,10 +6,12 @@ describe "Examples" do
 
     example_files.each do |file|
       it "interprets #{file} correctly" do
+        will_error = false
         expected = File.read_lines(file)
           .compact_map do |line|
             if line.includes?("# error: ")
-              "\e[1;31m" + line.split("# error: ").last + "\e[0m"
+              will_error = true
+              "\e[1m\e[31m" + line.split("# error: ").last + "\e[0m\e[22m"
             elsif line.includes?("# expect: ")
               line.split("# expect: ").last
             end
@@ -17,7 +19,11 @@ describe "Examples" do
           .join("\n") + "\n"
         raise "Missing expectation" if expected.empty?
 
-        output_of { Process.fork { Lit.run([file]) } }
+        status = nil
+        output_of {
+          status = Process.fork { Lit.run([file]) }.wait
+        }.should eq expected
+        will_error ? status.not_nil!.success?.should be_false : status.not_nil!.success?.should be_true
       end
     end
   end
