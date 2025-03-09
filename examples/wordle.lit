@@ -6,7 +6,7 @@ if let words = File.read!("wordle-answers.txt") {
   let guess = ""
 
   while guess != word {
-    print "Guess: "
+    println "Guess: "
     guess = readln
 
     if guess.size != 5 {
@@ -16,11 +16,11 @@ if let words = File.read!("wordle-answers.txt") {
 
     5.times { |i|
       if word[i] == guess[i] {
-        print "🟩"
+        println "🟩"
       } elsif word.include?(guess[i]) {
-        print "🟨"
+        println "🟨"
       } else {
-        print "🟥"
+        println "🟥"
       }
     }
 

@@ -1,0 +1,36 @@
+struct User {
+  new { |name, age!|
+    self.name = name
+    self.age! = age!
+  }
+
+  fn from_json(json) {
+    let name = json.get!("name") or { panic("Missing name") }
+    let age! = json.get!("age") or nil # nil == error("")
+
+    User.new(name, age!)
+  }
+}
+
+let users_json = '[{"name":"John","age":30},{"name":"Mary","age": null}]';
+let users = JSON.parse!(users_json) or { panic("Failed to parse JSON") }
+
+users.each { |user|
+  if user["age"] {
+    println "{user["name"]} is {user["age"]} years old"
+  } else {
+    println "{user["name"]} age is unknown"
+  }
+}
+
+# or
+
+let users = JSON.parse!(users_json, into: User) or { panic("Failed to parse JSON") }
+
+users.each { |user|
+  if user.age! {
+    println "{username} is {user.age!} years old"
+  } else {
+    println "{username} age is unknown"
+  }
+}

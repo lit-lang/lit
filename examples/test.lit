@@ -71,7 +71,7 @@ struct TestSuite {
     println "Running suite #{self.name}"
 
     let success? = self.test_cases.all? { |name, fun|
-      print "  Running test #{name}... "
+      println "  Running test #{name}... "
 
       let result = fun()
       if result.failed? {
