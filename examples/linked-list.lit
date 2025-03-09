@@ -24,4 +24,4 @@ let list = LinkedList.new(3)
 LinkedList.push(2, list)
 LinkedList.push(1, list)
 
-puts(LinkedList.length(list))
+println(LinkedList.length(list))

@@ -7,4 +7,4 @@ let fib = fn { |n|
 let n = read;
 
 print("The #{n} fibonacci is {fib(n)}")
-puts('The #{n} fibonacci is {fib(n)}')
+println('The #{n} fibonacci is {fib(n)}')

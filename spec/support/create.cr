@@ -26,6 +26,7 @@ module Create
     equal:         "=",
     pipe_operator: "|>",
     print:         "print",
+    println:       "println",
     let:           "let",
     colon:         ":",
     semicolon:     ";",

@@ -1,4 +1,4 @@
-let say_hello = fn { |n| puts("hello {n}") }
+let say_hello = fn { |n| println("hello {n}") }
 let sum = fn { |a, b| a + b }
 let a = 1
 let b = 2
@@ -18,7 +18,7 @@ github_user_names = {
 print(github_user_names.dhh)
 # => 'David Heinemeier Hansson'
 
-puts(github_user_names['matz'])
+println(github_user_names['matz'])
 # => 'Yukihiro Matsumoto\n'
 
 # for small hashes
@@ -47,7 +47,7 @@ List = {
   }
   tail = list -> {
     if List.empty?(list) then return List.Empty
-    
+
     _, tail = list
 
     return tail
@@ -75,18 +75,18 @@ AdminUser = {
 }
 
 Email = {
-  send: fn { |{from, to}| puts("sending email from {from} to {to}") }
+  send: fn { |{from, to}| println("sending email from {from} to {to}") }
 }
 
 User = (_name, _email) -> {
   return {
     ...AdminUser # Composition
-  
+
     name: _name, # constructor
     email: _email, # constructor
-  
+
     # Methods
-    say_hello: fn { puts("Hello, I'm {_name}" ) }
+    say_hello: fn { println("Hello, I'm {_name}" ) }
     send_email: fn { |content, {to}| Email.send(from: email, to: to, content: content) }
   }
 }
@@ -96,8 +96,8 @@ me.say_hello()
 me.send_email('Hi!', to: 'matz@ruby.com')
 
 match me.admin? {
-  true => puts('What?'),
-  false => puts('Hi, mere mortal')
+  true => println('What?'),
+  false => println('Hi, mere mortal')
 }
 
 Kernel = {
@@ -105,14 +105,14 @@ Kernel = {
     if n <= 0 then return 0
 
     f()
-  
+
     times(n - 1  f)
   }
 }
 
 let mean = fn { |arr| List.sum(arr) / List.length(arr) }
 let notes = List.map([0, 0, 0]) { gets() }
-notes |> mean |> puts
+notes |> mean |> println
 
 successors = map([1, 2, 3], fn { |i| i + 1 })
 successors = map([1, 2, 3], it + 1 )

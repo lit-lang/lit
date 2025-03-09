@@ -46,7 +46,7 @@ module Lit
     end
 
     private def statement
-      return print_statement if match?(TokenType::PRINT)
+      return print_statement if match?(TokenType::PRINTLN)
 
       expression_statement
     end
