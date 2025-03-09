@@ -10,8 +10,7 @@ module Lit
     include Expr::Visitor
     include Stmt::Visitor
 
-    # TODO: Exclude this after e2e tests
-    getter environment
+    private getter environment
     @environment = Environment.new
 
     def self.interpret(stmts : Array(Stmt))

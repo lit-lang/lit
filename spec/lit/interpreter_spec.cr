@@ -3,19 +3,6 @@ require "../spec_helper"
 describe Lit::Interpreter do
   interpreter = Lit::Interpreter.new
 
-  describe "#visit_var_stmt" do
-    # TODO: Exclude this after e2e tests
-    it "defines a new variable" do
-      name = Create.token(:identifier, "some_var")
-      value = Create.expr(:literal, value: 2.0)
-      stmt = Lit::Stmt::Let.new(name, value)
-
-      interpreter.execute(stmt)
-
-      interpreter.environment.values["some_var"].should eq 2.0
-    end
-  end
-
   describe "#visit_println_stmt" do
     it "interprets literals" do
       stmt = Create.stmt(:println, :literal, true)
@@ -295,36 +282,6 @@ describe Lit::Interpreter do
         expr = Create.expr(:logical, operator: or_token, left: false_literal, right: number)
 
         interpreter.evaluate(expr).should eq 1.0
-      end
-    end
-  end
-
-  describe "#visit_variable_expr" do
-    it "gets an variable from the environment" do
-      interpreter.environment.values["my_var"] = "some value"
-      expr = Create.expr(:variable)
-
-      interpreter.evaluate(expr).should eq "some value"
-    end
-  end
-
-  # TODO: Exclude this after e2e tests
-  describe "#visit_assign_expr" do
-    it "changes the value of a variable" do
-      interpreter.environment.values["my_var"] = "some value"
-      expr = Create.expr(:assign)
-      interpreter.evaluate(expr).should eq 1.0
-      interpreter.environment.values["my_var"].should eq 1.0
-    end
-
-    context "when variable does not exist in context" do
-      it "errors" do
-        interpreter.environment.values.delete("my_var")
-        expr = Create.expr(:assign)
-
-        expect_raises(Lit::RuntimeError, /Undefined variable 'my_var'/) do
-          interpreter.evaluate(expr)
-        end
       end
     end
   end

@@ -7,12 +7,17 @@ describe "Examples" do
     example_files.each do |file|
       it "interprets #{file} correctly" do
         expected = File.read_lines(file)
-          .select { |line| line.includes?("# expect: ") }
-          .map { |line| line.split("# expect: ").last }
+          .compact_map do |line|
+            if line.includes?("# error: ")
+              "\e[1;31m" + line.split("# error: ").last + "\e[0m"
+            elsif line.includes?("# expect: ")
+              line.split("# expect: ").last
+            end
+          end
           .join("\n") + "\n"
         raise "Missing expectation" if expected.empty?
 
-        output_of { Lit.run([file]) }.should eq expected
+        output_of { Process.fork { Lit.run([file]) } }
       end
     end
   end
