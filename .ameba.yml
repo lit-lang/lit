@@ -5,3 +5,9 @@ Metrics/CyclomaticComplexity:
   Severity: Convention
   Excluded:
     - src/lit/scanner.cr
+Documentation/DocumentationAdmonition:
+  Enabled: false
+Naming/BlockParameterName:
+  Enabled: false
+Lint/NotNil:
+  Enabled: false

@@ -10,14 +10,15 @@ require "./debug"
 
 module Lit
   class Lit
-    class_property had_error : Bool = false, had_runtime_error : Bool = false, interpreter = Interpreter.new
+    class_property? had_error = false, had_runtime_error = false
+    class_property interpreter = Interpreter.new
 
     def self.run(src : String) : String?
       tokens = Scanner.scan(src)
       expressions = Parser.parse(tokens)
 
-      return if had_error
-      return if had_runtime_error
+      return if had_error?
+      return if had_runtime_error?
 
       # puts Text.hint Debug.s_expr(expressions)
       interpreter.interpret(expressions)
@@ -32,8 +33,8 @@ module Lit
     rescue File::NotFoundError
       puts Text.error("Error: File not found!")
     ensure
-      exit(65) if had_error
-      exit(70) if had_runtime_error
+      exit(65) if had_error?
+      exit(70) if had_runtime_error?
     end
 
     def self.runtime_error(error)
