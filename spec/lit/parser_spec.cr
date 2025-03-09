@@ -241,7 +241,7 @@ describe Lit::Parser do
     it "outputs a message" do
       error_msg = output_of { Lit::Parser.parse(Create.tokens(:comma, :eof)) }
 
-      error_msg.should contain("[Line 1] Error at \",\": I was expecting an expression here.")
+      error_msg.should contain("[line 1] Error at \",\": I was expecting an expression here.")
     end
   end
 end

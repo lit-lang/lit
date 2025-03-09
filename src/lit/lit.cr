@@ -58,7 +58,7 @@ module Lit
     end
 
     private def self.report(line : Int, where : String, message : String)
-      puts Text.error("[Line #{line}] Error#{where}: #{message}")
+      puts Text.error("[line #{line}] Error#{where}: #{message}")
 
       self.had_error = true
     end
