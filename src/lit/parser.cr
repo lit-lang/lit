@@ -262,8 +262,10 @@ module Lit
     end
 
     private def synchronize
-      # TODO: Make this right
-      advance
+      until check(TokenType::SEMICOLON) || at_end?
+        advance
+      end
+      advance unless at_end?
     end
   end
 end
