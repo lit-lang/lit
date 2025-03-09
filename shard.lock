@@ -2,11 +2,11 @@ version: 2.0
 shards:
   ameba:
     git: https://github.com/crystal-ameba/ameba.git
-    version: 0.14.2
+    version: 1.6.4
 
   readline:
     git: https://github.com/crystal-lang/crystal-readline.git
-    version: 0.1.0
+    version: 0.1.1
 
   stdio:
     git: https://github.com/mosop/stdio.git
