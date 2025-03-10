@@ -2,20 +2,31 @@ name: Crystal CI
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: crystallang/crystal
     steps:
-      - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: apt update && apt install -y libreadline-dev && shards install
+      - uses: actions/checkout@v4
+      - uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: 1.15.1
+      - name: Cache shards
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/shards
+          key: ${{ runner.os }}-shards-${{ hashFiles('shard.yml') }}
+          restore-keys: ${{ runner.os }}-shards-
+      - name: Install system dependencies
+        run: sudo apt update && sudo apt install -y libreadline-dev
+      - name: Install shards
+        run: shards update
       - name: Run tests
-        run: crystal spec
+        run: crystal spec  --order=random
       - name: Run Linter
         run: bin/ameba
+      - name: Run Formatter
+        run: crystal tool format --check
