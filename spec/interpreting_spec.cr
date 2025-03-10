@@ -15,8 +15,9 @@ describe "Examples" do
             elsif line.includes?("# expect: ")
               line.split("# expect: ").last
             end
-          }.join("\n") + "\n"
-        raise "Missing expectation" if expected.empty?
+          }.join("\n")
+
+        expected += "\n" if !expected.empty?
 
         status, full_output = run_script(<<-CRYSTAL)
           Lit.run(["#{file}"])
