@@ -131,7 +131,7 @@ Lit is my first attempt at language design. My goals are:
 
 ## Installation
 
-TODO: Write installation instructions here
+You have to build the project from source 🙃.
 
 ## Docs
 
