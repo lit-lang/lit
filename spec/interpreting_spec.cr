@@ -4,6 +4,10 @@ describe "Examples" do
   describe "interpreting" do
     example_files = Dir.glob("spec/e2e/**/*.lit").sort
 
+    if ENV["ONLY"]?
+      example_files.select!(&.includes?(ENV["ONLY"]))
+    end
+
     example_files.each do |file|
       it "interprets #{file} correctly" do
         will_error = false
