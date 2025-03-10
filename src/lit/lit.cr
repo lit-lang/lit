@@ -32,7 +32,7 @@ module Lit
     def self.run_file(path : String)
       run(File.read(path))
     rescue File::NotFoundError
-      puts Text.error("Error: File not found!")
+      STDERR.puts Text.error("Error: File not found!")
       exit(ExitCode::NOINPUT)
     ensure
       exit(ExitCode::DATAERR) if had_error?
@@ -40,7 +40,7 @@ module Lit
     end
 
     def self.runtime_error(error)
-      puts Text.error("[line #{error.token.line}] #{error.message}")
+      STDERR.puts Text.error("[line #{error.token.line}] #{error.message}")
 
       self.had_runtime_error = true
     end
@@ -58,7 +58,7 @@ module Lit
     end
 
     private def self.report(line : Int, where : String, message : String)
-      puts Text.error("[line #{line}] Error#{where}: #{message}")
+      STDERR.puts Text.error("[line #{line}] Error#{where}: #{message}")
 
       self.had_error = true
     end

@@ -4,3 +4,5 @@
 *.dwarf
 coverage/
 run_tests*
+tmp/*
+!tmp/.keep

@@ -8,10 +8,11 @@ describe Lit::Lit do
   describe ".run_file" do
     context "when file is not found" do
       it "outputs the error" do
-        output_of {
-          status = Process.fork { Lit::Lit.run_file("./unknown-path/what.tf") }.wait
-          status.exit_code.should eq ExitCode::NOINPUT
-        }.should contain "File not found!"
+        status, output = run_script(<<-CRYSTAL)
+          Lit::Lit.run_file("./unknown-path/what.tf")
+        CRYSTAL
+        output.to_s.should contain "File not found!"
+        status.exit_code.should eq ExitCode::NOINPUT
       end
     end
   end

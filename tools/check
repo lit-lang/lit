@@ -4,7 +4,7 @@ echo "[CHECK] Formating files..."
 crystal tool format
 
 echo "[CHECK] Running linter..."
-bin/ameba
+bin/ameba --fix
 
 echo "[CHECK] Running tests..."
-crystal spec
+crystal spec --order=random
