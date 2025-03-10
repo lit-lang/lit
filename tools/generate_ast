@@ -18,7 +18,7 @@ module AstGenerator
     ])
 
     define_ast(output_dir, "Stmt", [
-    #   "Block      = statements : Array(Stmt)",
+      "Block      = statements : Array(Stmt)",
       "Expression = expression : Expr",
     #   "If         = condition : Expr, then_branch : Stmt, else_branch : Stmt?",
       "Println    = expression : Expr",

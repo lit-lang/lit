@@ -31,6 +31,10 @@ module Lit
       print stringify(evaluate(stmt.expression))
     end
 
+    def visit_block_stmt(stmt) : Nil
+      execute_block(stmt.statements, Environment.new(@environment))
+    end
+
     def visit_let_stmt(stmt) : Nil
       @environment.define(stmt.name.lexeme, evaluate(stmt.initializer))
     end
@@ -141,6 +145,17 @@ module Lit
 
     def evaluate(expr : Expr) : Value
       expr.accept(self)
+    end
+
+    private def execute_block(stmts : Array(Stmt), environment : Environment) : Nil
+      previous = @environment
+
+      begin
+        @environment = environment
+        stmts.each { |stmt| execute(stmt) }
+      ensure
+        @environment = previous
+      end
     end
 
     private def check_number_operand(operator, operand : Value)

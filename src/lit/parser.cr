@@ -48,6 +48,7 @@ module Lit
     private def statement
       return println_statement if match?(TokenType::PRINTLN)
       return print_statement if match?(TokenType::PRINT)
+      return Stmt::Block.new(block_statement) if match?(TokenType::LEFT_BRACE)
 
       expression_statement
     end
@@ -64,6 +65,18 @@ module Lit
       consume(TokenType::SEMICOLON, "I was expecting a semicolon after the print statement.")
 
       Stmt::Print.new(expr)
+    end
+
+    private def block_statement
+      statements = [] of Stmt
+
+      until check(TokenType::RIGHT_BRACE) || at_end?
+        statements.push(declaration)
+      end
+
+      consume(TokenType::RIGHT_BRACE, "I was expecting a '}' after the block.")
+
+      statements
     end
 
     private def expression_statement

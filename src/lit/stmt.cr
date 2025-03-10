@@ -5,10 +5,21 @@ require "./token"
 module Lit
   abstract class Stmt
     module Visitor
+      abstract def visit_block_stmt(stmt : Block)
       abstract def visit_expression_stmt(stmt : Expression)
       abstract def visit_println_stmt(stmt : Println)
       abstract def visit_print_stmt(stmt : Print)
       abstract def visit_let_stmt(stmt : Let)
+    end
+
+    class Block < Stmt
+      getter statements : Array(Stmt)
+
+      def initialize(@statements); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_block_stmt(self)
+      end
     end
 
     class Expression < Stmt
