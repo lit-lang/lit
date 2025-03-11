@@ -1,0 +1,20 @@
+# Single-expression body.
+let c = 0;
+until c > 2 { println c = c + 1; }
+# expect: 1
+# expect: 2
+# expect: 3
+
+# Parenthesized condition.
+let a = 0;
+until (a >= 3) {
+  println a;
+  a = a + 1;
+}
+# expect: 0
+# expect: 1
+# expect: 2
+
+# Statement bodies.
+until true { if true { 1; } else { 2; } }
+until true { while true { 1; } }

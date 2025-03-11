@@ -3,4 +3,4 @@ if (true) println "bad"; # error: [line 2] Error at "println": I was expecting a
 
 # requires bracket to close the if block
 if true {
-  println "bad"; # error: [line 7] Error at end: I was expecting a '}' to close the if block.
+  println "bad"; # error: [line 7] Error at end: I was expecting a '}' to close the block.

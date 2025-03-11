@@ -24,7 +24,7 @@ module AstGenerator
       "Println    = expression : Expr",
       "Print      = expression : Expr",
       "Let        = name : Token, initializer : Expr",
-    #   "While      = condition : Expr, body : Stmt",
+      "While      = condition : Expr, body : Stmt",
     ])
   end
 

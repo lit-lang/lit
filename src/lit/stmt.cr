@@ -11,6 +11,7 @@ module Lit
       abstract def visit_println_stmt(stmt : Println)
       abstract def visit_print_stmt(stmt : Print)
       abstract def visit_let_stmt(stmt : Let)
+      abstract def visit_while_stmt(stmt : While)
     end
 
     class Block < Stmt
@@ -73,6 +74,17 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_let_stmt(self)
+      end
+    end
+
+    class While < Stmt
+      getter condition : Expr
+      getter body : Stmt
+
+      def initialize(@condition, @body); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_while_stmt(self)
       end
     end
 

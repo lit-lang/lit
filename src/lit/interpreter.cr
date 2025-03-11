@@ -31,6 +31,12 @@ module Lit
       end
     end
 
+    def visit_while_stmt(stmt) : Nil
+      while truthy?(evaluate(stmt.condition))
+        execute(stmt.body)
+      end
+    end
+
     def visit_println_stmt(stmt) : Nil
       puts stringify(evaluate(stmt.expression))
     end

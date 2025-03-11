@@ -3,4 +3,4 @@ if false { println "bad"; } else println "bad"; # error: [line 2] Error at "prin
 
 # requires bracket to close the else block
 if false { println "bad"; } else {
-  println "bad"; # error: [line 7] Error at end: I was expecting a '}' to close the else block.
+  println "bad"; # error: [line 7] Error at end: I was expecting a '}' to close the block.

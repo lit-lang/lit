@@ -48,6 +48,8 @@ module Lit
 
     private def statement
       return if_statement if match?(TokenType::IF)
+      return while_statement if match?(TokenType::WHILE)
+      return until_statement if match?(TokenType::UNTIL)
       return println_statement if match?(TokenType::PRINTLN)
       return print_statement if match?(TokenType::PRINT)
       return Stmt::Block.new(block_statements) if match?(TokenType::LEFT_BRACE)
@@ -59,27 +61,33 @@ module Lit
       condition = expression
       consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the if condition.")
 
-      if !match?(TokenType::RIGHT_BRACE)
-        then_branch = statement
-
-        consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the if block.")
-      else
-        then_branch = Stmt::Block.new([] of Stmt) # empty block
-      end
+      then_branch = Stmt::Block.new(block_statements)
 
       if match?(TokenType::ELSE)
         consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the else keyword.")
 
-        if !match?(TokenType::RIGHT_BRACE)
-          else_branch = statement
-
-          consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the else block.")
-        else
-          else_branch = Stmt::Block.new([] of Stmt) # empty block
-        end
+        else_branch = Stmt::Block.new(block_statements)
       end
 
       Stmt::If.new(condition, then_branch, else_branch)
+    end
+
+    private def while_statement
+      condition = expression
+      consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the while condition.")
+
+      body = Stmt::Block.new(block_statements)
+
+      Stmt::While.new(condition, body)
+    end
+
+    private def until_statement
+      condition = expression
+      consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the until condition.")
+
+      body = Stmt::Block.new(block_statements)
+
+      Stmt::While.new(Expr::Unary.new(Token.new(TokenType::BANG, "!", nil, 0), condition), body)
     end
 
     private def println_statement
@@ -103,7 +111,7 @@ module Lit
         statements.push(declaration)
       end
 
-      consume(TokenType::RIGHT_BRACE, "I was expecting a '}' after the block.")
+      consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the block.")
 
       statements
     end

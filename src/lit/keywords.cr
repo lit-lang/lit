@@ -15,5 +15,6 @@ module Lit
     return:  TokenType::RETURN,
     true:    TokenType::TRUE,
     while:   TokenType::WHILE,
+    until:   TokenType::UNTIL,
   }
 end
