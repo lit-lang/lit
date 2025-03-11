@@ -1,0 +1,6 @@
+# error: [line 5] Error at "let": I was expecting an expression here.
+if true {
+  "ok";
+} else {
+  let foo;
+}

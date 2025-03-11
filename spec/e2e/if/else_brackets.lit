@@ -1,0 +1,6 @@
+# requires bracket after the else keyword
+if false { println "bad"; } else println "bad"; # error: [line 2] Error at "println": I was expecting a '{' after the else keyword.
+
+# requires bracket to close the else block
+if false { println "bad"; } else {
+  println "bad"; # error: [line 7] Error at end: I was expecting a '}' to close the else block.

@@ -23,6 +23,14 @@ module Lit
       Lit.runtime_error(e)
     end
 
+    def visit_if_stmt(stmt) : Nil
+      if truthy?(evaluate(stmt.condition))
+        execute(stmt.then_branch)
+      elsif stmt.else_branch
+        execute(stmt.else_branch.not_nil!)
+      end
+    end
+
     def visit_println_stmt(stmt) : Nil
       puts stringify(evaluate(stmt.expression))
     end

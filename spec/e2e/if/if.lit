@@ -1,0 +1,10 @@
+# Evaluate the 'then' expression if the condition is true.
+if true { println "good"; } # expect: good
+if false { println "bad"; };
+
+# Allow parentheses around the condition.
+if (true) { println "parentheses"; } # expect: parentheses
+
+# Assignment in if condition.
+let a = false;
+if a = true { println a; } # expect: true

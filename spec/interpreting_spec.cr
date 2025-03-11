@@ -1,9 +1,9 @@
 require "./spec_helper"
 
 describe "e2e tests" do
-  example_files = Dir.glob("spec/e2e/**/*.lit").sort
+  example_files = Dir.glob("spec/e2e/**/*.lit").reject(&.includes?("__")).sort!
 
-  if ENV["ONLY"]?
+  if ENV["ONLY"]? && !ENV["ONLY"].empty?
     all = example_files.size
     selections = ENV["ONLY"].split
     example_files.select! { |file| selections.any? { |s| file.includes?(s) } }
@@ -26,8 +26,8 @@ describe "e2e tests" do
       expected += "\n" if !expected.empty?
 
       status, full_output = run_script(<<-CRYSTAL)
-          Lit.run(["#{file}"])
-        CRYSTAL
+        Lit.run(["#{file}"])
+      CRYSTAL
 
       full_output.should eq expected
       will_error ? status.not_nil!.success?.should be_false : status.not_nil!.success?.should be_true

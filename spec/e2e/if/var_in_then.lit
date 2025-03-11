@@ -1,0 +1,2 @@
+# error: [line 2] Error at "let": I was expecting an expression here.
+if true { let foo; }

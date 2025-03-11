@@ -20,6 +20,7 @@ module Lit
       stmts = [] of Stmt
 
       until at_end?
+        match?(TokenType::SEMICOLON) # ignore extra semicolons
         stmts.push(declaration)
       end
 
@@ -46,11 +47,39 @@ module Lit
     end
 
     private def statement
+      return if_statement if match?(TokenType::IF)
       return println_statement if match?(TokenType::PRINTLN)
       return print_statement if match?(TokenType::PRINT)
-      return Stmt::Block.new(block_statement) if match?(TokenType::LEFT_BRACE)
+      return Stmt::Block.new(block_statements) if match?(TokenType::LEFT_BRACE)
 
       expression_statement
+    end
+
+    private def if_statement
+      condition = expression
+      consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the if condition.")
+
+      if !match?(TokenType::RIGHT_BRACE)
+        then_branch = statement
+
+        consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the if block.")
+      else
+        then_branch = Stmt::Block.new([] of Stmt) # empty block
+      end
+
+      if match?(TokenType::ELSE)
+        consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the else keyword.")
+
+        if !match?(TokenType::RIGHT_BRACE)
+          else_branch = statement
+
+          consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the else block.")
+        else
+          else_branch = Stmt::Block.new([] of Stmt) # empty block
+        end
+      end
+
+      Stmt::If.new(condition, then_branch, else_branch)
     end
 
     private def println_statement
@@ -67,7 +96,7 @@ module Lit
       Stmt::Print.new(expr)
     end
 
-    private def block_statement
+    private def block_statements
       statements = [] of Stmt
 
       until check(TokenType::RIGHT_BRACE) || at_end?
@@ -275,10 +304,18 @@ module Lit
     end
 
     private def synchronize
-      until check(TokenType::SEMICOLON) || at_end?
+      advance
+
+      until at_end?
+        # return if previous.type == TokenType::SEMICOLON
+
+        case peek.type
+        when TokenType::LET, TokenType::IF, TokenType::PRINTLN, TokenType::PRINT
+          return
+        end
+
         advance
       end
-      advance unless at_end?
     end
   end
 end
