@@ -79,5 +79,13 @@ describe Lit::Debug do
         Lit::Debug.s_expr(expr).should eq %((group 1.0)\n"a string")
       end
     end
+
+    context "with call expressions" do
+      it do
+        expr = Create.expr(:call)
+
+        Lit::Debug.s_expr(expr).should eq %((call my_var 1.0 1.0))
+      end
+    end
   end
 end

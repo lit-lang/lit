@@ -84,6 +84,8 @@ module Create
       right = right || expr(:literal, 2.0)
 
       Lit::Expr::Ternary.new(condition, left, right, self.token(:question))
+    when :call
+      Lit::Expr::Call.new(expr(:variable), self.token(:left_paren), exprs(:literal, :literal))
     else
       raise "Don't know hot to build expression with type '#{type}'"
     end

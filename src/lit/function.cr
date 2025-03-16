@@ -1,7 +1,5 @@
 require "./callable"
 
-# require "./interpreter"
-
 module Lit
   class Function < Callable
     def initialize(@declaration : Stmt::Function); end
