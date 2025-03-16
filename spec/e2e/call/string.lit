@@ -1,0 +1,1 @@
+"str"(); # error: [line 1] Can only call functions.

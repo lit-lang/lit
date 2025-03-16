@@ -7,6 +7,7 @@ module Lit
     module Visitor
       abstract def visit_block_stmt(stmt : Block)
       abstract def visit_expression_stmt(stmt : Expression)
+      abstract def visit_function_stmt(stmt : Function)
       abstract def visit_if_stmt(stmt : If)
       abstract def visit_println_stmt(stmt : Println)
       abstract def visit_print_stmt(stmt : Print)
@@ -31,6 +32,18 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_expression_stmt(self)
+      end
+    end
+
+    class Function < Stmt
+      getter name : Token
+      getter params : Array(Token)
+      getter body : Array(Stmt)
+
+      def initialize(@name, @params, @body); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_function_stmt(self)
       end
     end
 

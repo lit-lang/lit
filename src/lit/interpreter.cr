@@ -4,14 +4,22 @@ require "./stmt"
 require "./value"
 require "./runtime_error"
 require "./environment"
+require "./callable"
+require "./native"
+require "./function"
 
 module Lit
   class Interpreter
     include Expr::Visitor
     include Stmt::Visitor
 
-    private getter environment
-    @environment = Environment.new
+    getter environment
+
+    def initialize
+      @globals = Environment.new
+      @globals.define("clock", Clock.new)
+      @environment = @globals # current environment
+    end
 
     def self.interpret(stmts : Array(Stmt))
       new.interpret(stmts)
@@ -49,12 +57,33 @@ module Lit
       execute_block(stmt.statements, Environment.new(@environment))
     end
 
+    def visit_function_stmt(stmt) : Nil
+      function = Function.new(stmt)
+      @environment.define(stmt.name.lexeme, function)
+    end
+
     def visit_let_stmt(stmt) : Nil
       @environment.define(stmt.name.lexeme, evaluate(stmt.initializer))
     end
 
     def visit_expression_stmt(stmt) : Nil
       evaluate(stmt.expression)
+    end
+
+    def visit_call_expr(expr) : Value
+      callee = evaluate(expr.callee)
+      arguments = expr.arguments.map { |arg| evaluate(arg) }
+
+      if !callee.is_a? Callable
+        runtime_error(expr.paren, "Can only call functions.")
+      end
+
+      function = callee.as(Callable)
+      if arguments.size != function.arity
+        runtime_error(expr.paren, "Expected #{function.arity} arguments but got #{arguments.size}.")
+      end
+
+      function.call(self, arguments)
     end
 
     def visit_literal_expr(expr) : Value
@@ -161,7 +190,7 @@ module Lit
       expr.accept(self)
     end
 
-    private def execute_block(stmts : Array(Stmt), environment : Environment) : Nil
+    def execute_block(stmts : Array(Stmt), environment : Environment) : Nil
       previous = @environment
 
       begin

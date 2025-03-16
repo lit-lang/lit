@@ -28,6 +28,7 @@ module Lit
     end
 
     private def declaration
+      return function("function") if match?(TokenType::FN)
       return let_declaration if match?(TokenType::LET)
 
       statement
@@ -36,6 +37,14 @@ module Lit
 
       # NOTE: Since there's an error, return this dumb expr just to get going
       Stmt::Expression.new(Expr::Literal.new("ERROR"))
+    end
+
+    private def function(kind : String)
+      name = consume(TokenType::IDENTIFIER, "I was expecting a #{kind} name.")
+      consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the #{kind} name.")
+      body, params = block_with_params
+
+      Stmt::Function.new(name, params, body)
     end
 
     private def let_declaration
@@ -102,6 +111,23 @@ module Lit
       consume(TokenType::SEMICOLON, "I was expecting a semicolon after the print statement.")
 
       Stmt::Print.new(expr)
+    end
+
+    private def block_with_params
+      params = [] of Token
+
+      if match?(TokenType::BAR)   # begin params
+        if !check(TokenType::BAR) # handle empty param list
+          loop do
+            params.push(consume(TokenType::IDENTIFIER, "I was expecting a parameter name."))
+
+            break unless match?(TokenType::COMMA)
+          end
+        end
+        consume(TokenType::BAR, "I was expecting a '|' after the parameters.")
+      end
+
+      {block_statements, params}
     end
 
     private def block_statements
@@ -243,7 +269,37 @@ module Lit
         return Expr::Unary.new(operator, right)
       end
 
-      primary
+      call
+    end
+
+    private def call
+      expr = primary
+
+      loop do
+        if match?(TokenType::LEFT_PAREN)
+          expr = finish_call(expr)
+        else
+          break
+        end
+      end
+
+      expr
+    end
+
+    private def finish_call(callee)
+      arguments = [] of Expr
+
+      if !check(TokenType::RIGHT_PAREN)
+        loop do
+          arguments.push(expression)
+
+          break unless match?(TokenType::COMMA)
+        end
+      end
+
+      paren = consume(TokenType::RIGHT_PAREN, "I was expecting a ')' after the arguments.")
+
+      Expr::Call.new(callee, paren, arguments)
     end
 
     private def primary
