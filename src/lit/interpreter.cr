@@ -13,6 +13,12 @@ module Lit
     include Expr::Visitor
     include Stmt::Visitor
 
+    class Return < Exception
+      getter value : Value
+
+      def initialize(@value); end
+    end
+
     getter environment
 
     def initialize
@@ -68,6 +74,12 @@ module Lit
 
     def visit_expression_stmt(stmt) : Nil
       evaluate(stmt.expression)
+    end
+
+    def visit_return_stmt(stmt) : Nil
+      value = stmt.value ? evaluate(stmt.value.not_nil!) : nil
+
+      raise Return.new(value)
     end
 
     def visit_call_expr(expr) : Value

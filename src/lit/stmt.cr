@@ -11,6 +11,7 @@ module Lit
       abstract def visit_if_stmt(stmt : If)
       abstract def visit_println_stmt(stmt : Println)
       abstract def visit_print_stmt(stmt : Print)
+      abstract def visit_return_stmt(stmt : Return)
       abstract def visit_let_stmt(stmt : Let)
       abstract def visit_while_stmt(stmt : While)
     end
@@ -76,6 +77,17 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_print_stmt(self)
+      end
+    end
+
+    class Return < Stmt
+      getter keyword : Token
+      getter value : Expr?
+
+      def initialize(@keyword, @value); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_return_stmt(self)
       end
     end
 

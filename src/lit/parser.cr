@@ -59,11 +59,23 @@ module Lit
       return if_statement if match?(TokenType::IF)
       return while_statement if match?(TokenType::WHILE)
       return until_statement if match?(TokenType::UNTIL)
+      return return_statement if match?(TokenType::RETURN)
       return println_statement if match?(TokenType::PRINTLN)
       return print_statement if match?(TokenType::PRINT)
       return Stmt::Block.new(block_statements) if match?(TokenType::LEFT_BRACE)
 
       expression_statement
+    end
+
+    private def return_statement
+      keyword = previous
+      value = nil
+      if !check(TokenType::SEMICOLON)
+        value = expression
+      end
+      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the return statement.")
+
+      Stmt::Return.new(keyword, value)
     end
 
     private def if_statement

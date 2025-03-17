@@ -1,0 +1,2 @@
+fn f {}
+println f(); # expect: nil

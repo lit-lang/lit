@@ -1,10 +1,11 @@
 require "./callable"
+require "./interpreter"
 
 module Lit
   class Function < Callable
     def initialize(@declaration : Stmt::Function); end
 
-    def call(interpreter, arguments) : Nil
+    def call(interpreter, arguments)
       environment = Environment.new(interpreter.environment)
 
       @declaration.params.each_with_index do |param, index|
@@ -12,6 +13,8 @@ module Lit
       end
 
       interpreter.execute_block(@declaration.body, environment)
+    rescue e : Interpreter::Return
+      e.value
     end
 
     def arity
