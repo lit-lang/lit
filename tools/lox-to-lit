@@ -39,6 +39,7 @@ def convert_file(lox_file)
         line = line.gsub("Error at '", 'Error at "')
         line = line.gsub("':", '":')
         line = line.gsub("[line ", "error: [line ")
+        line = line.gsub("expect runtime error: ", "error: ")
         line = line.gsub(/fn (?<name>\w+)\((?<args>.*?)\)\s*\{?/) do |match|
           name = to_snake_case($~[:name])
           "fn #{name} { |#{$~[:args]}|"
