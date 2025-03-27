@@ -14,17 +14,23 @@ module Lit
     end
 
     def get(name : Token)
-      return @values[name.lexeme] if @values.has_key? name.lexeme
-      return @enclosing.not_nil!.get(name) if @enclosing # TODO: Maybe this could be faster iteratively, not recursively
-
-      raise RuntimeError.new(name, "Undefined variable '#{name.lexeme}'.")
+      if @values.has_key? name.lexeme
+        @values[name.lexeme]
+      elsif enclosing = @enclosing
+        enclosing.get(name) # TODO: Maybe this could be faster iteratively, not recursively
+      else
+        raise RuntimeError.new(name, "Undefined variable '#{name.lexeme}'.")
+      end
     end
 
     def assign(name, value) : Nil
-      return (@values[name.lexeme] = value) if @values.has_key?(name.lexeme)
-      return @enclosing.not_nil!.assign(name, value) if @enclosing # TODO: Maybe this could be faster iteratively, not recursively
-
-      raise RuntimeError.new(name, "Undefined variable '#{name.lexeme}'.")
+      if @values.has_key?(name.lexeme)
+        @values[name.lexeme] = value
+      elsif enclosing = @enclosing
+        enclosing.assign(name, value) # TODO: Maybe this could be faster iteratively, not recursively
+      else
+        raise RuntimeError.new(name, "Undefined variable '#{name.lexeme}'.")
+      end
     end
   end
 end

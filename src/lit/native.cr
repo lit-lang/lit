@@ -6,9 +6,14 @@ module Lit
       0
     end
 
-    def call : Value
-      Time.local.to_unix_f / 1000.0
+    def call(_interpreter, _args) : Value
+      Time.local.to_unix_f
     end
+
+    def to_s
+      "<native fn>"
+    end
+  end
 
     def to_s
       "<native fn>"

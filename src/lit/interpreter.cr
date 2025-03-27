@@ -19,12 +19,12 @@ module Lit
       def initialize(@value); end
     end
 
-    getter environment
+    getter environment # current environment
 
     def initialize
       @globals = Environment.new
       @globals.define("clock", Clock.new)
-      @environment = @globals # current environment
+      @environment = @globals
     end
 
     def self.interpret(stmts : Array(Stmt))
@@ -64,7 +64,7 @@ module Lit
     end
 
     def visit_function_stmt(stmt) : Nil
-      function = Function.new(stmt)
+      function = Function.new(stmt, @environment)
       @environment.define(stmt.name.lexeme, function)
     end
 

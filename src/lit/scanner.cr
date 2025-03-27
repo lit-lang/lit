@@ -153,7 +153,7 @@ module Lit
 
       while nesting > 0
         if at_end?
-          Lit.error(@line, "Unterminated block comment")
+          Lit.error(@line, "Unterminated block comment") # TODO: Should this be an error?
           return
         end
 

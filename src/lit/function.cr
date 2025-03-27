@@ -3,10 +3,10 @@ require "./interpreter"
 
 module Lit
   class Function < Callable
-    def initialize(@declaration : Stmt::Function); end
+    def initialize(@declaration : Stmt::Function, @closure : Environment); end
 
     def call(interpreter, arguments)
-      environment = Environment.new(interpreter.environment)
+      environment = Environment.new(@closure)
 
       @declaration.params.each_with_index do |param, index|
         environment.define(param.lexeme, arguments[index])
