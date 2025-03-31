@@ -1,6 +1,7 @@
 type String {
   fn uppercase? {
     self.chars().all? { it.is_uppercase?() }
+    self.chars().all?(&is_uppercase?)
   }
 
   fn size { self.chars().size() }

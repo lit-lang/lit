@@ -1,13 +1,13 @@
 # Simplified Wordle
 
-if let words = File.read!("wordle-answers.txt") {
-  words = words.split
+if let answers = File.read!("wordle-answers.txt") {
+  let words = answers.split
   let word = words.sample
   let guess = ""
 
   while guess != word {
-    println "Guess: "
-    guess = readln
+    print "Guess: "
+    guess = read
 
     if guess.size != 5 {
       println "Only 5 letter words allowed"

@@ -1,17 +1,18 @@
 struct Point {
-  let x
-  let y
-
   # FIXME: why all the other methods are instance, while this one is on the type itself?
   # Maybe well need special syntax for this?
   # or we could do like Ruby and use `fn self.new()`
-  new { |x, y|
+  self.init { |x, y|
     self.x = x
     self.y = y
   }
 
   fn + { |other|
     Point.new(self.x + other.x, self.y + other.y)
+  }
+
+  fn -self {
+    Point.new(-self.x, -self.y)
   }
 
   fn to_s {
@@ -22,5 +23,5 @@ struct Point {
 let point = Point.new(1, 1) + Point.new(2, 2)
 # => Point.new(3, 3)
 
-println point
-# (3, 3)
+println -point
+# (-3, -3)

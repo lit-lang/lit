@@ -1,15 +1,15 @@
 let GITHUB_LANGS_URL = "https://raw.githubusercontent.com/github/linguist/6b02d3bd769d07d1fdc661ba9e37aad0fd70e2ff/lib/linguist/languages.yml";
 
-fn fetch_url! { HTTP.get!(it) }
+fn fetch_url! do HTTP.get!(it)
 
-fn parse_yaml! { YAML.parse!(it) }
+fn parse_yaml! do YAML.parse!(it)
 
 fn hex_color_to_rgb { |color|
-  color.delete("#").scan(/../).map { it.hex }
+  color.delete("#").scan(/../).map do it.hex
 }
 
 fn rgb_color_to_hex { |color|
-  color.map_join { it.to_s(16).rjust(2, "0") }
+  color.map_join do it.to_s(16).rjust(2, "0")
 }
 
 GITHUB_LANGS_URL

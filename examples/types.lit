@@ -6,7 +6,7 @@ type * {
   }
 }
 
-1.tap { println(it) }
+1.tap(&println)
 # prints 1
 
 type Int {
@@ -24,6 +24,6 @@ type Int {
   }
 }
 
-3.times { |i| println(i) }
-# prints 0, 1, 2
+3.times(&print)
+# prints 0 1 2
 # => 3

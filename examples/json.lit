@@ -5,8 +5,8 @@ struct User {
   }
 
   fn from_json(json) {
-    let name = json.get!("name") or { panic("Missing name") }
-    let age! = json.get!("age") or nil # nil == error("")
+    let name = json.get!("name") or panic! "Missing name"
+    let age! = json.get!("age") or nil # nil == error
 
     User.new(name, age!)
   }

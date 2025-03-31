@@ -4,7 +4,7 @@ enum List {
 
   fn size {
     match self {
-      Cons(_val, list) then 1 + list.size()
+      Cons(_, list) then 1 + list.size()
       Empty then 0
     }
   }
@@ -20,7 +20,7 @@ enum Action {
   ChangeColor(r, g, b)
 }
 
-fn perform_action(action) {
+fn perform-action { |action|
   match action {
     Quit then exit()
     Move { x, y } {

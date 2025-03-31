@@ -1,4 +1,4 @@
-let say_hello = fn { |n| println("hello {n}") }
+let say_hello = fn { |n| println "hello {n}" }
 let sum = fn { |a, b| a + b }
 let a = 1
 let b = 2
@@ -15,10 +15,10 @@ github_user_names = {
   dhh: 'David Heinemeier Hansson'
   matz: 'Yukihiro Matsumoto'
 }
-print(github_user_names.dhh)
+print github_user_names.dhh
 # => 'David Heinemeier Hansson'
 
-println(github_user_names['matz'])
+println github_user_names['matz']
 # => 'Yukihiro Matsumoto\n'
 
 # for small hashes
@@ -27,11 +27,11 @@ point = {x: 1; y: 2}
 Math = {
   PI: 3.14159
 
-  pow: (n, m) -> n**m
-  half: n -> n / 2
+  pow: fn { |n, m| n**m }
+  half: fn do it / 2
 
   Circle: {
-    circumference: r -> 2 * PI * r
+    circumference: fn { |r| 2 * PI * r }
   }
 }
 
@@ -60,10 +60,10 @@ List = {
   sum = list -> {
     if List.empty?(list) then return 0
 
-    sumWithAccumulator(list, 0)
+    sum_with_accumulator(list, 0)
   }
-  sumWithAccumulator = (list, acc) -> {
-    acc + (list |> head |> sumWithAccumulator)
+  sum_with_accumulator = (list, acc) -> {
+    acc + (list |> head |> sum_with_accumulator)
   }
 }
 
@@ -75,7 +75,7 @@ AdminUser = {
 }
 
 Email = {
-  send: fn { |{from, to}| println("sending email from {from} to {to}") }
+  send: fn { |{from, to}| println "sending email from {from} to {to}" }
 }
 
 User = (_name, _email) -> {
@@ -86,7 +86,7 @@ User = (_name, _email) -> {
     email: _email, # constructor
 
     # Methods
-    say_hello: fn { println("Hello, I'm {_name}" ) }
+    say_hello: fn { println "Hello, I'm {_name}" }
     send_email: fn { |content, {to}| Email.send(from: email, to: to, content: content) }
   }
 }
@@ -96,8 +96,8 @@ me.say_hello()
 me.send_email('Hi!', to: 'matz@ruby.com')
 
 match me.admin? {
-  true => println('What?'),
-  false => println('Hi, mere mortal')
+  true then println 'What?',
+  false then println 'Hi, mere mortal'
 }
 
 Kernel = {
@@ -121,7 +121,7 @@ successors = map([1, 2, 3]) { |i| i + 1 }
 describe('List') {
   describe('.map') {
     it('does something') {
-      expect(List.map([1, 2, 3], it * 2)).toEq([2, 4, 6])
+      expect(List.map([1, 2, 3], it * 2)).to_eq([2, 4, 6])
     }
   }
 }

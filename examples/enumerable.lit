@@ -76,7 +76,7 @@ type HashMap {
 
 Array.map([1, 2, 3]) { |x| x * 2 } |> Array.each { println(it) } # 2 4 6
 
-[1, 2, 3].map { |x| x * 2 }.each { println(it) } # 2 4 6
+[1, 2, 3].map { |x| x * 2 }.each(&println) # 2 4 6
 
 struct List {
   ...Enumerable # include module
@@ -104,4 +104,3 @@ struct List {
     self.vals.first!()
   }
 }
-
