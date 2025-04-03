@@ -195,18 +195,12 @@ module Lit
           case e
           when 'n'
             string += "\n"
-          when '"'
-            string += '"'
-          when '\''
-            string += '\''
-          when '\\'
-            string += '\\'
           when 't'
             string += "\t"
+          when 'r'
+            string += "\r"
           else
-            Lit.error(@line, "Unknown escape sequence #{e.inspect}")
-            # Not returning so we can keep parsing the string
-            # NOTE: Ruby would simply return the given char here. What is nicer?
+            string += e # Adding the unknown escape sequence to the string
           end
         else
           @line += 1 if c == '\n'
