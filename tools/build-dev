@@ -1,2 +1,2 @@
 #!/bin/bash
-crystal build -p src/cli.cr -o bin/lit
+crystal build --warnings all -p src/cli.cr -o bin/lit
