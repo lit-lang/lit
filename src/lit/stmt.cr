@@ -4,16 +4,16 @@ require "./token"
 
 module Lit
   abstract class Stmt
-    module Visitor
-      abstract def visit_block_stmt(stmt : Block)
-      abstract def visit_expression_stmt(stmt : Expression)
-      abstract def visit_function_stmt(stmt : Function)
-      abstract def visit_if_stmt(stmt : If)
-      abstract def visit_println_stmt(stmt : Println)
-      abstract def visit_print_stmt(stmt : Print)
-      abstract def visit_return_stmt(stmt : Return)
-      abstract def visit_let_stmt(stmt : Let)
-      abstract def visit_while_stmt(stmt : While)
+    module Visitor(T)
+      abstract def visit_block_stmt(stmt : Block) : T
+      abstract def visit_expression_stmt(stmt : Expression) : T
+      abstract def visit_function_stmt(stmt : Function) : T
+      abstract def visit_if_stmt(stmt : If) : T
+      abstract def visit_println_stmt(stmt : Println) : T
+      abstract def visit_print_stmt(stmt : Print) : T
+      abstract def visit_return_stmt(stmt : Return) : T
+      abstract def visit_let_stmt(stmt : Let) : T
+      abstract def visit_while_stmt(stmt : While) : T
     end
 
     class Block < Stmt

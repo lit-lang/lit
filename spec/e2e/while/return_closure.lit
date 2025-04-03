@@ -1,7 +1,7 @@
-fun f() {
+fn f {
   while (true) {
     let i = "i";
-    fun g() { println i; }
+    fn g { println i; }
     return g;
   }
 }

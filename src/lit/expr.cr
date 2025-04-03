@@ -4,16 +4,16 @@ require "./token"
 
 module Lit
   abstract class Expr
-    module Visitor
-      abstract def visit_assign_expr(expr : Assign)
-      abstract def visit_binary_expr(expr : Binary)
-      abstract def visit_call_expr(expr : Call)
-      abstract def visit_grouping_expr(expr : Grouping)
-      abstract def visit_literal_expr(expr : Literal)
-      abstract def visit_ternary_expr(expr : Ternary)
-      abstract def visit_logical_expr(expr : Logical)
-      abstract def visit_unary_expr(expr : Unary)
-      abstract def visit_variable_expr(expr : Variable)
+    module Visitor(T)
+      abstract def visit_assign_expr(expr : Assign) : T
+      abstract def visit_binary_expr(expr : Binary) : T
+      abstract def visit_call_expr(expr : Call) : T
+      abstract def visit_grouping_expr(expr : Grouping) : T
+      abstract def visit_literal_expr(expr : Literal) : T
+      abstract def visit_ternary_expr(expr : Ternary) : T
+      abstract def visit_logical_expr(expr : Logical) : T
+      abstract def visit_unary_expr(expr : Unary) : T
+      abstract def visit_variable_expr(expr : Variable) : T
     end
 
     class Assign < Expr

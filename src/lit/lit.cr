@@ -4,6 +4,7 @@ require "./macros"
 require "./token"
 require "./scanner"
 require "./parser"
+require "./resolver"
 require "./interpreter"
 require "./repl"
 require "./text"
@@ -16,13 +17,17 @@ module Lit
 
     def self.run(src : String) : String?
       tokens = Scanner.scan(src)
-      expressions = Parser.parse(tokens)
+      statements = Parser.parse(tokens)
 
       return if had_error?
       return if had_runtime_error?
 
-      # puts Text.hint Debug.s_expr(expressions)
-      interpreter.interpret(expressions)
+      Resolver.new(interpreter).resolve(statements)
+
+      return if had_error?
+
+      # puts Text.hint Debug.s_expr(statements)
+      interpreter.interpret(statements)
     end
 
     def self.run_repl

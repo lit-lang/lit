@@ -10,8 +10,8 @@ require "./function"
 
 module Lit
   class Interpreter
-    include Expr::Visitor
-    include Stmt::Visitor
+    include Expr::Visitor(Value)
+    include Stmt::Visitor(Value)
 
     class Return < Exception
       getter value : Value
@@ -22,6 +22,7 @@ module Lit
     getter environment # current environment
 
     def initialize
+      @locals = {} of Expr => Int32
       @globals = Environment.new
       @globals.define("clock", Clock.new)
       @environment = @globals
@@ -164,7 +165,12 @@ module Lit
 
     def visit_assign_expr(expr) : Value
       value = evaluate(expr.value)
-      environment.assign(expr.name, value)
+
+      if distance = @locals[expr]?
+        @environment.assign_at(distance, expr.name, value)
+      else
+        @globals.assign(expr.name, value)
+      end
 
       value
     end
@@ -191,7 +197,7 @@ module Lit
     end
 
     def visit_variable_expr(expr) : Value
-      @environment.get(expr.name)
+      lookup_variable(expr.name, expr)
     end
 
     def execute(stmt : Stmt) : Value
@@ -210,6 +216,18 @@ module Lit
         stmts.each { |stmt| execute(stmt) }
       ensure
         @environment = previous
+      end
+    end
+
+    def resolve(expr, depth)
+      @locals[expr] = depth
+    end
+
+    private def lookup_variable(name : Token, expr : Expr) : Value
+      if distance = @locals[expr]?
+        @environment.get_at(distance, name)
+      else
+        @globals.get(name)
       end
     end
 

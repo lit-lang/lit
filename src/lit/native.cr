@@ -14,9 +14,4 @@ module Lit
       "<native fn>"
     end
   end
-
-    def to_s
-      "<native fn>"
-    end
-  end
 end
