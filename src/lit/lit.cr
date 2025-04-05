@@ -20,7 +20,6 @@ module Lit
       statements = Parser.parse(tokens)
 
       return if had_error?
-      return if had_runtime_error?
 
       Resolver.new(interpreter).resolve(statements)
 

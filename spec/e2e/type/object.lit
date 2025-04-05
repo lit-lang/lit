@@ -1,0 +1,4 @@
+type Foo {}
+
+let foo = Foo();
+foo(); # error: [line 4] Can only call functions and types.

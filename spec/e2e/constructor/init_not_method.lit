@@ -1,0 +1,12 @@
+type Foo {
+  init { |arg|
+    println "Foo.init(" + arg + ")";
+    self.field = "init";
+  }
+}
+
+fn init {
+  println "not initializer";
+}
+
+init(); # expect: not initializer

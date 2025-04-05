@@ -1,0 +1,1 @@
+println notDefined;  # error: [line 1] Undefined variable 'notDefined'.

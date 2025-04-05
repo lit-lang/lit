@@ -8,10 +8,13 @@ module Lit
       abstract def visit_assign_expr(expr : Assign) : T
       abstract def visit_binary_expr(expr : Binary) : T
       abstract def visit_call_expr(expr : Call) : T
+      abstract def visit_get_expr(expr : Get) : T
+      abstract def visit_set_expr(expr : Set) : T
       abstract def visit_grouping_expr(expr : Grouping) : T
       abstract def visit_literal_expr(expr : Literal) : T
       abstract def visit_ternary_expr(expr : Ternary) : T
       abstract def visit_logical_expr(expr : Logical) : T
+      abstract def visit_self_expr(expr : Self) : T
       abstract def visit_unary_expr(expr : Unary) : T
       abstract def visit_variable_expr(expr : Variable) : T
     end
@@ -48,6 +51,29 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_call_expr(self)
+      end
+    end
+
+    class Get < Expr
+      getter object : Expr
+      getter name : Token
+
+      def initialize(@object, @name); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_get_expr(self)
+      end
+    end
+
+    class Set < Expr
+      getter object : Expr
+      getter name : Token
+      getter value : Expr
+
+      def initialize(@object, @name, @value); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_set_expr(self)
       end
     end
 
@@ -93,6 +119,16 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_logical_expr(self)
+      end
+    end
+
+    class Self < Expr
+      getter keyword : Token
+
+      def initialize(@keyword); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_self_expr(self)
       end
     end
 

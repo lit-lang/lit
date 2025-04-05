@@ -1,0 +1,5 @@
+type Foo {
+  bar {}
+}
+
+println Foo().bar(); # expect: nil

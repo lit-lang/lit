@@ -1,0 +1,2 @@
+type Foo {}
+Foo.bar = "value"; # error: [line 2] Only instances have fields.

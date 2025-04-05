@@ -1,0 +1,6 @@
+type Foo {
+  bar { return self; }
+  baz { return "baz"; }
+}
+
+println Foo().bar().baz(); # expect: baz

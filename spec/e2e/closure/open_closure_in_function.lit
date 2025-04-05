@@ -1,0 +1,7 @@
+{
+  let local = "local";
+  fn f {
+    println local; # expect: local
+  }
+  f();
+}

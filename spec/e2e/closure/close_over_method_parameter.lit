@@ -1,0 +1,13 @@
+let f;
+
+type Foo {
+  method { |param|
+    fn f_ {
+      println param;
+    }
+    f = f_;
+  }
+}
+
+Foo().method("param");
+f(); # expect: param

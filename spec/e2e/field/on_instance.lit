@@ -1,0 +1,9 @@
+type Foo {}
+
+let foo = Foo();
+
+println foo.bar = "bar value"; # expect: bar value
+println foo.baz = "baz value"; # expect: baz value
+
+println foo.bar; # expect: bar value
+println foo.baz; # expect: baz value

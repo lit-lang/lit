@@ -1,0 +1,10 @@
+type Foo {
+  init {
+    fn init {
+      return "bar";
+    }
+    println init(); # expect: bar
+  }
+}
+
+println Foo(); # expect: Foo instance

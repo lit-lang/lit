@@ -4,8 +4,8 @@ def to_snake_case(str)
   str.gsub(/([A-Z])/, '_\1').downcase
 end
 
-def convert_lox_to_lit(dir: "spec/e2e")
-  Dir.glob("#{dir}/**/*.lox").each do |file|
+def convert_lox_to_lit(files)
+  files.each do |file|
     convert_file(file)
   end
 end
@@ -21,19 +21,21 @@ end
 # - fooBar(a,b) to foo_bar(a,b)
 # - [line x] Error at 'y': to error: [line x] Error at "y"
 #
-def convert_file(lox_file)
-  new_file = lox_file.sub(/\.lox$/, '.lit')
+def convert_file(lox_file_name)
+  new_file = lox_file_name.sub(/\.lox$/, '.lit')
   File.open(new_file, "w") do |out|
-    # File.open(lox_file, "r") do |f|
+    # File.open(lox_file_name, "r") do |f|
     #   f.each_line do |line|
     #     out.puts "# #{line.chomp}"
     #   end
     # end
     # out.puts "\n# Converted code\n"
-    File.open(lox_file, "r") do |f|
+    File.open(lox_file_name, "r") do |f|
       f.each_line do |line|
         line = line.gsub("// ", "# ")
         line = line.gsub("var ", "let ")
+        line = line.gsub("class ", "type ")
+        line = line.gsub("this", "self")
         line = line.gsub("fun ", "fn ")
         line = line.gsub("print ", "println ")
         line = line.gsub("Error at '", 'Error at "')
@@ -44,14 +46,15 @@ def convert_file(lox_file)
           name = to_snake_case($~[:name])
           "fn #{name} { |#{$~[:args]}|"
         end
-        line = line.gsub(/(\w+)\(/) do |match|
+        line = line.gsub(/(?<!\w)([a-z]\w*)\(/) do |match|
           "#{to_snake_case($1)}("
         end
         out.puts line
       end
     end
   end
-  File.delete(lox_file)
+  File.delete(lox_file_name) if lox_file_name.end_with?(".lox")
 end
 
-convert_lox_to_lit
+files = Array(ARGV[0] || Dir.glob("spec/e2e/**/*.lox"))
+convert_lox_to_lit(files)

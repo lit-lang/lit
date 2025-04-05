@@ -1,0 +1,13 @@
+println !true;     # expect: false
+println !false;    # expect: true
+println !!true;    # expect: true
+
+println !123;      # expect: false
+println !0;        # expect: false
+
+println !nil;     # expect: true
+
+println !"";       # expect: false
+
+fn foo {}
+println !foo;      # expect: false

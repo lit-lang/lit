@@ -14,8 +14,8 @@ module Lit
       @values[name] = value
     end
 
-    def get_at(distance : Int32, name : Token)
-      ancestor(distance).get(name)
+    def get_at(distance : Int32, name : String)
+      ancestor(distance).values[name]
     end
 
     def get(name : Token)

@@ -1,0 +1,14 @@
+println nil != nil; # expect: false
+
+println true != true; # expect: false
+println true != false; # expect: true
+
+println 1 != 1; # expect: false
+println 1 != 2; # expect: true
+
+println "str" != "str"; # expect: false
+println "str" != "ing"; # expect: true
+
+println nil != false; # expect: true
+println false != 0; # expect: true
+println 0 != "0"; # expect: true

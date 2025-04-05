@@ -1,0 +1,1 @@
+123.foo; # error: [line 1] Only instances have properties.

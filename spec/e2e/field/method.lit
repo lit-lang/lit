@@ -1,0 +1,9 @@
+type Foo {
+  bar { |arg|
+    println arg;
+  }
+}
+
+let bar = Foo().bar;
+println "got method"; # expect: got method
+bar("arg");          # expect: arg

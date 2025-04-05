@@ -1,0 +1,8 @@
+type Foo {
+  init { |a, b|
+    self.a = a;
+    self.b = b;
+  }
+}
+
+let foo = Foo(1, 2, 3, 4); # error: [line 8] Expected 2 arguments but got 4.

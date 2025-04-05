@@ -76,7 +76,7 @@ describe Lit::Parser do
       it "errors" do
         tokens = Create.tokens(:number, :equal, :number, :semicolon, :eof)
 
-        output_of { Lit::Parser.parse(tokens) }.should contain("I was expecting a variable before the equal sign")
+        output_of { Lit::Parser.parse(tokens) }.should contain("Invalid assignment target")
       end
     end
   end

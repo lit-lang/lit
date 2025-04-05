@@ -1,0 +1,20 @@
+type Outer {
+  method {
+    println self; # expect: Outer instance
+
+    fn f {
+      println self; # expect: Outer instance
+
+      type Inner {
+        method {
+          println self; # expect: Inner instance
+        }
+      }
+
+      Inner().method();
+    }
+    f();
+  }
+}
+
+Outer().method();

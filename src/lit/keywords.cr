@@ -14,7 +14,9 @@ module Lit
     println: TokenType::PRINTLN,
     return:  TokenType::RETURN,
     true:    TokenType::TRUE,
-    while:   TokenType::WHILE,
+    type:    TokenType::TYPE,
+    self:    TokenType::SELF,
     until:   TokenType::UNTIL,
+    while:   TokenType::WHILE,
   }
 end

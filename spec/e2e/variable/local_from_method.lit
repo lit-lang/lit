@@ -1,0 +1,9 @@
+let foo = "variable";
+
+type Foo {
+  method {
+    println foo;
+  }
+}
+
+Foo().method(); # expect: variable

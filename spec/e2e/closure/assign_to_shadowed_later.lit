@@ -1,0 +1,13 @@
+let a = "global";
+
+{
+  fn assign {
+    a = "assigned";
+  }
+
+  let a = "inner";
+  assign();
+  println a; # expect: inner
+}
+
+println a; # expect: assigned

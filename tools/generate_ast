@@ -10,16 +10,20 @@ module AstGenerator
       "Assign   = name : Token, value : Expr",
       "Binary   = left : Expr, operator : Token, right : Expr",
       "Call     = callee : Expr, paren : Token, arguments : Array(Expr)",
+      "Get      = object : Expr, name : Token",
+      "Set      = object : Expr, name : Token, value : Expr",
       "Grouping = expression : Expr",
       "Literal  = value : Union(String | Float64 | Bool | Nil)",
       "Ternary  = condition : Expr, left : Expr, right : Expr, operator : Token",
       "Logical  = left : Expr, operator : Token, right : Expr",
+      "Self     = keyword : Token",
       "Unary    = operator : Token, right : Expr",
       "Variable = name : Token",
     ])
 
     define_ast(output_dir, "Stmt", [
       "Block      = statements : Array(Stmt)",
+      "Type      = name : Token, methods : Array(Stmt::Function)",
       "Expression = expression : Expr",
       "Function   = name : Token, params : Array(Token), body : Array(Stmt)",
       "If         = condition : Expr, then_branch : Stmt, else_branch : Stmt?",
@@ -54,11 +58,11 @@ module AstGenerator
   end
 
   private def define_visitor_interface(file, base_name, types)
-    file.puts "    module Visitor"
+    file.puts "    module Visitor(T)"
 
     types.each do |type|
       type_name, _ = type.split("=").map(&:strip)
-      file.puts "      abstract def visit_#{type_name.downcase}_#{base_name.downcase}(#{base_name.downcase} : #{type_name})"
+      file.puts "      abstract def visit_#{type_name.downcase}_#{base_name.downcase}(#{base_name.downcase} : #{type_name}) : T"
     end
 
     file.puts "    end"

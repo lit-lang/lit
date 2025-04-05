@@ -1,0 +1,13 @@
+# Bound methods have identity equality.
+type Foo {
+  method {}
+}
+
+let foo = Foo();
+let foo_method = foo.method;
+
+# Same bound method.
+println foo_method == foo_method; # expect: true
+
+# Different closurizations.
+println foo.method == foo.method; # expect: false

@@ -1,0 +1,4 @@
+{
+  let a = "value";
+  let a = "other"; # error: [line 3] Error at "a": Already a variable with this name in this scope.
+}

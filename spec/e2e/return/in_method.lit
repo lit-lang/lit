@@ -1,0 +1,8 @@
+type Foo {
+  method {
+    return "ok";
+    println "bad";
+  }
+}
+
+println Foo().method(); # expect: ok

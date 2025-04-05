@@ -1,0 +1,4 @@
+fn foo { |arg,
+        arg| # error: [line 2] Error at "arg": Already a variable with this name in this scope.
+  "body";
+}

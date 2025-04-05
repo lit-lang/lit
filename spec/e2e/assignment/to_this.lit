@@ -1,0 +1,7 @@
+type Foo {
+  Foo {
+    self = "value"; # error: [line 3] Error at "=": Invalid assignment target.
+  }
+}
+
+Foo();

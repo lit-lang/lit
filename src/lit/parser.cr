@@ -59,6 +59,7 @@ module Lit
       return if_statement if match?(TokenType::IF)
       return while_statement if match?(TokenType::WHILE)
       return until_statement if match?(TokenType::UNTIL)
+      return type_statement if match?(TokenType::TYPE)
       return return_statement if match?(TokenType::RETURN)
       return println_statement if match?(TokenType::PRINTLN)
       return print_statement if match?(TokenType::PRINT)
@@ -109,6 +110,22 @@ module Lit
       body = Stmt::Block.new(block_statements)
 
       Stmt::While.new(Expr::Unary.new(Token.new(TokenType::BANG, "!", nil, 0), condition), body)
+    end
+
+    private def type_statement
+      # TODO: does this allow any kind of identifier be a class name? even lowercase?
+      name = consume(TokenType::IDENTIFIER, "I was expecting a type name.")
+      consume(TokenType::LEFT_BRACE, "I was a '{' after the type name.")
+
+      methods = [] of Stmt::Function
+
+      until check(TokenType::RIGHT_BRACE) || at_end?
+        methods << function("method")
+      end
+
+      consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the type body.")
+
+      Stmt::Type.new(name, methods)
     end
 
     private def println_statement
@@ -176,9 +193,12 @@ module Lit
           name = expr.as(Expr::Variable).name
 
           return Expr::Assign.new(name, value)
+        elsif expr.is_a? Expr::Get
+          get = expr.as(Expr::Get)
+          return Expr::Set.new(get.object, get.name, value)
         end
 
-        error(equals, "I was expecting a variable before the equal sign.")
+        error(equals, "Invalid assignment target.")
       end
 
       expr
@@ -290,6 +310,9 @@ module Lit
       loop do
         if match?(TokenType::LEFT_PAREN)
           expr = finish_call(expr)
+        elsif match?(TokenType::DOT)
+          name = consume(TokenType::IDENTIFIER, "I was expecting a property name after '.'.")
+          expr = Expr::Get.new(expr, name)
         else
           break
         end
@@ -319,6 +342,7 @@ module Lit
       return Expr::Literal.new(true) if match?(TokenType::TRUE)
       return Expr::Literal.new(nil) if match?(TokenType::NIL)
       return Expr::Literal.new(previous.literal) if match?(TokenType::NUMBER, TokenType::STRING)
+      return Expr::Self.new(previous) if match?(TokenType::SELF)
       return Expr::Variable.new(previous) if match?(TokenType::IDENTIFIER)
 
       if match?(TokenType::LEFT_PAREN)

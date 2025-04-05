@@ -1,0 +1,8 @@
+{
+  let a = "local";
+  {
+    let a = "shadow";
+    println a; # expect: shadow
+  }
+  println a; # expect: local
+}

@@ -1,0 +1,11 @@
+type Foo {
+  init { |a, b|
+    println "init"; # expect: init
+    self.a = a;
+    self.b = b;
+  }
+}
+
+let foo = Foo(1, 2);
+println foo.a; # expect: 1
+println foo.b; # expect: 2

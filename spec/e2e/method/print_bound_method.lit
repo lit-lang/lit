@@ -1,0 +1,5 @@
+type Foo {
+  method { }
+}
+let foo = Foo();
+println foo.method; # expect: <fn method>

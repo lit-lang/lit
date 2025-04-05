@@ -1,0 +1,12 @@
+{
+  let foo = "closure";
+  fn f {
+    {
+      println foo; # expect: closure
+      let foo = "shadow";
+      println foo; # expect: shadow
+    }
+    println foo; # expect: closure
+  }
+  f();
+}

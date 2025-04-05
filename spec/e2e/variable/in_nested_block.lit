@@ -1,0 +1,6 @@
+{
+  let a = "outer";
+  {
+    println a; # expect: outer
+  }
+}

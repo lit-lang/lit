@@ -1,0 +1,4 @@
+type Foo {}
+
+let foo = Foo();
+println foo; # expect: Foo instance

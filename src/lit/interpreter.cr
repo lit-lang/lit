@@ -7,6 +7,8 @@ require "./environment"
 require "./callable"
 require "./native"
 require "./function"
+require "./type"
+require "./instance"
 
 module Lit
   class Interpreter
@@ -38,6 +40,19 @@ module Lit
       Lit.runtime_error(e)
     end
 
+    def visit_type_stmt(stmt) : Nil
+      environment.define(stmt.name.lexeme, nil)
+
+      methods = {} of String => Function
+      stmt.methods.each do |method|
+        function = Function.new(method, @environment, initializer: method.name.lexeme == "init")
+        methods[method.name.lexeme] = function
+      end
+      type = Type.new(stmt.name.lexeme, methods)
+
+      environment.assign(stmt.name, type)
+    end
+
     def visit_if_stmt(stmt) : Nil
       if truthy?(evaluate(stmt.condition))
         execute(stmt.then_branch)
@@ -65,7 +80,7 @@ module Lit
     end
 
     def visit_function_stmt(stmt) : Nil
-      function = Function.new(stmt, @environment)
+      function = Function.new(stmt, @environment, false)
       @environment.define(stmt.name.lexeme, function)
     end
 
@@ -88,7 +103,7 @@ module Lit
       arguments = expr.arguments.map { |arg| evaluate(arg) }
 
       if !callee.is_a? Callable
-        runtime_error(expr.paren, "Can only call functions.")
+        runtime_error(expr.paren, "Can only call functions and types.")
       end
 
       function = callee.as(Callable)
@@ -97,6 +112,32 @@ module Lit
       end
 
       function.call(self, arguments)
+    end
+
+    def visit_get_expr(expr) : Value
+      object = evaluate(expr.object)
+
+      if object.is_a? Instance
+        return object.as(Instance).get(expr.name)
+      end
+
+      runtime_error(expr.name, "Only instances have properties.")
+    end
+
+    def visit_set_expr(expr) : Value
+      object = evaluate(expr.object)
+
+      if !object.is_a? Instance
+        raise RuntimeError.new(expr.name, "Only instances have fields.")
+      end
+
+      value = evaluate(expr.value)
+      object.as(Instance).set(expr.name, value)
+      value
+    end
+
+    def visit_self_expr(expr) : Value
+      lookup_variable(expr.keyword, expr)
     end
 
     def visit_literal_expr(expr) : Value
@@ -225,7 +266,7 @@ module Lit
 
     private def lookup_variable(name : Token, expr : Expr) : Value
       if distance = @locals[expr]?
-        @environment.get_at(distance, name)
+        @environment.get_at(distance, name.lexeme)
       else
         @globals.get(name)
       end
@@ -240,7 +281,7 @@ module Lit
     private def check_number_operands(operator, left : Value, right : Value)
       return if left.is_a? Float64 && right.is_a? Float64
 
-      runtime_error(operator, "Operands must be numbers.")
+      runtime_error(operator, "Operands must be two numbers or two strings.")
     end
 
     private def truthy?(value : Value) : Bool

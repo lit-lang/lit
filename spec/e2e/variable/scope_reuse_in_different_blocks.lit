@@ -1,0 +1,9 @@
+{
+  let a = "first";
+  println a; # expect: first
+}
+
+{
+  let a = "second";
+  println a; # expect: second
+}

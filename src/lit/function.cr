@@ -3,7 +3,9 @@ require "./interpreter"
 
 module Lit
   class Function < Callable
-    def initialize(@declaration : Stmt::Function, @closure : Environment); end
+    private getter? initializer
+
+    def initialize(@declaration : Stmt::Function, @closure : Environment, @initializer : Bool); end
 
     def call(interpreter, arguments)
       environment = Environment.new(@closure)
@@ -13,12 +15,25 @@ module Lit
       end
 
       interpreter.execute_block(@declaration.body, environment)
+
+      @closure.get_at(0, "self") if initializer?
     rescue e : Interpreter::Return
-      e.value
+      # TODO: should all initializes return self?
+      if initializer?
+        @closure.get_at(0, "self")
+      else
+        e.value
+      end
     end
 
     def arity
       @declaration.params.size
+    end
+
+    def bind(instance)
+      environment = Environment.new(@closure)
+      environment.define("self", instance)
+      Function.new(@declaration, environment, initializer?)
     end
 
     def to_s

@@ -1,0 +1,3 @@
+fn foo {}
+
+foo.bar; # error: [line 3] Only instances have properties.

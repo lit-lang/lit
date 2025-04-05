@@ -1,0 +1,5 @@
+type Foo {
+  init { |a, b|}
+}
+
+let foo = Foo(1); # error: [line 5] Expected 2 arguments but got 1.

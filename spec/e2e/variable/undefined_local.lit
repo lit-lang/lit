@@ -1,0 +1,3 @@
+{
+  println not_defined;  # error: [line 2] Undefined variable 'not_defined'.
+}

@@ -1,2 +1,2 @@
-# error: [line 2] Error at ".": I was expecting a semicolon after the expression.
+# error: [line 2] Error at ";": I was expecting a property name after '.'.
 123.;

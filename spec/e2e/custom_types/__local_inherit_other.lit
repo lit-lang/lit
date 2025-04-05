@@ -1,0 +1,8 @@
+type A {}
+
+fn f {
+  type B < A {}
+  return B;
+}
+
+println f(); # expect: B

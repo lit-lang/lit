@@ -1,0 +1,11 @@
+type Foo {
+  init {
+    println "init";
+    return;
+    println "nope";
+  }
+}
+
+let foo = Foo(); # expect: init
+println foo.init(); # expect: init
+# expect: Foo instance

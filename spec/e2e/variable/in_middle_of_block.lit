@@ -1,0 +1,10 @@
+{
+  let a = "a";
+  println a; # expect: a
+  let b = a + " b";
+  println b; # expect: a b
+  let c = a + " c";
+  println c; # expect: a c
+  let d = b + " d";
+  println d; # expect: a b d
+}

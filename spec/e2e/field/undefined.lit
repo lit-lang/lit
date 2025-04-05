@@ -1,0 +1,4 @@
+type Foo {}
+let foo = Foo();
+
+foo.bar; # error: [line 4] Undefined property 'bar'.

@@ -1,0 +1,19 @@
+type Foo {
+  get_closure {
+    fn f {
+      fn g {
+        fn h {
+          return self.to_string();
+        }
+        return h;
+      }
+      return g;
+    }
+    return f;
+  }
+
+  to_string { return "Foo"; }
+}
+
+let closure = Foo().get_closure();
+println closure()()(); # expect: Foo

@@ -1,0 +1,2 @@
+# error: [line 2] Error at "self": I was expecting a variable name here.
+let self = "value";

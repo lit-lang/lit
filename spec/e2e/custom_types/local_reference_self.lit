@@ -1,0 +1,9 @@
+{
+  type Foo {
+    return_self {
+      return Foo;
+    }
+  }
+
+  println Foo().return_self(); # expect: Foo
+}
