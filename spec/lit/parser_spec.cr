@@ -168,20 +168,6 @@ describe Lit::Parser do
       expr.right.as(Lit::Expr::Literal).value.should eq 1.0
     end
 
-    # NOTE: This test depends on Debug.s_expr
-    it "has correct precedence" do
-      # 1 + (2 - 3 * 4) < 0 == true or true and false
-      tokens = Create.tokens(
-        :number_1, :plus, :left_paren, :number_2, :minus, :number_3, :star,
-        :number_4, :right_paren, :less, :number_0, :equal_equal, :true, :or,
-        :true, :and, :false, :semicolon, :eof
-      )
-      exprs = Lit::Parser.parse(tokens).map(&.as(Lit::Stmt::Expression).expression)
-      s_expr = Lit::Debug.s_expr(exprs)
-
-      s_expr.should eq "(or (== (< (+ 1.0 (group (- 2.0 (* 3.0 4.0)))) 0.0) true) (and true false))"
-    end
-
     it "parses multiple expressions" do
       tokens = Create.tokens(:string, :plus, :number, :minus, :number, :semicolon, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Binary)

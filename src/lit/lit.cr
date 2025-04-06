@@ -8,7 +8,6 @@ require "./resolver"
 require "./interpreter"
 require "./repl"
 require "./text"
-require "./debug"
 
 module Lit
   class Lit
@@ -25,7 +24,6 @@ module Lit
 
       return if had_error?
 
-      # puts Text.hint Debug.s_expr(statements)
       interpreter.interpret(statements)
     end
 
