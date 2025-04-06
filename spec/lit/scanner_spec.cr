@@ -74,13 +74,13 @@ describe Lit::Scanner do
   end
 
   it "scans strings with escape sequences" do
-    str = %("\\n \\t \\\\ \\' \\"")
+    str = %("\\n \\t \\\\ \\' \\" \\y")
 
     token = Lit::Scanner.scan(str).first
     token.should be_a Lit::Token
     token.type.should eq token(STRING)
     token.lexeme.should eq str
-    token.literal.should eq %(\n \t \\ ' ")
+    token.literal.should eq %(\n \t \\ ' " y)
     token.line.should eq 1
   end
 
@@ -158,10 +158,6 @@ describe Lit::Scanner do
 
   it "errors on unterminated string escape" do
     output_of { Lit::Scanner.scan(%("Unterminated \\)) }.should contain("Unterminated string escape")
-  end
-
-  it "errors on unknown escape sequence" do
-    output_of { Lit::Scanner.scan(%('\\x')) }.should contain("Unknown escape sequence 'x'")
   end
 
   it "errors on single '&'" do
