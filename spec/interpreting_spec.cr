@@ -25,9 +25,15 @@ describe "e2e tests" do
 
       expected += "\n" if !expected.empty?
 
-      status, full_output = run_script(<<-CRYSTAL)
-        Lit.run(["#{file}"])
-      CRYSTAL
+      status = nil
+      if ENV["CI"]?
+        status, full_output = run_lit_script(file)
+      else
+        # Fork is deprecated, but this is SO much faster!
+        full_output = output_of {
+          status = Process.fork { Lit.run([file]) }.wait
+        }
+      end
 
       full_output.should eq expected
       will_error ? status.not_nil!.success?.should be_false : status.not_nil!.success?.should be_true
