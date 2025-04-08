@@ -23,7 +23,8 @@ module AstGenerator
 
     define_ast(output_dir, "Stmt", [
       "Block      = statements : Array(Stmt)",
-      "Type      = name : Token, methods : Array(Stmt::Function)",
+      "Break      = keyword : Token",
+      "Type       = name : Token, methods : Array(Stmt::Function)",
       "Expression = expression : Expr",
       "Function   = name : Token, params : Array(Token), body : Array(Stmt)",
       "If         = condition : Expr, then_branch : Stmt, else_branch : Stmt?",

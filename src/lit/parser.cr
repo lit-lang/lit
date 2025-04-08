@@ -59,6 +59,7 @@ module Lit
       return if_statement if match?(TokenType::IF)
       return while_statement if match?(TokenType::WHILE)
       return until_statement if match?(TokenType::UNTIL)
+      return break_statement if match?(TokenType::BREAK)
       return loop_statement if match?(TokenType::LOOP)
       return type_statement if match?(TokenType::TYPE)
       return return_statement if match?(TokenType::RETURN)
@@ -120,6 +121,14 @@ module Lit
       body = Stmt::Block.new(block_statements)
 
       Stmt::Loop.new(body)
+    end
+
+    private def break_statement
+      keyword = previous
+      # TODO: change "a semicolon" to "a ';'" on all error messages
+      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the break statement.")
+
+      Stmt::Break.new(keyword)
     end
 
     private def type_statement
@@ -420,7 +429,9 @@ module Lit
         # return if previous.type == TokenType::SEMICOLON
 
         case peek.type
-        when TokenType::LET, TokenType::IF, TokenType::PRINTLN, TokenType::PRINT
+        when TokenType::LET, TokenType::IF, TokenType::PRINTLN, TokenType::PRINT,
+             TokenType::RETURN, TokenType::WHILE, TokenType::UNTIL, TokenType::BREAK,
+             TokenType::LOOP, TokenType::TYPE, TokenType::FN
           return
         end
 

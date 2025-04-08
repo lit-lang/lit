@@ -10,13 +10,34 @@ loop {
 # expect: 1
 # expect: 2
 
-let = a = loop {
-  println i;
-  i = i + 1;
-  if i == 3 {
-    break;
+# Nested loops example
+let outer = 0;
+loop {
+  let inner = 0;
+  print "outer: ";
+  println outer;
+
+  loop {
+    print "  inner: ";
+    println inner;
+    inner = inner + 1;
+
+    if inner == 2 {
+      break; # Breaks inner loop only
+    }
+  }
+
+  outer = outer + 1;
+  if outer == 3 {
+    break; # Breaks outer loop
   }
 }
-# expect: 0
-# expect: 1
-# expect: 2
+# expect: outer: 0
+# expect:   inner: 0
+# expect:   inner: 1
+# expect: outer: 1
+# expect:   inner: 0
+# expect:   inner: 1
+# expect: outer: 2
+# expect:   inner: 0
+# expect:   inner: 1

@@ -6,6 +6,7 @@ module Lit
   abstract class Stmt
     module Visitor(T)
       abstract def visit_block_stmt(stmt : Block) : T
+      abstract def visit_break_stmt(stmt : Break) : T
       abstract def visit_type_stmt(stmt : Type) : T
       abstract def visit_expression_stmt(stmt : Expression) : T
       abstract def visit_function_stmt(stmt : Function) : T
@@ -25,6 +26,16 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_block_stmt(self)
+      end
+    end
+
+    class Break < Stmt
+      getter keyword : Token
+
+      def initialize(@keyword); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_break_stmt(self)
       end
     end
 

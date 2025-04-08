@@ -1,6 +1,7 @@
 module Lit
   KEYWORDS = {
     and:     TokenType::AND,
+    break:   TokenType::BREAK,
     else:    TokenType::ELSE,
     false:   TokenType::FALSE,
     fn:      TokenType::FN,

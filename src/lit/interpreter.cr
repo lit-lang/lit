@@ -21,6 +21,9 @@ module Lit
       def initialize(@value); end
     end
 
+    class Break < Exception
+    end
+
     getter environment # current environment
 
     def initialize
@@ -63,14 +66,26 @@ module Lit
 
     def visit_while_stmt(stmt) : Nil
       while truthy?(evaluate(stmt.condition))
-        execute(stmt.body)
+        begin
+          execute(stmt.body)
+        rescue e : Break
+          break
+        end
       end
     end
 
     def visit_loop_stmt(stmt) : Nil
       while true
-        execute(stmt.body)
+        begin
+          execute(stmt.body)
+        rescue e : Break
+          break
+        end
       end
+    end
+
+    def visit_break_stmt(stmt) : Nil
+      raise Break.new(nil)
     end
 
     def visit_println_stmt(stmt) : Nil

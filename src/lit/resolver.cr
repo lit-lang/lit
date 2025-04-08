@@ -25,6 +25,7 @@ module Lit
       @scopes = [] of Hash(String, Bool)
       @current_function = FunctionType::None
       @current_type = TypeType::None
+      @loop_depth = 0
     end
 
     private getter scopes
@@ -61,12 +62,22 @@ module Lit
     end
 
     def visit_while_stmt(stmt) : Nil
-      resolve(stmt.condition)
-      resolve(stmt.body)
+      with_loop_scope do
+        resolve(stmt.condition)
+        resolve(stmt.body)
+      end
     end
 
     def visit_loop_stmt(stmt) : Nil
-      resolve(stmt.body)
+      with_loop_scope do
+        resolve(stmt.body)
+      end
+    end
+
+    def visit_break_stmt(stmt) : Nil
+      if @loop_depth == 0
+        Lit.error(stmt.keyword, "Can't use 'break' outside of a loop.")
+      end
     end
 
     def visit_println_stmt(stmt) : Nil
@@ -232,6 +243,13 @@ module Lit
       return if scopes.empty?
 
       scopes.last[name.lexeme] = true
+    end
+
+    private def with_loop_scope(&)
+      @loop_depth += 1
+      yield
+    ensure
+      @loop_depth -= 1
     end
   end
 end
