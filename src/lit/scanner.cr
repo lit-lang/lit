@@ -90,7 +90,7 @@ module Lit
         if match?('&')
           add_token(TokenType::AND)
         else
-          Lit.error(@line, "Unexpected character #{c.inspect}")
+          syntax_error("Unexpected character #{c.inspect}")
         end
       when '\n'
         @line += 1
@@ -106,7 +106,7 @@ module Lit
         elsif alpha?(c)
           consume_identifier
         else
-          Lit.error(@line, "Unexpected character #{c.inspect}")
+          syntax_error("Unexpected character #{c.inspect}")
         end
       end
     end
@@ -127,19 +127,39 @@ module Lit
     end
 
     private def consume_number
-      while digit?(peek)
-        advance
+      scan_digits_with_underscores
+
+      # the next character can't be a _ but I'm allowing it here to give it a
+      # better error message inside `scan_digits_with_underscores`
+      if peek == '.' && (digit?(peek_next) || peek_next == '_')
+        advance # consuming the .
+        scan_digits_with_underscores
       end
 
-      if peek == '.' && digit?(peek_next)
-        advance # consuming the .
+      if current_token_string.ends_with?("_")
+        return syntax_error("Trailing underscore in number literal")
+      end
 
-        while digit?(peek)
-          advance
+      add_token(TokenType::NUMBER, current_token_string.delete('_').to_f)
+    end
+
+    private def scan_digits_with_underscores
+      while digit?(peek) || peek == '_'
+        previous_char = peek_previous
+        current_char = advance
+
+        if current_char == '_'
+          if !digit?(previous_char)
+            return syntax_error("Invalid underscore placement in number literal")
+          end
+        elsif !digit?(current_char)
+          return syntax_error("Unexpected character #{current_char.inspect}")
         end
       end
 
-      add_token(TokenType::NUMBER, current_token_string.to_f)
+      if peek_previous == '_' && peek == '.'
+        syntax_error("Invalid underscore placement in number literal")
+      end
     end
 
     private def consume_line_comment
@@ -152,10 +172,7 @@ module Lit
       nesting = 1
 
       while nesting > 0
-        if at_end?
-          Lit.error(@line, "Unterminated block comment") # TODO: Should this be an error?
-          return
-        end
+        return syntax_error("Unterminated block comment") if at_end?
 
         if closing_comment_next?
           nesting -= 1
@@ -181,14 +198,14 @@ module Lit
       string = ""
 
       loop do
-        return Lit.error(@line, "Unterminated string.") if at_end?
+        return syntax_error("Unterminated string.") if at_end?
 
         c = advance
 
         return add_token(TokenType::STRING, string) if c == quote
 
         if c == '\\' # TODO: Maybe single quote strings shouldn't allow escapes and interpolation
-          return Lit.error(@line, "Unterminated string escape.") if at_end?
+          return syntax_error("Unterminated string escape.") if at_end?
 
           e = advance
 
@@ -232,6 +249,12 @@ module Lit
       @src[@current_pos + 1]
     end
 
+    private def peek_previous : Char
+      return '\0' if @current_pos == 0
+
+      @src[@current_pos - 1]
+    end
+
     private def current_token_string
       @src[@token_start_pos...@current_pos]
     end
@@ -270,6 +293,19 @@ module Lit
 
     private def opening_block_comment_next?
       peek == '#' && peek_next == '='
+    end
+
+    private def syntax_error(message : String)
+      Lit.error(@line, message)
+      synchronize
+    end
+
+    # Avoid reporting unhelpful errors when scanner is in a bad state
+    private def synchronize
+      # TODO: Do we need to handle comments here?
+      until peek == '\n' || peek == ';' || peek == ')' || peek == '}' || peek == ']' || at_end?
+        advance
+      end
     end
   end
 end
