@@ -1,0 +1,22 @@
+let i = 0;
+loop {
+  println i;
+  i = i + 1;
+  if i == 3 {
+    break;
+  }
+}
+# expect: 0
+# expect: 1
+# expect: 2
+
+let = a = loop {
+  println i;
+  i = i + 1;
+  if i == 3 {
+    break;
+  }
+}
+# expect: 0
+# expect: 1
+# expect: 2

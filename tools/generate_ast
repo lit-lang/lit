@@ -31,6 +31,7 @@ module AstGenerator
       "Print      = expression : Expr",
       "Return     = keyword : Token, value : Expr?",
       "Let        = name : Token, initializer : Expr",
+      "Loop       = body : Stmt",
       "While      = condition : Expr, body : Stmt",
     ])
   end

@@ -59,6 +59,7 @@ module Lit
       return if_statement if match?(TokenType::IF)
       return while_statement if match?(TokenType::WHILE)
       return until_statement if match?(TokenType::UNTIL)
+      return loop_statement if match?(TokenType::LOOP)
       return type_statement if match?(TokenType::TYPE)
       return return_statement if match?(TokenType::RETURN)
       return println_statement if match?(TokenType::PRINTLN)
@@ -109,7 +110,16 @@ module Lit
 
       body = Stmt::Block.new(block_statements)
 
+      # desugar until to while
       Stmt::While.new(Expr::Unary.new(Token.new(TokenType::BANG, "!", nil, 0), condition), body)
+    end
+
+    private def loop_statement
+      consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the loop keyword.")
+
+      body = Stmt::Block.new(block_statements)
+
+      Stmt::Loop.new(body)
     end
 
     private def type_statement

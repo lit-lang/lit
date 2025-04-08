@@ -67,6 +67,12 @@ module Lit
       end
     end
 
+    def visit_loop_stmt(stmt) : Nil
+      while true
+        execute(stmt.body)
+      end
+    end
+
     def visit_println_stmt(stmt) : Nil
       puts stringify(evaluate(stmt.expression))
     end

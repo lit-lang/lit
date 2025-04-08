@@ -65,6 +65,10 @@ module Lit
       resolve(stmt.body)
     end
 
+    def visit_loop_stmt(stmt) : Nil
+      resolve(stmt.body)
+    end
+
     def visit_println_stmt(stmt) : Nil
       resolve(stmt.expression)
     end
