@@ -30,6 +30,7 @@ module Lit
     private def declaration
       return function("function") if match?(TokenType::FN)
       return let_declaration if match?(TokenType::LET)
+      return type_declaration if match?(TokenType::TYPE)
 
       statement
     rescue ParserError
@@ -55,6 +56,22 @@ module Lit
       Stmt::Let.new(name, initializer)
     end
 
+    private def type_declaration
+      # TODO: does this allow any kind of identifier be a class name? even lowercase?
+      name = consume(TokenType::IDENTIFIER, "I was expecting a type name.")
+      consume(TokenType::LEFT_BRACE, "I was a '{' after the type name.")
+
+      methods = [] of Stmt::Function
+
+      until check(TokenType::RIGHT_BRACE) || at_end?
+        methods << function("method")
+      end
+
+      consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the type body.")
+
+      Stmt::Type.new(name, methods)
+    end
+
     private def statement
       return if_statement if match?(TokenType::IF)
       return while_statement if match?(TokenType::WHILE)
@@ -62,7 +79,6 @@ module Lit
       return loop_statement if match?(TokenType::LOOP)
       return break_statement if match?(TokenType::BREAK)
       return next_statement if match?(TokenType::NEXT)
-      return type_statement if match?(TokenType::TYPE)
       return return_statement if match?(TokenType::RETURN)
       return println_statement if match?(TokenType::PRINTLN)
       return print_statement if match?(TokenType::PRINT)
@@ -136,22 +152,6 @@ module Lit
       keyword = previous
       consume(TokenType::SEMICOLON, "I was expecting a semicolon after the next statement.")
       Stmt::Next.new(keyword)
-    end
-
-    private def type_statement
-      # TODO: does this allow any kind of identifier be a class name? even lowercase?
-      name = consume(TokenType::IDENTIFIER, "I was expecting a type name.")
-      consume(TokenType::LEFT_BRACE, "I was a '{' after the type name.")
-
-      methods = [] of Stmt::Function
-
-      until check(TokenType::RIGHT_BRACE) || at_end?
-        methods << function("method")
-      end
-
-      consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the type body.")
-
-      Stmt::Type.new(name, methods)
     end
 
     private def println_statement
