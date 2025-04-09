@@ -80,7 +80,7 @@ module Lit
     end
 
     def visit_loop_stmt(stmt) : Nil
-      while true
+      loop do
         begin
           execute(stmt.body)
         rescue e : Break
