@@ -36,6 +36,9 @@ module Lit
     rescue File::NotFoundError
       STDERR.puts Text.error("Error: File not found!")
       exit(ExitCode::NOINPUT)
+    rescue IO::Error
+      STDERR.puts Text.error("Error: Unable to read file!")
+      exit(ExitCode::NOINPUT)
     ensure
       exit(ExitCode::DATAERR) if had_error?
       exit(ExitCode::SOFTWARE) if had_runtime_error?
