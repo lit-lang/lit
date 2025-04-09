@@ -9,6 +9,7 @@ module Lit
     is:      TokenType::EQUAL_EQUAL,
     let:     TokenType::LET,
     loop:    TokenType::LOOP,
+    next:    TokenType::NEXT,
     nil:     TokenType::NIL,
     not:     TokenType::BANG,
     or:      TokenType::OR,

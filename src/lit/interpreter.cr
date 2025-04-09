@@ -24,6 +24,9 @@ module Lit
     class Break < Exception
     end
 
+    class Next < Exception
+    end
+
     getter environment # current environment
 
     def initialize
@@ -70,6 +73,8 @@ module Lit
           execute(stmt.body)
         rescue e : Break
           break
+        rescue e : Next
+          next
         end
       end
     end
@@ -80,12 +85,18 @@ module Lit
           execute(stmt.body)
         rescue e : Break
           break
+        rescue e : Next
+          next
         end
       end
     end
 
     def visit_break_stmt(stmt) : Nil
       raise Break.new(nil)
+    end
+
+    def visit_next_stmt(stmt) : Nil
+      raise Next.new(nil)
     end
 
     def visit_println_stmt(stmt) : Nil

@@ -1,0 +1,7 @@
+# error: [line 3] Error at "next": Can't use 'next' outside of a loop.
+fn function {
+  next;
+}
+
+# error: [line 7] Error at "next": Can't use 'next' outside of a loop.
+next;

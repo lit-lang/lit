@@ -59,8 +59,9 @@ module Lit
       return if_statement if match?(TokenType::IF)
       return while_statement if match?(TokenType::WHILE)
       return until_statement if match?(TokenType::UNTIL)
-      return break_statement if match?(TokenType::BREAK)
       return loop_statement if match?(TokenType::LOOP)
+      return break_statement if match?(TokenType::BREAK)
+      return next_statement if match?(TokenType::NEXT)
       return type_statement if match?(TokenType::TYPE)
       return return_statement if match?(TokenType::RETURN)
       return println_statement if match?(TokenType::PRINTLN)
@@ -129,6 +130,12 @@ module Lit
       consume(TokenType::SEMICOLON, "I was expecting a semicolon after the break statement.")
 
       Stmt::Break.new(keyword)
+    end
+
+    private def next_statement
+      keyword = previous
+      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the next statement.")
+      Stmt::Next.new(keyword)
     end
 
     private def type_statement

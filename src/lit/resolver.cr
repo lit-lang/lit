@@ -80,6 +80,12 @@ module Lit
       end
     end
 
+    def visit_next_stmt(stmt) : Nil
+      if @loop_depth == 0
+        Lit.error(stmt.keyword, "Can't use 'next' outside of a loop.")
+      end
+    end
+
     def visit_println_stmt(stmt) : Nil
       resolve(stmt.expression)
     end
