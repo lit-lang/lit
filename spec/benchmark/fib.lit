@@ -1,0 +1,15 @@
+let before = clock();
+fn fib { |n|
+  if n <= 1 {
+    return n;
+  }
+  return fib(n - 1) + fib(n - 2);
+}
+
+fib(25);
+let after = clock();
+print "Time taken: ";
+print (after - before);
+println "s";
+# Time taken: 10.763844966888428s
+# on release build
