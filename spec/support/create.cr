@@ -24,7 +24,7 @@ module Create
     greater:       ">",
     greater_equal: ">=",
     equal:         "=",
-    pipe_operator: "|>",
+    pipe_greater:  "|>",
     print:         "print",
     println:       "println",
     let:           "let",

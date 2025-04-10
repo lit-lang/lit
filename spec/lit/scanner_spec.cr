@@ -34,7 +34,7 @@ describe Lit::Scanner do
   it_scans "|", to_type: token(BAR)
   it_scans "||", to_type: token(OR)
   it_scans "&&", to_type: token(AND)
-  it_scans "|>", to_type: token(PIPE_OPERATOR)
+  it_scans "|>", to_type: token(PIPE_GREATER)
   it_scans "!=", to_type: token(BANG_EQUAL)
   it_scans "silverchair!?", to_type: token(IDENTIFIER)
 

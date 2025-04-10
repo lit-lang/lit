@@ -248,7 +248,7 @@ module Lit
     private def pipeline_expr
       expr = or_expr
 
-      while match?(TokenType::PIPE_OPERATOR)
+      while match?(TokenType::PIPE_GREATER)
         operator = previous
         right = call
 

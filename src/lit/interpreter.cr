@@ -192,7 +192,7 @@ module Lit
     end
 
     def visit_binary_expr(expr) : Value
-      if expr.operator.type.pipe_operator?
+      if expr.operator.type.pipe_greater?
         expr.right.as(Expr::Call).arguments.unshift(expr.left)
         return evaluate(expr.right)
       end

@@ -82,7 +82,7 @@ module Lit
         if match?('|')
           add_token(TokenType::OR)
         elsif match?('>')
-          add_token(TokenType::PIPE_OPERATOR)
+          add_token(TokenType::PIPE_GREATER)
         else
           add_token(TokenType::BAR)
         end
