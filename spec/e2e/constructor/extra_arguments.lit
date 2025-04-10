@@ -5,4 +5,4 @@ type Foo {
   }
 }
 
-let foo = Foo(1, 2, 3, 4); # error: [line 8] Expected 2 arguments but got 4.
+let foo = Foo(1, 2, 3, 4); # error: [line 8] Runtime error: Expected 2 arguments but got 4.

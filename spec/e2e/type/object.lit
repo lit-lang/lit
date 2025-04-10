@@ -1,4 +1,4 @@
 type Foo {}
 
 let foo = Foo();
-foo(); # error: [line 4] Can only call functions and types.
+foo(); # error: [line 4] Runtime error: Can only call functions and types.

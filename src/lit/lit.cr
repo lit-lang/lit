@@ -45,7 +45,7 @@ module Lit
     end
 
     def self.runtime_error(error)
-      STDERR.puts Text.error("[line #{error.token.line}] #{error.message}")
+      STDERR.puts Text.error("[line #{error.token.line}] Runtime error: #{error.message}")
 
       self.had_runtime_error = true
     end
@@ -55,10 +55,14 @@ module Lit
     end
 
     def self.error(token : Token, message : String)
+      report(token.line, error_location(token), message)
+    end
+
+    private def self.error_location(token : Token) : String
       if token.type.eof?
-        report(token.line, " at end", message)
+        " at end"
       else
-        report(token.line, " at #{token.lexeme.inspect}", message)
+        " at #{token.lexeme.inspect}"
       end
     end
 

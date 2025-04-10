@@ -4,4 +4,4 @@ let a = "1
 3
 ";
 
-err; # error: [line 7] Undefined variable 'err'.
+err; # error: [line 7] Runtime error: Undefined variable 'err'.

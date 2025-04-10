@@ -1,1 +1,1 @@
-true.foo = "value"; # error: [line 1] Only instances have fields.
+true.foo = "value"; # error: [line 1] Runtime error: Only instances have fields.

@@ -1,1 +1,1 @@
-"str".foo = "value"; # error: [line 1] Only instances have fields.
+"str".foo = "value"; # error: [line 1] Runtime error: Only instances have fields.

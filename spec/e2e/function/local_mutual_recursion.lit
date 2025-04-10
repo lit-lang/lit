@@ -1,7 +1,7 @@
 {
   fn is_even { |n|
     if n == 0 { return true; }
-    return is_odd(n - 1); # error: [line 4] Undefined variable 'is_odd'.
+    return is_odd(n - 1); # error: [line 4] Runtime error: Undefined variable 'is_odd'.
   }
 
   fn is_odd { |n|

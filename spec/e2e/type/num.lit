@@ -1,1 +1,1 @@
-123(); # error: [line 1] Can only call functions and types.
+123(); # error: [line 1] Runtime error: Can only call functions and types.

@@ -1,4 +1,4 @@
 type Foo {}
 let foo = Foo();
 
-foo.bar; # error: [line 4] Undefined property 'bar'.
+foo.bar; # error: [line 4] Runtime error: Undefined property 'bar'.

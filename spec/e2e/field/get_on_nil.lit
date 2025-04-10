@@ -1,1 +1,1 @@
-nil.foo; # error: [line 1] Only instances have properties.
+nil.foo; # error: [line 1] Runtime error: Only instances have properties.
