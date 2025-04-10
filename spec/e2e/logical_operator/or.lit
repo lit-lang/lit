@@ -10,8 +10,8 @@ println false or false; # expect: false
 println false or false or false; # expect: false
 
 # Short-circuit at the first true argument.
-let a = "before";
-let b = "before";
+var a = "before";
+var b = "before";
 (a = false) or
     (b = true) or
     (a = "bad");

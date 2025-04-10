@@ -1,12 +1,12 @@
 # Single-expression body.
-let c = 0;
+var c = 0;
 while c < 3 { println c = c + 1; }
 # expect: 1
 # expect: 2
 # expect: 3
 
 # Parenthesized condition.
-let a = 0;
+var a = 0;
 while (a < 3) {
   println a;
   a = a + 1;

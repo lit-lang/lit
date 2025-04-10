@@ -1,7 +1,7 @@
-let before = clock();
+var before = clock();
 fn sum { |n|
-  let i = 0;
-  let total = 0;
+  var i = 0;
+  var total = 0;
   while i < n {
     total = total + i;
     i = i + 1;
@@ -10,7 +10,7 @@ fn sum { |n|
 }
 
 sum(10_000_000);
-let after = clock();
+var after = clock();
 print "Time taken: ";
 print (after - before);
 println "s";

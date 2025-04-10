@@ -1,4 +1,4 @@
-let f;
+var f;
 
 fn foo { |param|
   fn f_ {

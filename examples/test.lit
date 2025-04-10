@@ -17,7 +17,7 @@ describe("MyModule") { |test, expect| # FIXME: not ideal, but self everywhere is
 }
 
 struct TestRunner {
-  let test_suites = []
+  var test_suites = []
 
   fn run {
     let successful = self.test_suites.all? { |suite| suite.run().success?() }
@@ -70,10 +70,10 @@ struct TestSuite {
   fn run {
     println "Running suite #{self.name}"
 
-    let success? = self.test_cases.all? { |name, fun|
+    var success? = self.test_cases.all? { |name, fun|
       println "  Running test #{name}... "
 
-      let result = fun()
+      var result = fun()
       if result.failed? {
         println "Failed: #{result.reason}"
       } else {
@@ -98,9 +98,9 @@ struct TestSuite {
 }
 
 struct Expectation {
-  let expected
-  let failed?
-  let reason
+  var expected
+  var failed?
+  var reason
 
   new { |expected|
     self.expected = expected

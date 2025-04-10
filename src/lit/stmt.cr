@@ -15,7 +15,7 @@ module Lit
       abstract def visit_println_stmt(stmt : Println) : T
       abstract def visit_print_stmt(stmt : Print) : T
       abstract def visit_return_stmt(stmt : Return) : T
-      abstract def visit_let_stmt(stmt : Let) : T
+      abstract def visit_var_stmt(stmt : Var) : T
       abstract def visit_loop_stmt(stmt : Loop) : T
       abstract def visit_while_stmt(stmt : While) : T
     end
@@ -126,14 +126,14 @@ module Lit
       end
     end
 
-    class Let < Stmt
+    class Var < Stmt
       getter name : Token
       getter initializer : Expr
 
       def initialize(@name, @initializer); end
 
       def accept(visitor : Visitor)
-        visitor.visit_let_stmt(self)
+        visitor.visit_var_stmt(self)
       end
     end
 

@@ -1,4 +1,4 @@
-let before = clock();
+var before = clock();
 fn fib { |n|
   if n <= 1 {
     return n;
@@ -7,7 +7,7 @@ fn fib { |n|
 }
 
 fib(25);
-let after = clock();
+var after = clock();
 print "Time taken: ";
 print (after - before);
 println "s";

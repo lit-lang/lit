@@ -1,5 +1,5 @@
 {
-  let a = "outer";
+  var a = "outer";
   {
     println a; # expect: outer
   }

@@ -7,18 +7,18 @@ describe Lit::Parser do
   it_parses :number, to_literal: 1.0
   it_parses :string, to_literal: "some text"
 
-  describe "let statements" do
-    it "parses let statements" do
-      tokens = Create.tokens(:let, :identifier, :semicolon, :eof)
-      stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Let)
+  describe "var statements" do
+    it "parses var statements" do
+      tokens = Create.tokens(:var, :identifier, :semicolon, :eof)
+      stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Var)
 
       stmt.name.lexeme.should eq "my_var"
       stmt.initializer.as(Lit::Expr::Literal).value.should eq nil
     end
 
-    it "parses let statements with initializer" do
-      tokens = Create.tokens(:let, :identifier, :equal, :number, :semicolon, :eof)
-      stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Let)
+    it "parses var statements with initializer" do
+      tokens = Create.tokens(:var, :identifier, :equal, :number, :semicolon, :eof)
+      stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Var)
 
       stmt.name.lexeme.should eq "my_var"
       stmt.initializer.as(Lit::Expr::Literal).value.should eq 1.0
@@ -26,7 +26,7 @@ describe Lit::Parser do
 
     context "when there's no variable name" do
       it do
-        tokens = Create.tokens(:let, :semicolon, :eof)
+        tokens = Create.tokens(:var, :semicolon, :eof)
         error_msg = output_of { Lit::Parser.parse(tokens) }
 
         error_msg.should contain("I was expecting a variable name here")
@@ -35,7 +35,7 @@ describe Lit::Parser do
 
     context "when there's no semicolon after variable declaration" do
       it do
-        tokens = Create.tokens(:let, :identifier, :eof)
+        tokens = Create.tokens(:var, :identifier, :eof)
         error_msg = output_of { Lit::Parser.parse(tokens) }
 
         error_msg.should contain("I was expecting a semicolon after variable declaration")

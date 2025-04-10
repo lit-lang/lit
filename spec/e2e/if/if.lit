@@ -6,5 +6,5 @@ if false { println "bad"; };
 if (true) { println "parentheses"; } # expect: parentheses
 
 # Assignment in if condition.
-let a = false;
+var a = false;
 if a = true { println a; } # expect: true

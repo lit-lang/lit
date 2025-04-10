@@ -1,4 +1,4 @@
-let a = 10;
+var a = 10;
 println a; # expect: 10
 a = 20;
 println a; # expect: 20

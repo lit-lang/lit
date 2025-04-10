@@ -1,5 +1,5 @@
 {
-  let a = "before";
+  var a = "before";
   println a; # expect: before
 
   a = "after";

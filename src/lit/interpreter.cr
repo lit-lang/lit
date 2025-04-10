@@ -116,7 +116,7 @@ module Lit
       @environment.define(stmt.name.lexeme, function)
     end
 
-    def visit_let_stmt(stmt) : Nil
+    def visit_var_stmt(stmt) : Nil
       @environment.define(stmt.name.lexeme, evaluate(stmt.initializer))
     end
 

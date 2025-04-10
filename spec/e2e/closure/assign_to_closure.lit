@@ -1,8 +1,8 @@
-let f;
-let g;
+var f;
+var g;
 
 {
-  let local = "local";
+  var local = "local";
   fn f_ {
     println local;
     local = "after f";

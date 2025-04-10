@@ -1,4 +1,4 @@
-let i = 0;
+var i = 0;
 loop {
   println i;
   i = i + 1;
@@ -11,9 +11,9 @@ loop {
 # expect: 2
 
 # Nested loops example
-let outer = 0;
+var outer = 0;
 loop {
-  let inner = 0;
+  var inner = 0;
   print "outer: ";
   println outer;
 

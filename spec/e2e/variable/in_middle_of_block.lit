@@ -1,10 +1,10 @@
 {
-  let a = "a";
+  var a = "a";
   println a; # expect: a
-  let b = a + " b";
+  var b = a + " b";
   println b; # expect: a b
-  let c = a + " c";
+  var c = a + " c";
   println c; # expect: a c
-  let d = b + " d";
+  var d = b + " d";
   println d; # expect: a b d
 }

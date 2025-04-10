@@ -1,6 +1,6 @@
 type Foo {}
 
-let foo = Foo();
+var foo = Foo();
 fn set_fields {
   foo.bilberry = "bilberry";
   foo.lime = "lime";

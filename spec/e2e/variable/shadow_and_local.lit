@@ -1,8 +1,8 @@
 {
-  let a = "outer";
+  var a = "outer";
   {
     println a; # expect: outer
-    let a = "inner";
+    var a = "inner";
     println a; # expect: inner
   }
 }

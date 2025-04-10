@@ -27,7 +27,7 @@ module Create
     pipe_greater:  "|>",
     print:         "print",
     println:       "println",
-    let:           "let",
+    var:           "var",
     colon:         ":",
     semicolon:     ";",
     eof:           "",

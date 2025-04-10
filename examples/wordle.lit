@@ -3,7 +3,7 @@
 if let answers = File.read!("wordle-answers.txt") {
   let words = answers.split
   let word = words.sample
-  let guess = ""
+  var guess = ""
 
   while guess != word {
     print "Guess: "

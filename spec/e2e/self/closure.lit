@@ -9,5 +9,5 @@ type Foo {
   to_string { return "Foo"; }
 }
 
-let closure = Foo().get_closure();
+var closure = Foo().get_closure();
 println closure(); # expect: Foo

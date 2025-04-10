@@ -18,5 +18,5 @@
 
 # Ignored =#
 
-let you  #= 🥷 =# = "can do this!";
+var you  #= 🥷 =# = "can do this!";
 println(you); # expect: can do this!

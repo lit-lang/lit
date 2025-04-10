@@ -1,2 +1,2 @@
-let a = "a";
+var a = "a";
 (a) = "value"; # error: [line 2] Error at "=": Invalid assignment target.

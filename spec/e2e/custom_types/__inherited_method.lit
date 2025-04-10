@@ -16,7 +16,7 @@ type Baz < Bar {
   }
 }
 
-let baz = Baz();
+var baz = Baz();
 baz.in_foo(); # expect: in foo
 baz.in_bar(); # expect: in bar
 baz.in_baz(); # expect: in baz

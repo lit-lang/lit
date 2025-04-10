@@ -1,6 +1,6 @@
 type Foo {}
 
-let foo = Foo();
+var foo = Foo();
 foo.bar = "not fn";
 
 foo.bar(); # error: [line 6] Runtime error: Can only call functions and types.

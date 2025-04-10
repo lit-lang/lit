@@ -1,10 +1,10 @@
-let a = "outer";
+var a = "outer";
 {
   fn foo {
     println a;
   }
 
   foo(); # expect: outer
-  let a = "inner";
+  var a = "inner";
   foo(); # expect: outer
 }

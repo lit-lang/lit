@@ -1,5 +1,5 @@
 # Tests that we correctly track the line info across multiline strings.
-let a = "1
+var a = "1
 2
 3
 ";

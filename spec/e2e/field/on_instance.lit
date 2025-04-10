@@ -1,6 +1,6 @@
 type Foo {}
 
-let foo = Foo();
+var foo = Foo();
 
 println foo.bar = "bar value"; # expect: bar value
 println foo.baz = "baz value"; # expect: baz value

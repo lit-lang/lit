@@ -1,4 +1,4 @@
 type Foo {}
 
-let foo = Foo();
+var foo = Foo();
 println foo; # expect: Foo instance

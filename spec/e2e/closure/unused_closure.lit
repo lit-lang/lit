@@ -3,7 +3,7 @@
 # the closure was not executed.
 
 {
-  let a = "a";
+  var a = "a";
   if (false) {
     fn foo { a; }
   }

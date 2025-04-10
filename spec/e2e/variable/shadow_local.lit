@@ -1,7 +1,7 @@
 {
-  let a = "local";
+  var a = "local";
   {
-    let a = "shadow";
+    var a = "shadow";
     println a; # expect: shadow
   }
   println a; # expect: local

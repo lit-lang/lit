@@ -1,9 +1,9 @@
 {
-  let a = "first";
+  var a = "first";
   println a; # expect: first
 }
 
 {
-  let a = "second";
+  var a = "second";
   println a; # expect: second
 }

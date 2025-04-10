@@ -32,7 +32,7 @@ module AstGenerator
       "Println    = expression : Expr",
       "Print      = expression : Expr",
       "Return     = keyword : Token, value : Expr?",
-      "Let        = name : Token, initializer : Expr",
+      "Var        = name : Token, initializer : Expr",
       "Loop       = body : Stmt",
       "While      = condition : Expr, body : Stmt",
     ])

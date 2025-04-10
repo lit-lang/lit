@@ -106,7 +106,7 @@ module Lit
       resolve_function(stmt, FunctionType::Function)
     end
 
-    def visit_let_stmt(stmt) : Nil
+    def visit_var_stmt(stmt) : Nil
       declare(stmt.name)
       resolve(stmt.initializer.not_nil!) if stmt.initializer
       define(stmt.name)

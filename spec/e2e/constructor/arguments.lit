@@ -6,6 +6,6 @@ type Foo {
   }
 }
 
-let foo = Foo(1, 2);
+var foo = Foo(1, 2);
 println foo.a; # expect: 1
 println foo.b; # expect: 2

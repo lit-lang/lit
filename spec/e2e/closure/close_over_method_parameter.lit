@@ -1,4 +1,4 @@
-let f;
+var f;
 
 type Foo {
   method { |param|

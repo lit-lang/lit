@@ -4,8 +4,8 @@
 # then didn't handle not finding the variable.
 
 fn f {
-  let a = "a";
-  let b = "b";
+  var a = "a";
+  var b = "b";
   fn g {
     println b; # expect: b
     println a; # expect: a

@@ -1,6 +1,6 @@
 module Enumerable {
   fn is_empty? { |enumerable|
-    let is_empty? = true;
+    var is_empty? = true;
 
     self.each { |element|
       is_empty? = false;
@@ -11,7 +11,7 @@ module Enumerable {
   }
 
   fn first! {
-    let element! = nil
+    var element! = nil
 
     self.each { |first|
       element! = first
@@ -22,7 +22,7 @@ module Enumerable {
   }
 
   fn map { |enumerable, fun|
-    let acc = enumerable.type.init()
+    var acc = enumerable.type.init()
 
     enumerable.each { |value|
       acc << fun(value)
@@ -32,7 +32,7 @@ module Enumerable {
   }
 
   fn filter { |enumerable, fun|
-    let acc = enumerable.init()
+    var acc = enumerable.init()
 
     enumerable.each { |value|
       if fun(value) {
@@ -81,7 +81,7 @@ Array.map([1, 2, 3]) { |x| x * 2 } |> Array.each { println(it) } # 2 4 6
 struct List {
   ...Enumerable # include module
 
-  let vals = []
+  var vals = []
 
   fn init {
     List.new()

@@ -7,7 +7,7 @@ module Lit
     fn:      TokenType::FN,
     if:      TokenType::IF,
     is:      TokenType::EQUAL_EQUAL,
-    let:     TokenType::LET,
+    var:     TokenType::VAR,
     loop:    TokenType::LOOP,
     next:    TokenType::NEXT,
     nil:     TokenType::NIL,
