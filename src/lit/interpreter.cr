@@ -192,6 +192,11 @@ module Lit
     end
 
     def visit_binary_expr(expr) : Value
+      if expr.operator.type.pipe_operator?
+        expr.right.as(Expr::Call).arguments.unshift(expr.left)
+        return evaluate(expr.right)
+      end
+
       left = evaluate(expr.left)
       right = evaluate(expr.right)
 

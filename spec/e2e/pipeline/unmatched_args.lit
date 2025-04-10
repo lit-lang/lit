@@ -1,0 +1,2 @@
+fn no_op {}
+1 |> no_op(); # error: [line 2] Expected 0 arguments but got 1.

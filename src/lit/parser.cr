@@ -231,7 +231,7 @@ module Lit
     end
 
     private def ternary
-      expr = or_expr
+      expr = pipeline_expr
 
       if match?(TokenType::QUESTION)
         question_mark = previous
@@ -240,6 +240,23 @@ module Lit
         right = ternary
 
         return Expr::Ternary.new(expr, left, right, question_mark)
+      end
+
+      expr
+    end
+
+    private def pipeline_expr
+      expr = or_expr
+
+      while match?(TokenType::PIPE_OPERATOR)
+        operator = previous
+        right = call
+
+        if !right.is_a? Expr::Call
+          error(operator, "I was expecting a function call after the pipeline operator.")
+        end
+
+        expr = Expr::Binary.new(expr, operator, right)
       end
 
       expr
