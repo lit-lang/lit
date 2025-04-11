@@ -7,10 +7,10 @@ module Lit
 
     def initialize(@name : String, @methods : Hash(String, Function)); end
 
-    def call(interpreter, arguments)
+    def call(interpreter, arguments, token) : Instance
       Instance.new(self).tap do |instance|
         if initializer = find_method("init")
-          initializer.bind(instance).call(interpreter, arguments)
+          initializer.bind(instance).call(interpreter, arguments, token)
         end
       end
     end

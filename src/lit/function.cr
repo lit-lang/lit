@@ -7,7 +7,7 @@ module Lit
 
     def initialize(@declaration : Stmt::Function, @closure : Environment, @initializer : Bool); end
 
-    def call(interpreter, arguments)
+    def call(interpreter, arguments, token) : Value
       environment = Environment.new(@closure)
 
       @declaration.params.each_with_index do |param, index|

@@ -5,7 +5,7 @@ require "./value"
 require "./runtime_error"
 require "./environment"
 require "./callable"
-require "./native"
+require "./stdlib/native"
 require "./function"
 require "./type"
 require "./instance"
@@ -32,7 +32,9 @@ module Lit
     def initialize
       @locals = {} of Expr => Int32
       @globals = Environment.new
-      @globals.define("clock", Clock.new)
+      Stdlib::Native.all.each do |klass|
+        @globals.define(klass.fn_name, klass.new)
+      end
       @environment = @globals
     end
 
@@ -143,7 +145,7 @@ module Lit
         runtime_error(expr.paren, "Expected #{function.arity} arguments but got #{arguments.size}.")
       end
 
-      function.call(self, arguments)
+      function.call(self, arguments, expr.paren)
     end
 
     def visit_get_expr(expr) : Value

@@ -2,13 +2,11 @@ require "./value"
 require "./interpreter"
 
 module Lit
-  class Callable
+  abstract class Callable
     def arity : Int32
       0
     end
 
-    def call(interpreter : Interpreter, arguments : Array(Value)) : Value
-      raise "Not implemented"
-    end
+    abstract def call(interpreter : Interpreter, arguments : Array(Value), token : Token) : Value
   end
 end

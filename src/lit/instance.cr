@@ -4,7 +4,7 @@ require "./value"
 module Lit
   class Instance
     private getter fields
-    private getter type
+    getter type
 
     def initialize(@type : Type, @fields = {} of String => Value); end
 
