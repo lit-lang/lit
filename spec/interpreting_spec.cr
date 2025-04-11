@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-describe "e2e tests" do
+describe "e2e tests", tags: "e2e" do
   example_files = Dir.glob("spec/e2e/**/*.lit").reject(&.includes?("__")).sort!
 
   if ENV["ONLY"]? && !ENV["ONLY"].empty?
