@@ -32,7 +32,7 @@ module AstGenerator
       "Println    = expression : Expr",
       "Print      = expression : Expr",
       "Return     = keyword : Token, value : Expr?",
-      "Var        = name : Token, initializer : Expr",
+      "Var        = name : Token, initializer : Expr, mutable : Bool",
       "Loop       = body : Stmt",
       "While      = condition : Expr, body : Stmt",
     ])
@@ -96,7 +96,11 @@ module AstGenerator
 
   private def define_getters(file, fields)
     fields.each do |field|
-      file.puts "      getter #{field}"
+      if field.end_with?("Bool")
+        file.puts "      getter? #{field}"
+      else
+        file.puts "      getter #{field}"
+      end
     end
     file.puts
   end

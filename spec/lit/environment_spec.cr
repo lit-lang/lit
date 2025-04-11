@@ -15,22 +15,10 @@ describe Lit::Environment do
   describe "#get" do
     it "access variables by name" do
       env = Lit::Environment.new
-      env.values["my_var"] = true
+      env.values["my_var"] = Lit::Environment::Binding.new(true, mutable: false)
       var = Create.token(:identifier, "my_var")
 
       env.get(var).should eq true
-    end
-
-    context "when variable is on a enclosing scope" do
-      it "searches on the enclosing scope" do
-        enclosing = Lit::Environment.new
-        enclosing.values["my_var"] = true
-        env = Lit::Environment.new(enclosing)
-
-        var = Create.token(:identifier, "my_var")
-
-        env.get(var).should eq true
-      end
     end
 
     context "when variable does not exist" do
@@ -48,25 +36,13 @@ describe Lit::Environment do
   describe "#assign" do
     it "changes the value of the given variable" do
       env = Lit::Environment.new
-      env.values["my_var"] = true
+      env.values["my_var"] = Lit::Environment::Binding.new(true, mutable: true)
+
       var = Create.token(:identifier, "my_var")
 
       env.assign(var, false)
 
-      env.values["my_var"].should eq false
-    end
-
-    context "when variable is on a enclosing scope" do
-      it "searches on the enclosing scope" do
-        enclosing = Lit::Environment.new
-        enclosing.values["my_var"] = true
-        env = Lit::Environment.new(enclosing)
-        var = Create.token(:identifier, "my_var")
-
-        env.assign(var, false)
-
-        enclosing.values["my_var"].should eq false
-      end
+      env.values["my_var"].value.should eq false
     end
 
     context "when variable does not exist" do

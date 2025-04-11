@@ -47,7 +47,7 @@ module Lit
     end
 
     def visit_type_stmt(stmt) : Nil
-      environment.define(stmt.name.lexeme, nil)
+      environment.define(stmt.name.lexeme, UNINITIALIZED)
 
       methods = {} of String => Function
       stmt.methods.each do |method|
@@ -117,7 +117,7 @@ module Lit
     end
 
     def visit_var_stmt(stmt) : Nil
-      @environment.define(stmt.name.lexeme, evaluate(stmt.initializer))
+      @environment.define(stmt.name.lexeme, evaluate(stmt.initializer), stmt.mutable?)
     end
 
     def visit_expression_stmt(stmt) : Nil

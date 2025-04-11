@@ -13,6 +13,16 @@ describe Lit::Parser do
       stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Var)
 
       stmt.name.lexeme.should eq "my_var"
+      stmt.mutable?.should be_true
+      stmt.initializer.as(Lit::Expr::Literal).value.should eq nil
+    end
+
+    it "parses let statements" do
+      tokens = Create.tokens(:let, :identifier, :semicolon, :eof)
+      stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Var)
+
+      stmt.name.lexeme.should eq "my_var"
+      stmt.mutable?.should be_false
       stmt.initializer.as(Lit::Expr::Literal).value.should eq nil
     end
 

@@ -6,26 +6,35 @@ module Lit
   class Environment
     getter values
     getter enclosing : Environment?
-    @values = {} of String => Value
+
+    # a binding is a pair of value and a boolean indicating if it is mutable
+    class Binding
+      property value : Value
+      getter? mutable : Bool
+
+      def initialize(@value, @mutable : Bool); end
+
+      def uninitialized?
+        @value == UNINITIALIZED
+      end
+    end
+
+    @values = {} of String => Binding
 
     def initialize(@enclosing : Environment? = nil); end
 
-    def define(name, value)
-      @values[name] = value
+    def define(name, value, mutable = false)
+      @values[name] = Binding.new(value, mutable)
     end
 
     def get_at(distance : Int32, name : String)
-      ancestor(distance).values[name]
+      ancestor(distance).values[name].value
     end
 
     def get(name : Token)
-      if @values.has_key? name.lexeme
-        @values[name.lexeme]
-      elsif enclosing = @enclosing
-        enclosing.get(name) # TODO: Maybe this could be faster iteratively, not recursively
-      else
-        raise RuntimeError.new(name, "Undefined variable '#{name.lexeme}'.")
-      end
+      binding = @values[name.lexeme]? || raise RuntimeError.new(name, "Undefined variable '#{name.lexeme}'.")
+
+      binding.value
     end
 
     def assign_at(distance : Int32, name : Token, value : Value)
@@ -33,12 +42,12 @@ module Lit
     end
 
     def assign(name, value) : Nil
-      if @values.has_key?(name.lexeme)
-        @values[name.lexeme] = value
-      elsif enclosing = @enclosing
-        enclosing.assign(name, value) # TODO: Maybe this could be faster iteratively, not recursively
+      binding = @values[name.lexeme]? || raise RuntimeError.new(name, "Undefined variable '#{name.lexeme}'.")
+
+      if binding.mutable? || binding.uninitialized?
+        binding.value = value
       else
-        raise RuntimeError.new(name, "Undefined variable '#{name.lexeme}'.")
+        raise RuntimeError.new(name, "Can't reassign '#{name.lexeme}' because it is declared with 'let'.")
       end
     end
 

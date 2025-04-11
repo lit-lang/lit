@@ -29,7 +29,8 @@ module Lit
 
     private def declaration
       return function("function") if match?(TokenType::FN)
-      return var_declaration if match?(TokenType::VAR)
+      return var_declaration(mutable: false) if match?(TokenType::LET)
+      return var_declaration(mutable: true) if match?(TokenType::VAR)
       return type_declaration if match?(TokenType::TYPE)
 
       statement
@@ -48,12 +49,12 @@ module Lit
       Stmt::Function.new(name, params, body)
     end
 
-    private def var_declaration
+    private def var_declaration(mutable)
       name = consume(TokenType::IDENTIFIER, "I was expecting a variable name here.")
       initializer = match?(TokenType::EQUAL) ? expression : Expr::Literal.new(nil)
       consume(TokenType::SEMICOLON, "I was expecting a semicolon after variable declaration.")
 
-      Stmt::Var.new(name, initializer)
+      Stmt::Var.new(name, initializer, mutable)
     end
 
     private def type_declaration

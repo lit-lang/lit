@@ -28,6 +28,7 @@ module Create
     print:         "print",
     println:       "println",
     var:           "var",
+    let:           "let",
     colon:         ":",
     semicolon:     ";",
     eof:           "",

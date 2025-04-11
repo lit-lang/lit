@@ -8,6 +8,7 @@ module Lit
     if:      TokenType::IF,
     is:      TokenType::EQUAL_EQUAL,
     var:     TokenType::VAR,
+    let:     TokenType::LET,
     loop:    TokenType::LOOP,
     next:    TokenType::NEXT,
     nil:     TokenType::NIL,

@@ -129,8 +129,9 @@ module Lit
     class Var < Stmt
       getter name : Token
       getter initializer : Expr
+      getter? mutable : Bool
 
-      def initialize(@name, @initializer); end
+      def initialize(@name, @initializer, @mutable); end
 
       def accept(visitor : Visitor)
         visitor.visit_var_stmt(self)
