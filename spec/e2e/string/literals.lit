@@ -1,5 +1,10 @@
 println "(" + "" + ")";   # expect: ()
 println "a string"; # expect: a string
+println "a\nstring";
+# expect: a
+# expect: string
+
+println 'a\nstring';# expect: a\nstring
 
 # Non-ASCII.
 println "A~¶Þॐஃ"; # expect: A~¶Þॐஃ

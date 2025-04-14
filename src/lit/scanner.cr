@@ -204,7 +204,7 @@ module Lit
 
         return add_token(TokenType::STRING, string) if c == quote
 
-        if c == '\\' # TODO: Maybe single quote strings shouldn't allow escapes and interpolation
+        if quote == '"' && c == '\\'
           return syntax_error("Unterminated string escape.") if at_end?
 
           e = advance
