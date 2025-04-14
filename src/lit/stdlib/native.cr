@@ -43,10 +43,10 @@ module Lit
               raise "Bug in the interpreter: can't find type of #{value.inspect}"
             end
           }),
-          ::Lit::Native::Fn.new("to_s", 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), _token : Token) : Value {
+          ::Lit::Native::Fn.new("to_s", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
             value = arguments[0]
 
-            ::Lit.stringify_value(value)
+            ::Lit.stringify_value(value, interpreter, token)
           }),
         ]
       end

@@ -13,6 +13,10 @@ module Lit
       %(<#{type} '#{lexeme}'#{literal ? ": #{literal}" : ""}>)
     end
 
+    def with_lexeme(lexeme)
+      self.class.new(type, lexeme, literal, line)
+    end
+
     delegate :to_s, to: :inspect
   end
 end

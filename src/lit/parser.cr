@@ -156,17 +156,19 @@ module Lit
     end
 
     private def println_statement
+      token = previous
       expr = expression
       consume(TokenType::SEMICOLON, "I was expecting a semicolon after the println statement.")
 
-      Stmt::Println.new(expr)
+      Stmt::Println.new(token, expr)
     end
 
     private def print_statement
+      token = previous
       expr = expression
       consume(TokenType::SEMICOLON, "I was expecting a semicolon after the print statement.")
 
-      Stmt::Print.new(expr)
+      Stmt::Print.new(token, expr)
     end
 
     private def block_with_params

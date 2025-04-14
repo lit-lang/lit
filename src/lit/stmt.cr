@@ -96,9 +96,10 @@ module Lit
     end
 
     class Println < Stmt
+      getter keyword : Token
       getter expression : Expr
 
-      def initialize(@expression); end
+      def initialize(@keyword, @expression); end
 
       def accept(visitor : Visitor)
         visitor.visit_println_stmt(self)
@@ -106,9 +107,10 @@ module Lit
     end
 
     class Print < Stmt
+      getter keyword : Token
       getter expression : Expr
 
-      def initialize(@expression); end
+      def initialize(@keyword, @expression); end
 
       def accept(visitor : Visitor)
         visitor.visit_print_stmt(self)

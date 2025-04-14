@@ -20,6 +20,10 @@ module Lit
       raise RuntimeError.new(name, "Undefined property '#{name.lexeme}'.")
     end
 
+    def get_method(name) : Callable?
+      get(name).try(&.as(Callable)) rescue nil
+    end
+
     def set(name, value)
       fields[name.lexeme] = value
     end

@@ -3,7 +3,7 @@ require "./native_fn"
 
 module Lit
   class LitArray < Instance
-    TYPE = Type.new("Array", {} of String => Function)
+    TYPE = Type.new("LitArray", {} of String => Function)
 
     getter elements
 
@@ -15,7 +15,7 @@ module Lit
     def get(name : Token) : Value
       case name.lexeme
       when "get"
-        ::Lit::Native::Fn.new("get", 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+        ::Lit::Native::Fn.new(name.lexeme, 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
           index = arguments[0]
 
           begin
@@ -29,17 +29,17 @@ module Lit
           end
         })
       when "push"
-        ::Lit::Native::Fn.new("push", 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), _token : Token) : Value {
+        ::Lit::Native::Fn.new(name.lexeme, 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), _token : Token) : Value {
           value = arguments[0]
           @elements << value
           value
         })
       when "pop"
-        ::Lit::Native::Fn.new("pop", 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
+        ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
           @elements.pop
         })
       when "set"
-        ::Lit::Native::Fn.new("set", 2, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+        ::Lit::Native::Fn.new(name.lexeme, 2, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
           index = arguments[0]
           value = arguments[1]
 
@@ -54,7 +54,7 @@ module Lit
           end
         })
       when "concat"
-        ::Lit::Native::Fn.new("concat", 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+        ::Lit::Native::Fn.new(name.lexeme, 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
           other = arguments[0]
           if other.is_a?(LitArray)
             @elements.concat(other.elements)
@@ -64,8 +64,12 @@ module Lit
           self
         })
       when "size"
-        ::Lit::Native::Fn.new("size", 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
+        ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
           @elements.size.to_f
+        })
+      when "to_s"
+        ::Lit::Native::Fn.new(name.lexeme, 0, ->(interpreter : Interpreter, _arguments : ::Array(Value), token : Token) : Value {
+          "[" + @elements.map { |element| ::Lit.inspect_value(element, interpreter, token) }.join(", ") + "]"
         })
       else
         super
@@ -74,10 +78,6 @@ module Lit
 
     def set(name : Token, value : Value)
       raise RuntimeError.new(name, "Cannot set properties on array.")
-    end
-
-    def to_s
-      "[#{@elements.map { |element| ::Lit.inspect_value(element) }.join(", ")}]"
     end
   end
 end

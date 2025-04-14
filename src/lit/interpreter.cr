@@ -103,11 +103,11 @@ module Lit
     end
 
     def visit_println_stmt(stmt) : Nil
-      puts ::Lit.stringify_value(evaluate(stmt.expression))
+      puts ::Lit.stringify_value(evaluate(stmt.expression), self, stmt.keyword)
     end
 
     def visit_print_stmt(stmt) : Nil
-      print ::Lit.stringify_value(evaluate(stmt.expression))
+      print ::Lit.stringify_value(evaluate(stmt.expression), self, stmt.keyword)
     end
 
     def visit_block_stmt(stmt) : Nil
