@@ -102,11 +102,11 @@ module Lit
     end
 
     def visit_println_stmt(stmt) : Nil
-      puts stringify(evaluate(stmt.expression))
+      puts ::Lit.stringify_value(evaluate(stmt.expression))
     end
 
     def visit_print_stmt(stmt) : Nil
-      print stringify(evaluate(stmt.expression))
+      print ::Lit.stringify_value(evaluate(stmt.expression))
     end
 
     def visit_block_stmt(stmt) : Nil
@@ -141,11 +141,11 @@ module Lit
       end
 
       function = callee.as(Callable)
-      if arguments.size != function.arity
-        runtime_error(expr.paren, "Expected #{function.arity} arguments but got #{arguments.size}.")
+      if function.arity === arguments.size
+        return function.call(self, arguments, expr.paren)
       end
 
-      function.call(self, arguments, expr.paren)
+      runtime_error(expr.paren, "Expected #{function.arity} arguments but got #{arguments.size}.")
     end
 
     def visit_get_expr(expr) : Value
@@ -336,13 +336,6 @@ module Lit
       return false if a.nil?
 
       a == b
-    end
-
-    private def stringify(value : Value) : String
-      return "nil" if value.nil?
-      return value.to_s.rchop(".0") if value.is_a? Float64
-
-      value.to_s
     end
 
     private def runtime_error(token, msg)
