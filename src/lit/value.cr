@@ -11,4 +11,10 @@ module Lit
 
     value.to_s
   end
+
+  def self.inspect_value(value : Value) : String
+    return value.inspect if value.is_a? String
+
+    stringify_value(value)
+  end
 end

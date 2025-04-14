@@ -6,6 +6,7 @@ require "./runtime_error"
 require "./environment"
 require "./callable"
 require "./stdlib/native"
+require "./stdlib/lit_array"
 require "./function"
 require "./type"
 require "./instance"
@@ -32,8 +33,8 @@ module Lit
     def initialize
       @locals = {} of Expr => Int32
       @globals = Environment.new
-      Stdlib::Native.all.each do |klass|
-        @globals.define(klass.fn_name, klass.new)
+      Stdlib::Native.all.each do |fn|
+        @globals.define(fn.name, fn)
       end
       @environment = @globals
     end
