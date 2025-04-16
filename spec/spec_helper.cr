@@ -2,7 +2,6 @@ require "spec"
 require "stdio"
 require "file_utils"
 require "./support/create"
-require "./support/feature"
 require "../src/lit"
 
 Spec.before_suite do
