@@ -42,6 +42,8 @@ module Create
       Lit::Token.new(Lit::TokenType.parse(type.to_s), %("some text"), "some text", 1)
     when :identifier
       Lit::Token.new(Lit::TokenType.parse(type.to_s), value || "my_var", nil, 1)
+    when :string_interpolation
+      Lit::Token.new(Lit::TokenType.parse(type.to_s), "#{value}", value, 1)
     else
       if TOKENS.has_key?(type)
         return Lit::Token.new(Lit::TokenType.parse(type.to_s), TOKENS[type], nil, 1)

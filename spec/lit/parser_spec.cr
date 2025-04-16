@@ -237,6 +237,16 @@ describe Lit::Parser do
     expr.name.lexeme.should eq "my_var"
   end
 
+  describe "string interpolation" do
+    it "parses string interpolation" do
+      tokens = Create.tokens(:string_interpolation, :number, :string, :semicolon, :eof)
+      expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::StringInterpolation)
+
+      expr.parts.size.should eq 3
+      expr.token.should eq tokens.first
+    end
+  end
+
   context "when there's an unexpected token" do
     it "outputs a message" do
       error_msg = output_of { Lit::Parser.parse(Create.tokens(:comma, :eof)) }

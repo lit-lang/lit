@@ -17,6 +17,7 @@ module Lit
       abstract def visit_self_expr(expr : Self) : T
       abstract def visit_unary_expr(expr : Unary) : T
       abstract def visit_variable_expr(expr : Variable) : T
+      abstract def visit_string_interpolation_expr(expr : StringInterpolation) : T
     end
 
     class Assign < Expr
@@ -150,6 +151,17 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_variable_expr(self)
+      end
+    end
+
+    class StringInterpolation < Expr
+      getter parts : Array(Expr)
+      getter token : Token
+
+      def initialize(@parts, @token); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_string_interpolation_expr(self)
       end
     end
 

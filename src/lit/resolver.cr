@@ -193,6 +193,10 @@ module Lit
       resolve_local(expr, expr.name)
     end
 
+    def visit_string_interpolation_expr(expr) : Nil
+      expr.parts.each { |part| resolve(part) }
+    end
+
     def resolve(stmt : Stmt) : Nil
       stmt.accept(self)
     end

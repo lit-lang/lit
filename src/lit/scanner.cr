@@ -4,9 +4,24 @@ require "./lit"
 
 module Lit
   class Scanner
+    MAX_INTERPOLATION_DEPTH = 8
+
     def initialize(src : String)
       @tokens = [] of Token
       @src = src
+      # Interpolated strings make the lexer not strictly regular: we don't know
+      # whether a ")" should be treated as a RIGHT_PAREN token or as ending an
+      # interpolated expression unless we know whether we are inside a string
+      # interpolation and how many unmatched "(" there are. This is particularly
+      # complex because interpolation can nest:
+      #
+      #     " { " { inner } " } "
+      #
+      # This tracks that state. The parser maintains a stack of ints, one for each
+      # level of current interpolation nesting. Each value is the number of
+      # unmatched "(" that are waiting to be closed.
+      @braces = StaticArray(Int32, MAX_INTERPOLATION_DEPTH).new(0)
+      @interpolation_depth = 0
       @token_start_pos = 0
       @current_pos = 0
       @line = 1
@@ -49,7 +64,15 @@ module Lit
       when '{'
         add_token(TokenType::LEFT_BRACE)
       when '}'
-        add_token(TokenType::RIGHT_BRACE)
+        # If we are inside an interpolated expression, count the "}".
+        if @interpolation_depth > 0 && (current_interpolation_braces - 1) == 0
+          # This is the final "}", so the interpolation expression has ended.
+          # This "}" now begins the next section of the template string.
+          @interpolation_depth -= 1
+          consume_string('"')
+        else
+          add_token(TokenType::RIGHT_BRACE)
+        end
       when ','
         add_token(TokenType::COMMA)
       when '.'
@@ -195,35 +218,53 @@ module Lit
     end
 
     private def consume_string(quote) : Nil
+      # TODO: use String.build
       string = ""
+      token_type = TokenType::STRING
 
       loop do
         return syntax_error("Unterminated string.") if at_end?
 
         c = advance
 
-        return add_token(TokenType::STRING, string) if c == quote
+        break if c == quote
 
-        if quote == '"' && c == '\\'
-          return syntax_error("Unterminated string escape.") if at_end?
+        if quote == '"' # only double quotes support interpolation and escapes
+          if c == '\\'
+            return syntax_error("Unterminated string escape.") if at_end?
 
-          e = advance
+            e = advance
 
-          case e
-          when 'n'
-            string += "\n"
-          when 't'
-            string += "\t"
-          when 'r'
-            string += "\r"
+            case e
+            when 'n'
+              string += "\n"
+            when 't'
+              string += "\t"
+            when 'r'
+              string += "\r"
+            else
+              string += e # Adding the unknown escape sequence to the string
+            end
+          elsif c == '{'
+            if @interpolation_depth >= MAX_INTERPOLATION_DEPTH
+              syntax_error("Interpolation may only nest #{MAX_INTERPOLATION_DEPTH} levels deep.")
+            end
+
+            @braces[@interpolation_depth] = 1
+            @interpolation_depth += 1
+            token_type = TokenType::STRING_INTERPOLATION
+            break
           else
-            string += e # Adding the unknown escape sequence to the string
+            @line += 1 if c == '\n'
+            string += c # Normal character
           end
         else
           @line += 1 if c == '\n'
           string += c # Normal character
         end
       end
+
+      add_token(token_type, string)
     end
 
     private def consume_identifier
@@ -257,6 +298,12 @@ module Lit
 
     private def current_token_string
       @src[@token_start_pos...@current_pos]
+    end
+
+    private def current_interpolation_braces
+      return 0 if @interpolation_depth == 0
+
+      @braces[@interpolation_depth - 1]
     end
 
     private def add_token(type : TokenType)

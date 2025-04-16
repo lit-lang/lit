@@ -84,6 +84,22 @@ describe Lit::Scanner do
     token.line.should eq 1
   end
 
+  context "when encountering string interpolation" do
+    it "scans string interpolation" do
+      str = %("a {b} c {d}")
+
+      tokens = Lit::Scanner.scan(str)
+
+      tokens.size.should eq 6
+      [tokens[0].type, tokens[0].literal].should eq [token(STRING_INTERPOLATION), "a "]
+      [tokens[1].type, tokens[1].lexeme].should eq [token(IDENTIFIER), "b"]
+      [tokens[2].type, tokens[2].literal].should eq [token(STRING_INTERPOLATION), " c "]
+      [tokens[3].type, tokens[3].lexeme].should eq [token(IDENTIFIER), "d"]
+      [tokens[4].type, tokens[4].literal].should eq [token(STRING), ""]
+      tokens[5].type.should eq token(EOF)
+    end
+  end
+
   it "scans spaces" do
     token = Lit::Scanner.scan(" \r\t\r   1  \r\r\t      ").first
     token.should be_a Lit::Token

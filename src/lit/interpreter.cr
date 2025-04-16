@@ -281,6 +281,14 @@ module Lit
       lookup_variable(expr.name, expr)
     end
 
+    def visit_string_interpolation_expr(expr) : String
+      String.build do |s|
+        expr.parts.each do |e|
+          s << ::Lit.stringify_value(evaluate(e), self, expr.token)
+        end
+      end
+    end
+
     def execute(stmt : Stmt) : Value
       stmt.accept(self)
     end

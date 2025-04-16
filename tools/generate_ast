@@ -19,6 +19,7 @@ module AstGenerator
       "Self     = keyword : Token",
       "Unary    = operator : Token, right : Expr",
       "Variable = name : Token",
+      "StringInterpolation = parts : Array(Expr), token : Token",
     ])
 
     define_ast(output_dir, "Stmt", [
@@ -65,7 +66,7 @@ module AstGenerator
 
     types.each do |type|
       type_name, _ = type.split("=").map(&:strip)
-      file.puts "      abstract def visit_#{type_name.downcase}_#{base_name.downcase}(#{base_name.downcase} : #{type_name}) : T"
+      file.puts "      abstract def visit_#{underscore(type_name)}_#{base_name.downcase}(#{base_name.downcase} : #{type_name}) : T"
     end
 
     file.puts "    end"
@@ -113,8 +114,12 @@ module AstGenerator
   private def define_visitor(file, class_name, base_name)
     file.puts
     file.puts "      def accept(visitor : Visitor)"
-    file.puts "        visitor.visit_#{class_name.downcase}_#{base_name.downcase}(self)"
+    file.puts "        visitor.visit_#{underscore(class_name)}_#{base_name.downcase}(self)"
     file.puts "      end"
+  end
+
+  private def underscore(str)
+    str.gsub(/([A-Z])/, '_\1').downcase.sub(/^_/, '')
   end
 end
 

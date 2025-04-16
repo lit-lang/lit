@@ -390,6 +390,7 @@ module Lit
       return Expr::Literal.new(previous.literal) if match?(TokenType::NUMBER, TokenType::STRING)
       return Expr::Self.new(previous) if match?(TokenType::SELF)
       return Expr::Variable.new(previous) if match?(TokenType::IDENTIFIER)
+      return string_interpolation if match?(TokenType::STRING_INTERPOLATION)
 
       if match?(TokenType::LEFT_PAREN)
         expr = expression
@@ -399,6 +400,25 @@ module Lit
       end
 
       raise error(peek, "I was expecting an expression here.")
+    end
+
+    private def string_interpolation
+      token = previous
+      parts = [Expr::Literal.new(previous.literal)] of Expr
+
+      loop do
+        parts << expression
+        if match?(TokenType::STRING_INTERPOLATION)
+          parts << Expr::Literal.new(previous.literal)
+        else
+          break
+        end
+      end
+
+      consume(TokenType::STRING, "I was expecting the end of string interpolation.")
+      parts << Expr::Literal.new(previous.literal)
+
+      Expr::StringInterpolation.new(parts, token)
     end
 
     private def match?(*types) : Bool
