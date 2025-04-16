@@ -22,11 +22,9 @@ module Lit
       def initialize(@value); end
     end
 
-    class Break < Exception
-    end
+    class Break < Exception; end
 
-    class Next < Exception
-    end
+    class Next < Exception; end
 
     getter environment # current environment
 
