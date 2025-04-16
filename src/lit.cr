@@ -5,7 +5,11 @@ module Lit
 
   def self.run(opts : Array(String) = ARGV)
     if opts.first?
-      Lit.run_file(opts.first)
+      if opts.first == "-v" || opts.first == "--version"
+        puts "Lit #{VERSION}"
+      else
+        Lit.run_file(opts.first)
+      end
     else
       Lit.run_repl
     end
