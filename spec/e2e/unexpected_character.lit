@@ -1,2 +1,2 @@
 # error: [line 2] Error: Unexpected character '^'
-foo(a ^ b);
+foo(a ^ b)

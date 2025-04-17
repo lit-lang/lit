@@ -1,1 +1,1 @@
-true(); # error: [line 1] Runtime error: Can only call functions and types.
+true() # error: [line 1] Runtime error: Can only call functions and types.

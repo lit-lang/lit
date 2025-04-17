@@ -1,27 +1,27 @@
-var f;
-var g;
+var f
+var g
 
 {
-  var local = "local";
+  var local = "local"
   fn f_ {
-    println local;
-    local = "after f";
-    println local;
+    println local
+    local = "after f"
+    println local
   }
-  f = f_;
+  f = f_
 
   fn g_ {
-    println local;
-    local = "after g";
-    println local;
+    println local
+    local = "after g"
+    println local
   }
-  g = g_;
+  g = g_
 }
 
-f();
+f()
 # expect: local
 # expect: after f
 
-g();
+g()
 # expect: after f
 # expect: after g

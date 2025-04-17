@@ -1,15 +1,15 @@
 type Foo {
   init { |arg|
-    println "Foo.init(" + arg + ")";
-    self.field = "init";
+    println "Foo.init(" + arg + ")"
+    self.field = "init"
   }
 }
 
-var foo = Foo("one"); # expect: Foo.init(one)
-foo.field = "field";
+var foo = Foo("one") # expect: Foo.init(one)
+foo.field = "field"
 
-var foo2 = foo.init("two"); # expect: Foo.init(two)
-println foo2; # expect: Foo(field: init)
+var foo2 = foo.init("two") # expect: Foo.init(two)
+println foo2 # expect: Foo(field: init)
 
 # Make sure init() doesn't create a fresh instance.
-println foo.field; # expect: init
+println foo.field # expect: init

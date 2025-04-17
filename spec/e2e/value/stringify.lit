@@ -2,20 +2,20 @@ fn function {}
 type Foo {}
 type FooCustom {
   to_s {
-    return "<✨ custom ✨>";
+    return "<✨ custom ✨>"
   }
 }
 
-println 1; # expect: 1
-println 1.0; # expect: 1
-println 1.5; # expect: 1.5
-println "foo"; # expect: foo
-println true; # expect: true
-println false; # expect: false
-println nil; # expect: nil
-println function; # expect: <fn function>
-println clock; # expect: <native fn>
-println Foo; # expect: Foo
-println Foo(); # expect: Foo()
-println FooCustom(); # expect: <✨ custom ✨>
-println Array(); # expect: []
+println 1 # expect: 1
+println 1.0 # expect: 1
+println 1.5 # expect: 1.5
+println "foo" # expect: foo
+println true # expect: true
+println false # expect: false
+println nil # expect: nil
+println function # expect: <fn function>
+println clock # expect: <native fn>
+println Foo # expect: Foo
+println Foo() # expect: Foo()
+println FooCustom() # expect: <✨ custom ✨>
+println Array() # expect: []

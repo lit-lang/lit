@@ -9,7 +9,7 @@ describe Lit::Parser do
 
   describe "var statements" do
     it "parses var statements" do
-      tokens = Create.tokens(:var, :identifier, :semicolon, :eof)
+      tokens = Create.tokens(:var, :identifier, :newline, :eof)
       stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Var)
 
       stmt.name.lexeme.should eq "my_var"
@@ -18,7 +18,7 @@ describe Lit::Parser do
     end
 
     it "parses let statements" do
-      tokens = Create.tokens(:let, :identifier, :semicolon, :eof)
+      tokens = Create.tokens(:let, :identifier, :newline, :eof)
       stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Var)
 
       stmt.name.lexeme.should eq "my_var"
@@ -27,7 +27,7 @@ describe Lit::Parser do
     end
 
     it "parses var statements with initializer" do
-      tokens = Create.tokens(:var, :identifier, :equal, :number, :semicolon, :eof)
+      tokens = Create.tokens(:var, :identifier, :equal, :number, :newline, :eof)
       stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Var)
 
       stmt.name.lexeme.should eq "my_var"
@@ -36,45 +36,45 @@ describe Lit::Parser do
 
     context "when there's no variable name" do
       it do
-        tokens = Create.tokens(:var, :semicolon, :eof)
+        tokens = Create.tokens(:var, :newline, :eof)
         error_msg = output_of { Lit::Parser.parse(tokens) }
 
         error_msg.should contain("I was expecting a variable name here")
       end
     end
 
-    context "when there's no semicolon after variable declaration" do
+    context "when there's no newline after variable declaration" do
       it do
         tokens = Create.tokens(:var, :identifier, :eof)
         error_msg = output_of { Lit::Parser.parse(tokens) }
 
-        error_msg.should contain("I was expecting a semicolon after variable declaration")
+        error_msg.should contain("I was expecting a newline after variable declaration")
       end
     end
   end
 
   describe "println statements" do
     it "parses println statements" do
-      tokens = Create.tokens(:println, :number_1, :semicolon, :eof)
+      tokens = Create.tokens(:println, :number_1, :newline, :eof)
       stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Println)
 
       stmt.expression.as(Lit::Expr::Literal).value.should eq 1
     end
 
-    context "when semicolon is missing" do
+    context "when newline is missing" do
       it "errors" do
         tokens = Create.tokens(:println, :number_1, :eof)
 
         output_of {
           Lit::Parser.parse(tokens)
-        }.should contain("I was expecting a semicolon after the println statement")
+        }.should contain("I was expecting a newline after the println statement")
       end
     end
   end
 
   describe "assignment expression" do
     it "parses the assignment" do
-      tokens = Create.tokens(:identifier, :equal, :number, :semicolon, :eof)
+      tokens = Create.tokens(:identifier, :equal, :number, :newline, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Assign)
 
       expr.name.type.identifier?.should be_true
@@ -84,7 +84,7 @@ describe Lit::Parser do
 
     context "when left hand is not a variable expression" do
       it "errors" do
-        tokens = Create.tokens(:number, :equal, :number, :semicolon, :eof)
+        tokens = Create.tokens(:number, :equal, :number, :newline, :eof)
 
         output_of { Lit::Parser.parse(tokens) }.should contain("Invalid assignment target")
       end
@@ -93,7 +93,7 @@ describe Lit::Parser do
 
   describe "ternary expression" do
     it "parses the ternary" do
-      tokens = Create.tokens(:true, :question, :number, :colon, :number_2, :semicolon, :eof)
+      tokens = Create.tokens(:true, :question, :number, :colon, :number_2, :newline, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Ternary)
 
       expr.operator.type.question?.should be_true
@@ -103,7 +103,7 @@ describe Lit::Parser do
 
     context "when colon is missing" do
       it "errors" do
-        tokens = Create.tokens(:true, :question, :number, :number_2, :semicolon, :eof)
+        tokens = Create.tokens(:true, :question, :number, :number_2, :newline, :eof)
 
         output_of { Lit::Parser.parse(tokens) }.should contain(
           "I was expecting a colon after the truthy condition on the ternary expression"
@@ -114,7 +114,7 @@ describe Lit::Parser do
 
   describe "logical expression" do
     it "parses 'and' expressions" do
-      tokens = Create.tokens(:number, :and, :number_2, :semicolon, :eof)
+      tokens = Create.tokens(:number, :and, :number_2, :newline, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Logical)
 
       expr.operator.type.and?.should be_true
@@ -123,7 +123,7 @@ describe Lit::Parser do
     end
 
     it "parses 'or' expressions" do
-      tokens = Create.tokens(:number, :or, :number_2, :semicolon, :eof)
+      tokens = Create.tokens(:number, :or, :number_2, :newline, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Logical)
 
       expr.operator.type.or?.should be_true
@@ -134,7 +134,7 @@ describe Lit::Parser do
 
   describe "binary expression" do
     it "parses equalities" do
-      tokens = Create.tokens(:number, :equal_equal, :number_2, :semicolon, :eof)
+      tokens = Create.tokens(:number, :equal_equal, :number_2, :newline, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Binary)
 
       expr.operator.type.equal_equal?.should be_true
@@ -143,7 +143,7 @@ describe Lit::Parser do
     end
 
     it "parses comparissons" do
-      tokens = Create.tokens(:number, :less, :number_2, :semicolon, :eof)
+      tokens = Create.tokens(:number, :less, :number_2, :newline, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Binary)
 
       expr.operator.type.less?.should be_true
@@ -152,7 +152,7 @@ describe Lit::Parser do
     end
 
     it "parses factors" do
-      tokens = Create.tokens(:number, :slash, :number, :semicolon, :eof)
+      tokens = Create.tokens(:number, :slash, :number, :newline, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Binary)
 
       expr.operator.type.slash?.should be_true
@@ -161,7 +161,7 @@ describe Lit::Parser do
     end
 
     it "parses mod" do
-      tokens = Create.tokens(:number, :percent, :number, :semicolon, :eof)
+      tokens = Create.tokens(:number, :percent, :number, :newline, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Binary)
 
       expr.operator.type.percent?.should be_true
@@ -170,7 +170,7 @@ describe Lit::Parser do
     end
 
     it "parses terms" do
-      tokens = Create.tokens(:number, :plus, :number, :semicolon, :eof)
+      tokens = Create.tokens(:number, :plus, :number, :newline, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Binary)
 
       expr.operator.type.plus?.should be_true
@@ -179,7 +179,7 @@ describe Lit::Parser do
     end
 
     it "parses multiple expressions" do
-      tokens = Create.tokens(:string, :plus, :number, :minus, :number, :semicolon, :eof)
+      tokens = Create.tokens(:string, :plus, :number, :minus, :number, :newline, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Binary)
 
       expr.operator.type.minus?.should be_true
@@ -195,7 +195,7 @@ describe Lit::Parser do
 
   describe "unary expression" do
     it "parses a unary expression" do
-      tokens = Create.tokens(:minus, :number, :semicolon, :eof)
+      tokens = Create.tokens(:minus, :number, :newline, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Unary)
 
       expr.operator.type.minus?.should be_true
@@ -205,7 +205,7 @@ describe Lit::Parser do
 
   describe "grouping expression" do
     it "parses a grouping expression" do
-      group = Create.tokens(:left_paren, :number, :right_paren, :semicolon, :eof)
+      group = Create.tokens(:left_paren, :number, :right_paren, :newline, :eof)
       expr = Lit::Parser.parse(group).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Grouping)
 
       expr.expression.as(Lit::Expr::Literal).value.should eq 1
@@ -213,7 +213,7 @@ describe Lit::Parser do
 
     context "when there's no expression inside parens" do
       it "errors" do
-        group = Create.tokens(:left_paren, :right_paren, :semicolon, :eof)
+        group = Create.tokens(:left_paren, :right_paren, :newline, :eof)
         error_msg = output_of { Lit::Parser.parse(group) }
 
         error_msg.should contain("I was expecting an expression here.")
@@ -222,7 +222,7 @@ describe Lit::Parser do
 
     context "when there's no closing paren" do
       it "errors" do
-        tokens = Create.tokens(:left_paren, :number, :semicolon, :eof)
+        tokens = Create.tokens(:left_paren, :number, :newline, :eof)
         error_msg = output_of { Lit::Parser.parse(tokens) }
 
         error_msg.should contain "I was expecting a ')' here."
@@ -231,7 +231,7 @@ describe Lit::Parser do
   end
 
   it "parses variable expressions" do
-    tokens = Create.tokens(:identifier, :semicolon, :eof)
+    tokens = Create.tokens(:identifier, :newline, :eof)
     expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Variable)
 
     expr.name.lexeme.should eq "my_var"
@@ -239,7 +239,7 @@ describe Lit::Parser do
 
   describe "string interpolation" do
     it "parses string interpolation" do
-      tokens = Create.tokens(:string_interpolation, :number, :string, :semicolon, :eof)
+      tokens = Create.tokens(:string_interpolation, :number, :string, :newline, :eof)
       expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::StringInterpolation)
 
       expr.parts.size.should eq 3
@@ -258,7 +258,7 @@ end
 
 private def it_parses(type : Symbol, to_literal)
   it "parses literal #{type}" do
-    expr = Lit::Parser.parse(Create.tokens(type, :semicolon, :eof)).first.as(Lit::Stmt::Expression)
+    expr = Lit::Parser.parse(Create.tokens(type, :newline, :eof)).first.as(Lit::Stmt::Expression)
     expr.expression.as(Lit::Expr::Literal).value.should eq to_literal
   end
 end

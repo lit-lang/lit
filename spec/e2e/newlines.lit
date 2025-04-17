@@ -1,0 +1,111 @@
+
+
+# ignores new lines at beginning and end of the file
+
+fn twice { |x|
+  return x + x
+}
+
+# ignores new lines after opening and before closing braces
+type Foo {
+
+  foo {
+
+    if true {
+
+      loop {
+
+        println "foo"
+        break
+
+      }
+
+      println 1 ==
+          2
+
+      let a =
+        "bar" |>
+          twice()
+
+      println a
+
+      println true and
+          "and"
+
+      println false or
+          "or"
+
+
+      println "bar" ==
+          "bar"
+
+      println "bar" !=
+          "bar"
+
+      println 1 <
+          2
+
+      println 1 >
+          2
+
+      println 1 <=
+          2
+
+      println 1 >=
+          2
+
+      println 1 +
+          2
+
+      println 1 -
+          2
+
+      println 1 *
+          2
+
+      println 1 /
+          2
+
+      println 1 %
+          2
+
+      println twice(
+
+        (
+
+          1 + 1
+
+        )
+
+      )
+
+    } else {
+
+      var a = 2
+
+    }
+
+  }
+
+}
+
+Foo().
+  foo()
+
+# expect: foo
+# expect: false
+# expect: barbar
+# expect: and
+# expect: or
+# expect: true
+# expect: false
+# expect: true
+# expect: false
+# expect: true
+# expect: false
+# expect: 3
+# expect: -1
+# expect: 2
+# expect: 0.5
+# expect: 1
+# expect: 4

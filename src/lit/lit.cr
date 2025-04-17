@@ -61,6 +61,8 @@ module Lit
     private def self.error_location(token : Token) : String
       if token.type.eof?
         " at end"
+      elsif token.type.newline?
+        " at end of line"
       else
         " at #{token.lexeme.inspect}"
       end

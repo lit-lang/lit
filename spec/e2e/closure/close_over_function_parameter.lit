@@ -1,11 +1,11 @@
-var f;
+var f
 
 fn foo { |param|
   fn f_ {
-    println param;
+    println param
   }
-  f = f_;
+  f = f_
 }
-foo("param");
+foo("param")
 
-f(); # expect: param
+f() # expect: param

@@ -1,2 +1,2 @@
-# error: [line 2] Error at ";": I was expecting a property name after '.'.
-123.;
+# error: [line 3] Error at end: I was expecting a property name after '.'.
+123.

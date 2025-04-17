@@ -1,10 +1,10 @@
 type Foo {
   init {
-    println "init";
-    return;
-    println "nope";
+    println "init"
+    return
+    println "nope"
   }
 }
 
-var foo = Foo(); # expect: init
-println foo; # expect: Foo()
+var foo = Foo() # expect: init
+println foo # expect: Foo()

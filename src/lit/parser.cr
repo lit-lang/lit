@@ -19,9 +19,11 @@ module Lit
     def parse : Array(Stmt)
       stmts = [] of Stmt
 
+      # ignore any newlines at the start of the file
+      ignore_newlines
       until at_end?
-        match?(TokenType::SEMICOLON) # ignore extra semicolons
         stmts.push(declaration)
+        ignore_newlines # TODO: ignore or require?
       end
 
       stmts
@@ -38,6 +40,8 @@ module Lit
       synchronize
 
       # NOTE: Since there's an error, return this dumb expr just to get going
+      # TODO: there's no need to create a new literal every time. move to a
+      # constant. Same for other fixed literals.
       Stmt::Expression.new(Expr::Literal.new("ERROR"))
     end
 
@@ -51,8 +55,13 @@ module Lit
 
     private def var_declaration(mutable)
       name = consume(TokenType::IDENTIFIER, "I was expecting a variable name here.")
-      initializer = match?(TokenType::EQUAL) ? expression : Expr::Literal.new(nil)
-      consume(TokenType::SEMICOLON, "I was expecting a semicolon after variable declaration.")
+      initializer = if match?(TokenType::EQUAL)
+                      ignore_newlines
+                      expression
+                    else
+                      Expr::Literal.new(nil)
+                    end
+      consume_line("I was expecting a newline after variable declaration.")
 
       Stmt::Var.new(name, initializer, mutable)
     end
@@ -61,11 +70,13 @@ module Lit
       # TODO: does this allow any kind of identifier be a class name? even lowercase?
       name = consume(TokenType::IDENTIFIER, "I was expecting a type name.")
       consume(TokenType::LEFT_BRACE, "I was a '{' after the type name.")
+      ignore_newlines
 
       methods = [] of Stmt::Function
 
       until check(TokenType::RIGHT_BRACE) || at_end?
         methods << function("method")
+        consume_line("I was expecting a newline after the method declaration.")
       end
 
       consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the type body.")
@@ -91,10 +102,11 @@ module Lit
     private def return_statement
       keyword = previous
       value = nil
-      if !check(TokenType::SEMICOLON)
+      if !match_line?
         value = expression
+
+        consume_line("I was expecting a newline after the return statement.")
       end
-      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the return statement.")
 
       Stmt::Return.new(keyword, value)
     end
@@ -102,10 +114,12 @@ module Lit
     private def if_statement
       condition = expression
       consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the if condition.")
+      ignore_newlines
 
       then_branch = Stmt::Block.new(block_statements)
 
       if match?(TokenType::ELSE)
+        ignore_newlines
         consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the else keyword.")
 
         else_branch = Stmt::Block.new(block_statements)
@@ -135,6 +149,7 @@ module Lit
 
     private def loop_statement
       consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the loop keyword.")
+      ignore_newlines
 
       body = Stmt::Block.new(block_statements)
 
@@ -143,22 +158,21 @@ module Lit
 
     private def break_statement
       keyword = previous
-      # TODO: change "a semicolon" to "a ';'" on all error messages
-      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the break statement.")
+      consume_line("I was expecting a newline after the break statement.")
 
       Stmt::Break.new(keyword)
     end
 
     private def next_statement
       keyword = previous
-      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the next statement.")
+      consume_line("I was expecting a newline after the next statement.")
       Stmt::Next.new(keyword)
     end
 
     private def println_statement
       token = previous
       expr = expression
-      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the println statement.")
+      consume_line("I was expecting a newline after the println statement.")
 
       Stmt::Println.new(token, expr)
     end
@@ -166,7 +180,7 @@ module Lit
     private def print_statement
       token = previous
       expr = expression
-      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the print statement.")
+      consume_line("I was expecting a newline after the print statement.")
 
       Stmt::Print.new(token, expr)
     end
@@ -189,12 +203,17 @@ module Lit
     end
 
     private def block_statements
+      ignore_newlines
+
       statements = [] of Stmt
 
       until check(TokenType::RIGHT_BRACE) || at_end?
         statements.push(declaration)
+        # consume_line("I was expecting a newline after the statement.")
+        ignore_newlines # TODO: ignore or require?
       end
 
+      ignore_newlines
       consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the block.")
 
       statements
@@ -202,7 +221,7 @@ module Lit
 
     private def expression_statement
       expr = expression
-      consume(TokenType::SEMICOLON, "I was expecting a semicolon after the expression.")
+      consume_line("I was expecting a newline after the expression.")
 
       Stmt::Expression.new(expr)
     end
@@ -216,6 +235,7 @@ module Lit
 
       if match?(TokenType::EQUAL)
         equals = previous
+        ignore_newlines
         value = assignment
 
         if expr.is_a? Expr::Variable
@@ -253,6 +273,7 @@ module Lit
 
       while match?(TokenType::PIPE_GREATER)
         operator = previous
+        ignore_newlines
         right = call
 
         if !right.is_a? Expr::Call
@@ -270,6 +291,7 @@ module Lit
 
       while match?(TokenType::OR)
         operator = previous
+        ignore_newlines
         right = and_expr
         expr = Expr::Logical.new(expr, operator, right)
       end
@@ -282,6 +304,7 @@ module Lit
 
       while match?(TokenType::AND)
         operator = previous
+        ignore_newlines
         right = equality
         expr = Expr::Logical.new(expr, operator, right)
       end
@@ -294,6 +317,7 @@ module Lit
 
       while match?(TokenType::BANG_EQUAL, TokenType::EQUAL_EQUAL)
         operator = previous
+        ignore_newlines
         right = comparison
         expr = Expr::Binary.new(expr, operator, right)
       end
@@ -306,6 +330,7 @@ module Lit
 
       while match?(TokenType::GREATER, TokenType::GREATER_EQUAL, TokenType::LESS, TokenType::LESS_EQUAL)
         operator = previous
+        ignore_newlines
         right = term
         expr = Expr::Binary.new(expr, operator, right)
       end
@@ -318,6 +343,7 @@ module Lit
 
       while match?(TokenType::PLUS, TokenType::MINUS)
         operator = previous
+        ignore_newlines
         right = factor
 
         expr = Expr::Binary.new(expr, operator, right)
@@ -331,6 +357,7 @@ module Lit
 
       while match?(TokenType::STAR, TokenType::SLASH, TokenType::PERCENT)
         operator = previous
+        ignore_newlines
         right = unary
 
         expr = Expr::Binary.new(expr, operator, right)
@@ -357,6 +384,7 @@ module Lit
         if match?(TokenType::LEFT_PAREN)
           expr = finish_call(expr)
         elsif match?(TokenType::DOT)
+          ignore_newlines
           name = consume(TokenType::IDENTIFIER, "I was expecting a property name after '.'.")
           expr = Expr::Get.new(expr, name)
         else
@@ -368,6 +396,7 @@ module Lit
     end
 
     private def finish_call(callee)
+      ignore_newlines
       arguments = [] of Expr
 
       if !check(TokenType::RIGHT_PAREN)
@@ -378,6 +407,7 @@ module Lit
         end
       end
 
+      ignore_newlines
       paren = consume(TokenType::RIGHT_PAREN, "I was expecting a ')' after the arguments.")
 
       Expr::Call.new(callee, paren, arguments)
@@ -393,7 +423,9 @@ module Lit
       return string_interpolation if match?(TokenType::STRING_INTERPOLATION)
 
       if match?(TokenType::LEFT_PAREN)
+        ignore_newlines
         expr = expression
+        ignore_newlines
         consume(TokenType::RIGHT_PAREN, "I was expecting a ')' here.")
 
         return Expr::Grouping.new(expr)
@@ -463,6 +495,22 @@ module Lit
       raise error(peek, error_msg)
     end
 
+    private def consume_line(msg)
+      consume(TokenType::NEWLINE, msg)
+      ignore_newlines
+    end
+
+    private def match_line? : Bool
+      return false if !check(TokenType::NEWLINE)
+
+      while match?(TokenType::NEWLINE); end
+      true
+    end
+
+    private def ignore_newlines : Nil
+      match_line?
+    end
+
     private def error(token, msg)
       Lit.error(token, msg)
 
@@ -473,7 +521,7 @@ module Lit
       advance
 
       until at_end?
-        # return if previous.type == TokenType::SEMICOLON
+        # return if previous.type == TokenType::NEWLINE
 
         case peek.type
         when TokenType::VAR, TokenType::IF, TokenType::PRINTLN, TokenType::PRINT,

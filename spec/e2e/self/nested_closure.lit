@@ -3,17 +3,17 @@ type Foo {
     fn f {
       fn g {
         fn h {
-          return self.to_string();
+          return self.to_string()
         }
-        return h;
+        return h
       }
-      return g;
+      return g
     }
-    return f;
+    return f
   }
 
   to_string { return "Foo"; }
 }
 
-var closure = Foo().get_closure();
-println closure()()(); # expect: Foo
+var closure = Foo().get_closure()
+println closure()()() # expect: Foo

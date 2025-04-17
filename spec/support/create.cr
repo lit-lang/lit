@@ -30,7 +30,7 @@ module Create
     var:           "var",
     let:           "let",
     colon:         ":",
-    semicolon:     ";",
+    newline:       "\n",
     eof:           "",
   }
 

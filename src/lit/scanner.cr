@@ -80,7 +80,7 @@ module Lit
       when ':'
         add_token(TokenType::COLON)
       when ';'
-        add_token(TokenType::SEMICOLON)
+        add_token(TokenType::NEWLINE)
       when '+'
         add_token(TokenType::PLUS)
       when '-'
@@ -117,6 +117,7 @@ module Lit
         end
       when '\n'
         @line += 1
+        add_token(TokenType::NEWLINE)
       when '#'
         match?('=') ? consume_block_comment : consume_line_comment
       when ' ', '\r', '\t'
@@ -311,7 +312,9 @@ module Lit
     end
 
     private def add_token(type, literal)
-      @tokens << Token.new(type, current_token_string, literal, @line)
+      # Make line tokens appear on the line containing the "\n".
+      line = type == TokenType::NEWLINE ? @line - 1 : @line
+      @tokens << Token.new(type, current_token_string, literal, line)
     end
 
     private def add_eof_token

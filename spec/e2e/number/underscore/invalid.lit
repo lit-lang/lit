@@ -1,14 +1,14 @@
 # error: [line 2] Error: Trailing underscore in number literal
-1_;
+1_
 
 # error: [line 5] Error: Invalid underscore placement in number literal
-1__2;
+1__2
 
 # error: [line 8] Error: Invalid underscore placement in number literal
-1_.0;
+1_.0
 
 # error: [line 11] Error: Invalid underscore placement in number literal
-1._0;
+1._0
 
 # this is fine when scanning. It's just an identifier
-_1;
+_1

@@ -1,2 +1,2 @@
 # error: [line 2] Error at "false": I was expecting a variable name here.
-var false = "value";
+var false = "value"

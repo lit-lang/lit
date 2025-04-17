@@ -2,4 +2,4 @@ type Foo {
   method { |a, b|}
 }
 
-Foo().method(1); # error: [line 5] Runtime error: Expected 2 arguments but got 1.
+Foo().method(1) # error: [line 5] Runtime error: Expected 2 arguments but got 1.

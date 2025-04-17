@@ -1,1 +1,1 @@
-"str"(); # error: [line 1] Runtime error: Can only call functions and types.
+"str"() # error: [line 1] Runtime error: Can only call functions and types.

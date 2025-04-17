@@ -1,7 +1,7 @@
 type Foo {
   method {
-    println method; # error: [line 3] Runtime error: Undefined variable 'method'.
+    println method # error: [line 3] Runtime error: Undefined variable 'method'.
   }
 }
 
-Foo().method();
+Foo().method()

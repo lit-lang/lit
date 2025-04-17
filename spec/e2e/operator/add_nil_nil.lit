@@ -1,1 +1,1 @@
-nil + nil; # error: [line 1] Runtime error: Undefined operator + for Nil and Nil.
+nil + nil # error: [line 1] Runtime error: Undefined operator + for Nil and Nil.

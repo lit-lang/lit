@@ -1,11 +1,11 @@
-var f;
+var f
 
 {
-  var local = "local";
+  var local = "local"
   fn f_ {
-    println local;
+    println local
   }
-  f = f_;
+  f = f_
 }
 
-f(); # expect: local
+f() # expect: local

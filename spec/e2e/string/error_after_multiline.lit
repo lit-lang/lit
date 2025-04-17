@@ -2,6 +2,6 @@
 var a = "1
 2
 3
-";
+"
 
-err; # error: [line 7] Runtime error: Undefined variable 'err'.
+err # error: [line 7] Runtime error: Undefined variable 'err'.

@@ -1,19 +1,19 @@
 type Foo {
   say_name { |a|
-    println self.name;
-    println a;
+    println self.name
+    println a
   }
 }
 
-var foo1 = Foo();
-foo1.name = "foo1";
+var foo1 = Foo()
+foo1.name = "foo1"
 
-var foo2 = Foo();
-foo2.name = "foo2";
+var foo2 = Foo()
+foo2.name = "foo2"
 
 # Store the method reference on another object.
-foo2.f = foo1.say_name;
+foo2.f = foo1.say_name
 # Still retains original receiver.
-foo2.f(1);
+foo2.f(1)
 # expect: foo1
 # expect: 1

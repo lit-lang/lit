@@ -6,7 +6,8 @@ describe Lit::Scanner do
   end
 
   it_scans "", to_type: token(EOF)
-  it_scans "\n", to_type: token(EOF), to_lexeme: "", at_line: 2
+  it_scans "\n", to_type: token(NEWLINE), at_line: 1
+  it_scans ";", to_type: token(NEWLINE), at_line: 0
   it_scans "(", to_type: token(LEFT_PAREN)
   it_scans ")", to_type: token(RIGHT_PAREN)
   it_scans "[", to_type: token(LEFT_BRACKET)
@@ -16,7 +17,6 @@ describe Lit::Scanner do
   it_scans ",", to_type: token(COMMA)
   it_scans ".", to_type: token(DOT)
   it_scans ":", to_type: token(COLON)
-  it_scans ";", to_type: token(SEMICOLON)
   it_scans "!", to_type: token(BANG)
   it_scans "?", to_type: token(QUESTION)
   it_scans "+", to_type: token(PLUS)
@@ -109,9 +109,13 @@ describe Lit::Scanner do
     token.line.should eq 1
   end
 
-  context "when found comment" do
+  context "when comment is found" do
     it "scans one-line comments" do
-      token = Lit::Scanner.scan("# This is a comment.\n###### 1 + 1\n1").first
+      tokens = Lit::Scanner.scan("# This is a comment.\n###### 1 + 1\n1")
+      tokens.shift.type.should eq token(NEWLINE)
+      tokens.shift.type.should eq token(NEWLINE)
+
+      token = tokens[0]
       token.should be_a Lit::Token
       token.type.should eq token(NUMBER)
       token.lexeme.should eq "1"
@@ -120,7 +124,10 @@ describe Lit::Scanner do
     end
 
     it "scans block comments" do
-      token = Lit::Scanner.scan("#=\nThis\n2\nShould\nBe\nIgnored\n# Commentception\n= #\n=#\n1").first
+      tokens = Lit::Scanner.scan("#=\nThis\n2\nShould\nBe\nIgnored\n# Commentception\n= #\n=#\n1")
+      tokens.shift.type.should eq token(NEWLINE)
+
+      token = tokens[0]
       token.should be_a Lit::Token
       token.type.should eq token(NUMBER)
       token.lexeme.should eq "1"
@@ -148,7 +155,12 @@ describe Lit::Scanner do
   end
 
   it "scans new lines" do
-    token = Lit::Scanner.scan("\n\n\n1").first
+    tokens = Lit::Scanner.scan("\n\n\n1")
+    tokens.shift.type.should eq token(NEWLINE)
+    tokens.shift.type.should eq token(NEWLINE)
+    tokens.shift.type.should eq token(NEWLINE)
+
+    token = tokens[0]
     token.should be_a Lit::Token
     token.type.should eq token(NUMBER)
     token.lexeme.should eq "1"

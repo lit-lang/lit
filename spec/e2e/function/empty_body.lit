@@ -1,2 +1,2 @@
 fn f {}
-println f(); # expect: nil
+println f() # expect: nil

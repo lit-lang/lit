@@ -1,9 +1,9 @@
-var i = 0;
+var i = 0
 loop {
-  println i;
-  i = i + 1;
+  println i
+  i = i + 1
   if i == 3 {
-    break;
+    break
   }
 }
 # expect: 0
@@ -11,25 +11,25 @@ loop {
 # expect: 2
 
 # Nested loops example
-var outer = 0;
+var outer = 0
 loop {
-  var inner = 0;
-  print "outer: ";
-  println outer;
+  var inner = 0
+  print "outer: "
+  println outer
 
   loop {
-    print "  inner: ";
-    println inner;
-    inner = inner + 1;
+    print "  inner: "
+    println inner
+    inner = inner + 1
 
     if inner == 2 {
-      break; # Breaks inner loop only
+      break # Breaks inner loop only
     }
   }
 
-  outer = outer + 1;
+  outer = outer + 1
   if outer == 3 {
-    break; # Breaks outer loop
+    break # Breaks outer loop
   }
 }
 # expect: outer: 0

@@ -1,8 +1,8 @@
 {
   fn fib { |n|
     if n < 2 { return n; }
-    return fib(n - 1) + fib(n - 2);
+    return fib(n - 1) + fib(n - 2)
   }
 
-  println fib(8); # expect: 21
+  println fib(8) # expect: 21
 }

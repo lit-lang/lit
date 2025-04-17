@@ -1,13 +1,13 @@
 type Foo {
   get_closure {
     fn closure {
-      return self.to_string();
+      return self.to_string()
     }
-    return closure;
+    return closure
   }
 
   to_string { return "Foo"; }
 }
 
-var closure = Foo().get_closure();
-println closure(); # expect: Foo
+var closure = Foo().get_closure()
+println closure() # expect: Foo

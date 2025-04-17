@@ -1,13 +1,13 @@
-var f;
+var f
 
 type Foo {
   method { |param|
     fn f_ {
-      println param;
+      println param
     }
-    f = f_;
+    f = f_
   }
 }
 
-Foo().method("param");
-f(); # expect: param
+Foo().method("param")
+f() # expect: param

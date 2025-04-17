@@ -2,4 +2,4 @@ type Foo {
   bar {}
 }
 
-println Foo().bar(); # expect: nil
+println Foo().bar() # expect: nil

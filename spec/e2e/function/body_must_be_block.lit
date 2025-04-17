@@ -1,2 +1,2 @@
 # error: [line 2] Error at "123": I was expecting a '{' after the function name.
-fn f 123;
+fn f 123

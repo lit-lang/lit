@@ -1,1 +1,1 @@
-nil.foo = "value"; # error: [line 1] Runtime error: Only instances have fields.
+nil.foo = "value" # error: [line 1] Runtime error: Only instances have fields.

@@ -1,1 +1,1 @@
-unknown = "what"; # error: [line 1] Runtime error: Undefined variable 'unknown'.
+unknown = "what" # error: [line 1] Runtime error: Undefined variable 'unknown'.

@@ -1,7 +1,7 @@
 type Foo {
   return_self {
-    return Foo;
+    return Foo
   }
 }
 
-println Foo().return_self(); # expect: Foo
+println Foo().return_self() # expect: Foo

@@ -3,4 +3,4 @@ type Foo {
   baz { return "baz"; }
 }
 
-println Foo().bar().baz(); # expect: baz
+println Foo().bar().baz() # expect: baz

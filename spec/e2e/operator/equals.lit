@@ -1,14 +1,14 @@
-println nil == nil; # expect: true
+println nil == nil # expect: true
 
-println true == true; # expect: true
-println true == false; # expect: false
+println true == true # expect: true
+println true == false # expect: false
 
-println 1 == 1; # expect: true
-println 1 == 2; # expect: false
+println 1 == 1 # expect: true
+println 1 == 2 # expect: false
 
-println "str" == "str"; # expect: true
-println "str" == "ing"; # expect: false
+println "str" == "str" # expect: true
+println "str" == "ing" # expect: false
 
-println nil == false; # expect: false
-println false == 0; # expect: false
-println 0 == "0"; # expect: false
+println nil == false # expect: false
+println false == 0 # expect: false
+println 0 == "0" # expect: false

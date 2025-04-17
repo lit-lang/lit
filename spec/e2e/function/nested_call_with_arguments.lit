@@ -1,13 +1,13 @@
 fn return_arg { |arg|
-  return arg;
+  return arg
 }
 
 fn return_fun_call_with_arg { |func, arg|
-  return return_arg(func)(arg);
+  return return_arg(func)(arg)
 }
 
 fn print_arg { |arg|
-  println arg;
+  println arg
 }
 
-return_fun_call_with_arg(print_arg, "hello world"); # expect: hello world
+return_fun_call_with_arg(print_arg, "hello world") # expect: hello world
