@@ -12,7 +12,6 @@ module Lit
     loop:    TokenType::LOOP,
     next:    TokenType::NEXT,
     nil:     TokenType::NIL,
-    not:     TokenType::BANG,
     or:      TokenType::OR,
     print:   TokenType::PRINT,
     println: TokenType::PRINTLN,
