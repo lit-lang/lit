@@ -75,6 +75,7 @@ module Lit
       methods = [] of Stmt::Function
 
       until check(TokenType::RIGHT_BRACE) || at_end?
+        match?(TokenType::FN) # optional fn before methods.
         methods << function("method")
         consume_line("I was expecting a newline after the method declaration.")
       end
