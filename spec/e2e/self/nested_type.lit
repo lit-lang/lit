@@ -1,13 +1,13 @@
 type Outer {
   method {
-    println self; # expect: Outer instance
+    println self; # expect: Outer()
 
     fn f {
-      println self; # expect: Outer instance
+      println self; # expect: Outer()
 
       type Inner {
         method {
-          println self; # expect: Inner instance
+          println self; # expect: Inner()
         }
       }
 

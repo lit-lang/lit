@@ -28,9 +28,8 @@ module Lit
       fields[name.lexeme] = value
     end
 
-    # TODO: change this representation to something like Ruby or Rust
     def to_s
-      "#{type.name} instance"
+      "#{type.name}(#{fields.map { |k, v| "#{k}: #{v}" }.join(", ")})"
     end
   end
 end

@@ -7,4 +7,4 @@ type FooCustom {
 }
 
 println Array(1, 1.0, 1.5, "foo", true, false, nil, function, clock, Foo, Foo(), FooCustom());
- # expect: [1, 1, 1.5, "foo", true, false, nil, <fn function>, <native fn>, Foo, Foo instance, FooCustom instance]
+ # expect: [1, 1, 1.5, "foo", true, false, nil, <fn function>, <native fn>, Foo, Foo(), FooCustom()]

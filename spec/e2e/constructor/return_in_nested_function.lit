@@ -7,4 +7,4 @@ type Foo {
   }
 }
 
-println Foo(); # expect: Foo instance
+println Foo(); # expect: Foo()

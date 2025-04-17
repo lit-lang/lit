@@ -16,6 +16,6 @@ println nil; # expect: nil
 println function; # expect: <fn function>
 println clock; # expect: <native fn>
 println Foo; # expect: Foo
-println Foo(); # expect: Foo instance
+println Foo(); # expect: Foo()
 println FooCustom(); # expect: <✨ custom ✨>
 println Array(); # expect: []

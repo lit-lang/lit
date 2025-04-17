@@ -8,4 +8,4 @@ type Foo {
 
 var foo = Foo(); # expect: init
 println foo.init(); # expect: init
-# expect: Foo instance
+# expect: Foo()

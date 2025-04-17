@@ -7,4 +7,4 @@ type Foo {
 }
 
 var foo = Foo(); # expect: init
-println foo; # expect: Foo instance
+println foo; # expect: Foo()
