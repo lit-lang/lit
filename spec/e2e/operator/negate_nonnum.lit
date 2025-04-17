@@ -1,1 +1,1 @@
--"s"; # error: [line 1] Runtime error: Operand must be a number.
+-"s"; # error: [line 1] Runtime error: Operand must be a number or implement the 'neg' method.

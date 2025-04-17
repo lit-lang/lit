@@ -182,14 +182,18 @@ module Lit
 
       case expr.operator.type
       when .minus?
-        check_number_operand(expr.operator, right)
-
-        return -right.as(Float64)
+        if right.is_a?(Float64)
+          return -right.as(Float64)
+        elsif right.is_a? Instance
+          return right.as(Instance).call_method(expr.operator.with_lexeme("neg"), ([] of Value), self)
+        else
+          return runtime_error(expr.operator, "Operand must be a number or implement the 'neg' method.")
+        end
       when .bang?
         return falsey?(right)
       end
 
-      runtime_error(expr.operator, "Unknown unary operator. This is probably a parsing error. My bad =(")
+      runtime_error(expr.operator, "Unknown unary operator #{expr.operator}. This is probably a parsing error. My bad =(")
     end
 
     def visit_binary_expr(expr) : Value
@@ -203,39 +207,30 @@ module Lit
 
       case expr.operator.type
       when .greater?
-        return run_on_numbers_or_strings(">", expr.operator, left, right)
+        return apply_binary_operator(">", expr.operator, left, right)
       when .greater_equal?
-        return run_on_numbers_or_strings(">=", expr.operator, left, right)
+        return apply_binary_operator(">=", expr.operator, left, right)
       when .less?
-        return run_on_numbers_or_strings("<", expr.operator, left, right)
+        return apply_binary_operator("<", expr.operator, left, right)
       when .less_equal?
-        return run_on_numbers_or_strings("<=", expr.operator, left, right)
+        return apply_binary_operator("<=", expr.operator, left, right)
       when .bang_equal?
-        return !equal?(left, right)
+        return !equal?(left, right, expr.operator)
       when .equal_equal?
-        return equal?(left, right)
+        return equal?(left, right, expr.operator)
       when .plus?
-        return run_on_numbers_or_strings("+", expr.operator, left, right)
+        return apply_binary_operator("+", expr.operator, left, right)
       when .minus?
-        check_number_operands(expr.operator, left, right)
-
-        return left.as(Float64) - right.as(Float64)
+        return apply_binary_operator("-", expr.operator, left, right)
       when .star?
-        # TODO: Add support for string * number
-        check_number_operands(expr.operator, left, right)
-
-        return left.as(Float64) * right.as(Float64)
+        return apply_binary_operator("*", expr.operator, left, right)
       when .slash?
-        check_number_operands(expr.operator, left, right)
-
-        return left.as(Float64) / right.as(Float64)
+        return apply_binary_operator("/", expr.operator, left, right)
       when .percent?
-        check_number_operands(expr.operator, left, right)
-
-        return left.as(Float64) % right.as(Float64)
+        return apply_binary_operator("%", expr.operator, left, right)
       end
 
-      runtime_error(expr.operator, "Unknown binary operator. This is probably a parsing error. My bad =(")
+      runtime_error(expr.operator, "Unknown binary operator #{expr.operator.inspect}. This is probably a parsing error. My bad =(")
     end
 
     def visit_grouping_expr(expr) : Value
@@ -269,7 +264,7 @@ module Lit
       when .and?
         return left if falsey?(left)
       else
-        runtime_error(expr.operator, "Unknown logical operator. This is probably a parsing error. My bad =(")
+        runtime_error(expr.operator, "Unknown logical operator #{expr.operator}. This is probably a parsing error. My bad =(")
       end
 
       evaluate(expr.right)
@@ -331,18 +326,6 @@ module Lit
       end
     end
 
-    private def check_number_operand(operator, operand : Value)
-      return if operand.is_a? Float64
-
-      runtime_error(operator, "Operand must be a number.")
-    end
-
-    private def check_number_operands(operator, left : Value, right : Value)
-      return if left.is_a? Float64 && right.is_a? Float64
-
-      runtime_error(operator, "Operands must be two numbers or two strings.")
-    end
-
     private def truthy?(value : Value) : Bool
       !!value
     end
@@ -351,9 +334,12 @@ module Lit
       !value
     end
 
-    private def equal?(a : Value, b : Value) : Bool
+    private def equal?(a : Value, b : Value, token) : Bool
       return true if a.nil? && b.nil?
       return false if a.nil?
+      if a.is_a?(Instance) && (method = a.as(Instance).get_method(token.with_lexeme(BINARY_OP_TO_METHOD[:==])))
+        return truthy?(method.call(self, [b], token))
+      end
 
       a == b
     end
@@ -362,16 +348,35 @@ module Lit
       raise RuntimeError.new(token, msg)
     end
 
-    private macro run_on_numbers_or_strings(operation, expr_token, left, right)
+    BINARY_OP_TO_METHOD = {
+      "+":  "add",
+      "-":  "sub",
+      "*":  "mul",
+      "/":  "div",
+      "%":  "mod",
+      ">":  "gt",
+      ">=": "gte",
+      "<":  "lt",
+      "<=": "lte",
+      "==": "eq",
+    }
+
+    private macro apply_binary_operator(operation, expr_token, left, right)
       if left.is_a? Float64 && right.is_a? Float64
         return left.as(Float64) {{ operation.id }} right.as(Float64)
       end
 
-      if left.is_a? String && right.is_a? String
-        return left.as(String) {{ operation.id }} right.as(String)
+      {% if operation != "-" && operation != "*" && operation != "/" && operation != "%" %}
+        if left.is_a? String && right.is_a? String
+          return left.as(String) {{ operation.id }} right.as(String)
+        end
+      {% end %}
+
+      if left.is_a? Instance
+        return left.as(Instance).call_method({{expr_token}}.with_lexeme(BINARY_OP_TO_METHOD[{{ operation }}]), [right], self)
       end
 
-      runtime_error({{ expr_token }}, "Operands must be two numbers or two strings.")
+      runtime_error({{ expr_token }}, "Undefined operator #{{{operation}}} for #{type_of(left)} and #{type_of(right)}.")
     end
   end
 end

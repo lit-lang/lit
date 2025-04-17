@@ -34,3 +34,4 @@ println a.get(-4); # expect: nil
 a = Array(1);
 # concat
 println a.concat(Array(2, 3)); # expect: [1, 2, 3]
+println a + Array(4, 5); # expect: [1, 2, 3, 4, 5]

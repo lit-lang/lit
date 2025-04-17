@@ -24,6 +24,14 @@ module Lit
       get(name).try(&.as(Callable)) rescue nil
     end
 
+    def call_method(name, arguments, interpreter)
+      if method = get_method(name)
+        method.call(interpreter, arguments, name)
+      else
+        raise RuntimeError.new(name, "Undefined method '#{name.lexeme}' for #{type.name}.")
+      end
+    end
+
     def set(name, value)
       fields[name.lexeme] = value
     end

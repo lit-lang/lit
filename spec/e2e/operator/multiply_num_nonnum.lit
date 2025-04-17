@@ -1,1 +1,1 @@
-1 * "1"; # error: [line 1] Runtime error: Operands must be two numbers or two strings.
+1 * "1"; # error: [line 1] Runtime error: Undefined operator * for Number and String.

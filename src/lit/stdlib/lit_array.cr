@@ -53,7 +53,7 @@ module Lit
             raise RuntimeError.new(token, "Expected number as the first argument.")
           end
         })
-      when "concat"
+      when "concat", "add"
         ::Lit::Native::Fn.new(name.lexeme, 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
           other = arguments[0]
           if other.is_a?(LitArray)
