@@ -10,7 +10,7 @@ module Lit
     def initialize(@type, @lexeme, @literal, @line); end
 
     def inspect
-      %(<#{type} lexeme: '#{lexeme}' literal: #{literal ? literal.inspect : "nothing"}>)
+      %(<#{type} lexeme: #{lexeme.inspect} literal: #{literal ? literal.inspect : "nothing"}>)
     end
 
     def with_lexeme(lexeme)
