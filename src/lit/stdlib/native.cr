@@ -32,6 +32,16 @@ module Lit
           ::Lit::Native::Fn.new("typeof", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), _token : Token) : Value {
             interpreter.type_of(arguments[0])
           }),
+          ::Lit::Native::Fn.new("sleep", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+            seconds = arguments[0]
+
+            if seconds.is_a?(Float64)
+              sleep(Time::Span.new(nanoseconds: (seconds * 1_000_000_000).to_i64))
+              seconds
+            else
+              raise RuntimeError.new(token, "Expected number as the first argument, got #{interpreter.type_of(seconds)}.")
+            end
+          }),
         ]
       end
     end
