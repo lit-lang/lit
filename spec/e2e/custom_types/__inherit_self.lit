@@ -1,1 +1,0 @@
-type Foo < Foo {} # Error at "Foo": A type can't inherit from itself.
