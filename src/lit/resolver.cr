@@ -48,7 +48,7 @@ module Lit
         if method.name.lexeme == "init"
           declaration = FunctionType::Initializer
         end
-        resolve_function(method, declaration)
+        resolve_function(method.function, declaration)
       end
 
       end_scope
@@ -103,7 +103,7 @@ module Lit
     def visit_function_stmt(stmt) : Nil
       declare(stmt.name)
       define(stmt.name)
-      resolve_function(stmt, FunctionType::Function)
+      resolve_function(stmt.function, FunctionType::Function)
     end
 
     def visit_var_stmt(stmt) : Nil
@@ -195,6 +195,10 @@ module Lit
 
     def visit_string_interpolation_expr(expr) : Nil
       expr.parts.each { |part| resolve(part) }
+    end
+
+    def visit_function_expr(expr) : Nil
+      resolve_function(expr, FunctionType::Function)
     end
 
     def resolve(stmt : Stmt) : Nil

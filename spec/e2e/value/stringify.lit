@@ -1,4 +1,5 @@
 fn function {}
+let anon = fn {}
 type Foo {}
 type FooCustom {
   to_s {
@@ -14,6 +15,7 @@ println true # expect: true
 println false # expect: false
 println nil # expect: nil
 println function # expect: <fn function>
+println anon # expect: <fn>
 println clock # expect: <native fn>
 println Foo # expect: Foo
 println Foo() # expect: Foo()

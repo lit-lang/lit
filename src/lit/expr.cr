@@ -8,6 +8,7 @@ module Lit
       abstract def visit_assign_expr(expr : Assign) : T
       abstract def visit_binary_expr(expr : Binary) : T
       abstract def visit_call_expr(expr : Call) : T
+      abstract def visit_function_expr(expr : Function) : T
       abstract def visit_get_expr(expr : Get) : T
       abstract def visit_set_expr(expr : Set) : T
       abstract def visit_grouping_expr(expr : Grouping) : T
@@ -52,6 +53,17 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_call_expr(self)
+      end
+    end
+
+    class Function < Expr
+      getter params : Array(Token)
+      getter body : Array(Stmt)
+
+      def initialize(@params, @body); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_function_expr(self)
       end
     end
 

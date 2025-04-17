@@ -5,7 +5,7 @@ module Lit
   class Function < Callable
     private getter? initializer
 
-    def initialize(@declaration : Stmt::Function, @closure : Environment, @initializer : Bool); end
+    def initialize(@name : String?, @declaration : Expr::Function, @closure : Environment, @initializer : Bool); end
 
     def call(interpreter, arguments, token) : Value
       environment = Environment.new(@closure)
@@ -33,11 +33,11 @@ module Lit
     def bind(instance)
       environment = Environment.new(@closure)
       environment.define("self", instance)
-      Function.new(@declaration, environment, initializer?)
+      Function.new(@name, @declaration, environment, initializer?)
     end
 
     def to_s
-      "<fn #{@declaration.name.lexeme}>"
+      "<fn#{@name && " #{@name}"}>"
     end
   end
 end

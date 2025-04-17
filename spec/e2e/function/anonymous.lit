@@ -1,0 +1,25 @@
+fn map { |array, f|
+  let result = Array()
+  let size = array.size()
+  var i = 0
+
+  while i < size {
+    let item = array.get(i)
+    result.push(f(item))
+    i = i + 1
+  }
+
+  return result
+}
+
+var f = fn {}
+println f() # expect: nil
+
+f = fn {
+  return 1
+}
+println f() # expect: 1
+
+println map(Array(1, 2, 3), fn { |x| return x * 2; }) # expect: [2, 4, 6]
+
+fn {}

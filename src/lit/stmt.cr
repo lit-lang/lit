@@ -73,10 +73,9 @@ module Lit
 
     class Function < Stmt
       getter name : Token
-      getter params : Array(Token)
-      getter body : Array(Stmt)
+      getter function : Expr::Function
 
-      def initialize(@name, @params, @body); end
+      def initialize(@name, @function); end
 
       def accept(visitor : Visitor)
         visitor.visit_function_stmt(self)

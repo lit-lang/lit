@@ -52,7 +52,7 @@ module Lit
 
       methods = {} of String => Function
       stmt.methods.each do |method|
-        function = Function.new(method, @environment, initializer: method.name.lexeme == "init")
+        function = Function.new(method.name.lexeme, method.function, @environment, initializer: method.name.lexeme == "init")
         methods[method.name.lexeme] = function
       end
       type = Type.new(stmt.name.lexeme, methods)
@@ -113,7 +113,7 @@ module Lit
     end
 
     def visit_function_stmt(stmt) : Nil
-      function = Function.new(stmt, @environment, false)
+      function = Function.new(stmt.name.lexeme, stmt.function, @environment, false)
       @environment.define(stmt.name.lexeme, function)
     end
 
@@ -280,6 +280,10 @@ module Lit
           s << ::Lit.stringify_value(evaluate(e), self, expr.token)
         end
       end
+    end
+
+    def visit_function_expr(expr) : Value
+      Function.new(nil, expr, @environment, initializer: false)
     end
 
     def execute(stmt : Stmt) : Value

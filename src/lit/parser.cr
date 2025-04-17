@@ -30,7 +30,10 @@ module Lit
     end
 
     private def declaration
-      return function("function") if match?(TokenType::FN)
+      if check(TokenType::FN) && check_next(TokenType::IDENTIFIER)
+        consume(TokenType::FN, "BUG")
+        return function("function")
+      end
       return var_declaration(mutable: false) if match?(TokenType::LET)
       return var_declaration(mutable: true) if match?(TokenType::VAR)
       return type_declaration if match?(TokenType::TYPE)
@@ -47,10 +50,8 @@ module Lit
 
     private def function(kind : String)
       name = consume(TokenType::IDENTIFIER, "I was expecting a #{kind} name.")
-      consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the #{kind} name.")
-      body, params = block_with_params
 
-      Stmt::Function.new(name, params, body)
+      Stmt::Function.new(name, function_body(kind))
     end
 
     private def var_declaration(mutable)
@@ -422,6 +423,7 @@ module Lit
       return Expr::Self.new(previous) if match?(TokenType::SELF)
       return Expr::Variable.new(previous) if match?(TokenType::IDENTIFIER)
       return string_interpolation if match?(TokenType::STRING_INTERPOLATION)
+      return function_body("function", anonymous: true) if match?(TokenType::FN)
 
       if match?(TokenType::LEFT_PAREN)
         ignore_newlines
@@ -454,6 +456,18 @@ module Lit
       Expr::StringInterpolation.new(parts, token)
     end
 
+    private def function_body(kind, anonymous = false)
+      if anonymous
+        consume(TokenType::LEFT_BRACE, "I was expecting a name or '{' after the 'fn' keyword.")
+      else
+        consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the #{kind} name.")
+      end
+
+      body, params = block_with_params
+
+      Expr::Function.new(params, body)
+    end
+
     private def match?(*types) : Bool
       types.each do |type|
         if check(type)
@@ -470,6 +484,15 @@ module Lit
       return false if at_end?
 
       peek.type == type
+    end
+
+    private def check_next(type : TokenType)
+      return false if at_end?
+
+      next_token = tokens[current + 1]
+      return false if next_token.type.eof?
+
+      next_token.type == type
     end
 
     private def peek

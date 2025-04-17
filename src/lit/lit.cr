@@ -64,7 +64,8 @@ module Lit
       elsif token.type.newline?
         " at end of line"
       else
-        " at #{token.lexeme.inspect}"
+        where = token.lexeme.starts_with?('"') ? token.lexeme : %("#{token.lexeme}")
+        " at #{where}"
       end
     end
 
