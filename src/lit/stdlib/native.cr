@@ -29,19 +29,8 @@ module Lit
               raise RuntimeError.new(token, "Expected string as the first argument.")
             end
           }),
-          ::Lit::Native::Fn.new("typeof", 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), _token : Token) : Value {
-            value = arguments[0]
-
-            case value
-            in Float64
-              "Number"
-            in String, Bool, Nil, Type, Function
-              value.class.name.split("::").last
-            in Instance
-              value.type.name
-            in Uninitialized, Callable
-              raise "Bug in the interpreter: can't find type of #{value.inspect}"
-            end
+          ::Lit::Native::Fn.new("typeof", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), _token : Token) : Value {
+            interpreter.type_of(arguments[0])
           }),
         ]
       end

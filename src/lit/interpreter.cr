@@ -310,6 +310,19 @@ module Lit
       @locals[expr] = depth
     end
 
+    def type_of(value : Value) : String
+      case value
+      in Float64
+        "Number"
+      in String, Bool, Nil, Type, Function
+        value.class.name.split("::").last
+      in Instance
+        value.type.name
+      in Uninitialized, Callable
+        raise "Bug in the interpreter: can't find type of #{value.inspect}"
+      end
+    end
+
     private def lookup_variable(name : Token, expr : Expr) : Value
       if distance = @locals[expr]?
         @environment.get_at(distance, name.lexeme)
