@@ -2,8 +2,8 @@ require "./text"
 
 module Lit
   module REPL
-    EXIT_REGEX = /^\s*(#|$)|\b(quit|exit)\b/i
-    HELP_REGEX = /^\s*(#|$)|\b(help)\b/i
+    EXIT_REGEX = /\b(quit|exit)\b/i
+    HELP_REGEX = /\b(help)\b/i
 
     extend self
 
@@ -24,7 +24,7 @@ module Lit
     end
 
     private def read_line
-      Readline.readline("lit> ", add_history: true) || ""
+      (Readline.readline("lit> ", add_history: true) || "") + "\n"
     end
 
     private def evaluate(line : String, runner) : String?
@@ -42,11 +42,11 @@ module Lit
     end
 
     private def should_exit?(line : String) : Bool
-      EXIT_REGEX.matches?(line) && !line.empty?
+      EXIT_REGEX.matches?(line)
     end
 
     private def display_help?(line : String) : Bool
-      asked_for_help = HELP_REGEX.matches?(line) && !line.empty?
+      asked_for_help = HELP_REGEX.matches?(line)
       display_help if asked_for_help
 
       asked_for_help
