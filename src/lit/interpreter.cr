@@ -7,6 +7,8 @@ require "./environment"
 require "./callable"
 require "./stdlib/native"
 require "./stdlib/lit_array"
+require "./stdlib/lit_string"
+require "./stdlib/lit_float"
 require "./function"
 require "./type"
 require "./instance"
@@ -150,9 +152,12 @@ module Lit
     def visit_get_expr(expr) : Value
       object = evaluate(expr.object)
 
-      if object.is_a? Instance
-        return object.as(Instance).get(expr.name)
+      if instance = box(object)
+        return instance.get(expr.name)
       end
+      # if object.is_a? Instance
+      # return object.as(Instance).get(expr.name)
+      # # end
 
       runtime_error(expr.name, "Only instances have properties.")
     end
@@ -346,6 +351,19 @@ module Lit
       end
 
       a == b
+    end
+
+    private def box(value : Value) : Instance?
+      case value
+      when Instance
+        value
+      when String
+        LitString.new(value)
+      when Float64
+        LitFloat.new(value)
+      else
+        nil
+      end
     end
 
     private def runtime_error(token, msg)
