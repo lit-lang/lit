@@ -1,5 +1,11 @@
 ## v0.2.0
 
+- Remove required semicolon
+
+- Treat primitives as instances
+
+- Add function literals (anon functions)
+
 - Allow overloading operators on custom types. Here's a list of the currently supported operators and the methods you need to implement in your type to overload them:
 
 | Operator | Method to implement |
@@ -16,6 +22,14 @@
 | <= | lte |
 | > | gt |
 | >= | gte |
+
+- allow `else if`
+
+- Allow fn keyword before method definitions
+
+- new stdlib stuff: sleep, argv
+
+- Change default instance representation
 
 ## v0.1.0 - If you squint, it's Lox
 

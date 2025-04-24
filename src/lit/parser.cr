@@ -121,10 +121,13 @@ module Lit
       then_branch = Stmt::Block.new(block_statements)
 
       if match?(TokenType::ELSE)
-        ignore_newlines
-        consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the else keyword.")
-
-        else_branch = Stmt::Block.new(block_statements)
+        if match?(TokenType::IF) # else if
+          else_branch = if_statement
+        else
+          ignore_newlines
+          consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the else keyword.")
+          else_branch = Stmt::Block.new(block_statements)
+        end
       end
 
       Stmt::If.new(condition, then_branch, else_branch)
