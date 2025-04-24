@@ -17,7 +17,7 @@ module Lit
         return method.bind(self)
       end
 
-      raise RuntimeError.new(name, "Undefined property '#{name.lexeme}'.")
+      raise RuntimeError.new(name, "Undefined property '#{name.lexeme}' for #{type.name}.")
     end
 
     def get_method(name) : Callable?
