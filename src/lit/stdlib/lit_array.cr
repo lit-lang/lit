@@ -67,6 +67,24 @@ module Lit
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
           @elements.size.to_f
         })
+      when "is_empty?"
+        ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
+          @elements.empty?
+        })
+      when "first"
+        ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
+          @elements.first?
+        })
+      when "each"
+        ::Lit::Native::Fn.new(name.lexeme, 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          fn = arguments[0]
+          if !fn.is_a?(Function)
+            raise RuntimeError.new(token, "Expected function as the first argument.")
+          end
+          @elements.each do |element|
+            fn.call(interpreter, [element], token)
+          end
+        })
       when "to_s"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(interpreter : Interpreter, _arguments : ::Array(Value), token : Token) : Value {
           "[" + @elements.map { |element| ::Lit.inspect_value(element, interpreter, token) }.join(", ") + "]"
