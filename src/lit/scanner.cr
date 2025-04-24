@@ -19,7 +19,7 @@ module Lit
       #
       # This tracks that state. The parser maintains a stack of ints, one for each
       # level of current interpolation nesting. Each value is the number of
-      # unmatched "(" that are waiting to be closed.
+      # unmatched "{" that are waiting to be closed.
       @braces = StaticArray(Int32, MAX_INTERPOLATION_DEPTH).new(0)
       @interpolation_depth = 0
       @token_start_pos = 0
