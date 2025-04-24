@@ -318,6 +318,8 @@ module Lit
       case value
       in Float64
         "Number"
+      in ::Lit::Native::Fn
+        "Function"
       in String, Bool, Nil, Type, Function
         value.class.name.split("::").last
       in Instance
