@@ -31,6 +31,7 @@ module Lit
     class Next < Exception; end
 
     getter environment # current environment
+    getter argv : LitArray
 
     def initialize
       @locals = {} of Expr => Int32
@@ -39,6 +40,13 @@ module Lit
         @globals.define(fn.name, fn)
       end
       @environment = @globals
+      @argv = LitArray.new.tap do |a|
+        if !ARGV.empty?
+          ARGV[1..].each do |arg|
+            a.elements.push(arg)
+          end
+        end
+      end
     end
 
     def self.interpret(stmts : Array(Stmt))

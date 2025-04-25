@@ -24,12 +24,44 @@ module Lit
               LitMap.new(elements.each_slice(2).to_h)
             end
           }),
+          ::Lit::Native::Fn.new("rand", 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
+            Random.rand
           }),
           ::Lit::Native::Fn.new("clock", 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
             Time.local.to_unix_f
           }),
           ::Lit::Native::Fn.new("readln", 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
             gets || ""
+          }),
+          ::Lit::Native::Fn.new("eprint", 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+            if arguments[0].is_a?(String)
+              STDERR.print(arguments[0])
+            else
+              raise RuntimeError.new(token, "Expected string as the first argument.")
+            end
+          }),
+          ::Lit::Native::Fn.new("eprintln", 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+            if arguments[0].is_a?(String)
+              STDERR.puts(arguments[0])
+            else
+              raise RuntimeError.new(token, "Expected string as the first argument.")
+            end
+          }),
+          ::Lit::Native::Fn.new("panic", 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+            if arguments[0].is_a?(String)
+              abort(arguments[0])
+            else
+              raise RuntimeError.new(token, "Expected string as the first argument.")
+            end
+          }),
+          ::Lit::Native::Fn.new("exit", 0..1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+            if arguments.size == 0
+              exit
+            elsif arguments[0].is_a?(Float64)
+              exit(arguments[0].as(Float64).to_i)
+            else
+              raise RuntimeError.new(token, "Expected number as the first argument.")
+            end
           }),
           ::Lit::Native::Fn.new("open", 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
             filename = arguments[0]
@@ -52,6 +84,9 @@ module Lit
             else
               raise RuntimeError.new(token, "Expected number as the first argument, got #{interpreter.type_of(seconds)}.")
             end
+          }),
+          ::Lit::Native::Fn.new("argv", 0, ->(interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
+            interpreter.argv
           }),
         ]
       end

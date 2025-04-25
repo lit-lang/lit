@@ -3,7 +3,7 @@ module Lit
     class Fn < Callable
       getter name
 
-      def initialize(@name : String, @arity : Int32 | Range(Int32, Nil), @body : Proc(Interpreter, Array(Value), Token, Value)); end
+      def initialize(@name : String, @arity : Int32 | Range(Int32, Nil) | Range(Int32, Int32), @body : Proc(Interpreter, Array(Value), Token, Value)); end
 
       def arity
         @arity
