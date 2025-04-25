@@ -1,6 +1,8 @@
 fn function {}
 let anon = fn {}
-type Foo {}
+type Foo {
+  init { |bar| self.bar = bar; }
+}
 type FooCustom {
   to_s {
     return "<✨ custom ✨>"
@@ -18,6 +20,6 @@ println function # expect: <fn function>
 println anon # expect: <fn>
 println clock # expect: <native fn>
 println Foo # expect: Foo
-println Foo() # expect: Foo()
+println Foo(Foo("baz")) # expect: Foo(bar: Foo(bar: "baz"))
 println FooCustom() # expect: <✨ custom ✨>
 println Array() # expect: []

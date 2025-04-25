@@ -36,8 +36,8 @@ module Lit
       fields[name.lexeme] = value
     end
 
-    def to_s
-      "#{type.name}(#{fields.map { |k, v| "#{k}: #{v}" }.join(", ")})"
+    def to_s(interpreter, token) : String
+      "#{type.name}(#{fields.map { |k, v| "#{k}: #{::Lit.inspect_value(v, interpreter, token)}" }.join(", ")})"
     end
   end
 end
