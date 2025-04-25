@@ -7,20 +7,20 @@ type Tape {
   }
 
   fn get {
-    return self.tape.get(self.pos)
+    return self.tape[self.pos]
   }
 
   fn inc {
-    let value = (self.tape.get(self.pos) + 1) % 256
-    self.tape.set(self.pos, value)
+    let value = (self.tape[self.pos] + 1) % 256
+    self.tape[self.pos] = value
   }
 
   fn dec {
-    let value = (self.tape.get(self.pos) - 1) % 256
+    let value = (self.tape[self.pos] - 1) % 256
     if value < 0 {
-      self.tape.set(self.pos, 255)
+      self.tape[self.pos] = 255
     } else {
-      self.tape.set(self.pos, value)
+      self.tape[self.pos] = value
     }
   }
 
@@ -61,8 +61,8 @@ type Parser {
         } else if c == "]" && !bracket_stack.is_empty?() {
           let left = bracket_stack.pop()
           let right = i
-          bracket_map.set(left, right)
-          bracket_map.set(right, left)
+          bracket_map[left] = right
+          bracket_map[right] = left
         }
 
         i = i + 1
@@ -86,7 +86,7 @@ type Interpreter {
     var output = ""
 
     while pc < size {
-      let c = self.chars.get(pc)
+      let c = self.chars[pc]
 
       if c == ">" {
         tape.advance()
@@ -103,11 +103,11 @@ type Interpreter {
         tape.set(byte)
       } else if c == "[" {
         if tape.get() == 0 {
-          pc = self.bracket_map.get(pc)
+          pc = self.bracket_map[pc]
         }
       } else if c == "]" {
         if tape.get() != 0 {
-          pc = self.bracket_map.get(pc)
+          pc = self.bracket_map[pc]
         }
       }
 
@@ -133,12 +133,12 @@ fn help {
 fn parse_options {
   if argv().is_empty?() {
     help()
-  } else if "--hello-world".includes?(argv().get(0)) {
+  } else if "--hello-world".includes?(argv()[0]) {
     return "
       Hello world!
       ++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.
     "
-  } else if "--benchmark".includes?(argv().get(0)) {
+  } else if "--benchmark".includes?(argv()[0]) {
     return "
       Benchmark brainf*ck program
       >++[<+++++++++++++>-]<[[>+>+<<-]>[<+>-]++++++++
@@ -146,11 +146,11 @@ fn parse_options {
       ++++++++[>++++++++++[>++++++++++[>++++++++++[>+
       +++++++++[-]<-]<-]<-]<-]<-]<-]<-]++++++++++.
     "
-  } else if "--triangles".includes?(argv().get(0)) {
+  } else if "--triangles".includes?(argv()[0]) {
     return "
       >++++[<++++++++>-]>++++++++[>++++<-]>>++>>>+>>>+<<<<<<<<<<[-[->+<]>[-<+>>>.<<]>>>[[->++++++++[>++++<-]>.<<[->+<]+>[->++++++++++<<+>]>.[-]>]]+<<<[-[->+<]+>[-<+>>>-[->+<]++>[-<->]<<<]<<<<]++++++++++.+++.[-]<]+++++*****Made*By:*NYYRIKKI*2002*****
     "
-  } else if "--squares".includes?(argv().get(0)) {
+  } else if "--squares".includes?(argv()[0]) {
     return "
       ++++[>+++++<-]>[<+++++>-]+<+[
           >[>+>+<<-]++>>[<<+>>-]>>>[-]++>[-]+
@@ -162,14 +162,14 @@ fn parse_options {
       http://www.hevanet.com/cristofd/brainfuck/]
 
     "
-  } else if "--file".includes?(argv().get(0)) && argv().get(1) {
-    return open(argv().get(1))
-  } else if "--eval".includes?(argv().get(0)) && argv().get(1) {
-    return argv().get(1)
+  } else if "--file".includes?(argv()[0]) && argv()[1] {
+    return open(argv()[1])
+  } else if "--eval".includes?(argv()[0]) && argv()[1] {
+    return argv()[1]
   } else {
     help()
   }
 }
 
 let result = parse_options() |> Parser().parse()
-Interpreter(result.get(0), result.get(1)).run()
+Interpreter(result[0], result[1]).run()
