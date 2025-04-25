@@ -98,7 +98,7 @@ type User {
 println User("Alice", 30) # User(name: "Alice", age: 30)
 ```
 
-- New stdlib functions: sleep, argv, exit, panic, eprint, eprintln
+- New stdlib functions: sleep, argv, exit, panic, eprint, eprintln, measure
 
 ## v0.1.0 - If you squint, it's Lox
 
