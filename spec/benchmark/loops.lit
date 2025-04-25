@@ -1,0 +1,14 @@
+let start = clock()
+var i = 0
+var sum = 0
+
+while i < 1_000 {
+  var j = 0
+  while j < 100_000 {
+    sum = sum + 0 + 1
+    j = j + 1
+  }
+  i = i + 1
+}
+println sum
+println "Took {clock() - start}s"
