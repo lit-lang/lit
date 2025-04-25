@@ -57,8 +57,8 @@ module Lit
           ::Lit::Native::Fn.new("exit", 0..1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
             if arguments.size == 0
               exit
-            elsif arguments[0].is_a?(Float64)
-              exit(arguments[0].as(Float64).to_i)
+            elsif arguments[0].is_a?(Int64)
+              exit(arguments[0].as(Int64).to_i32)
             else
               raise RuntimeError.new(token, "Expected number as the first argument.")
             end
@@ -78,7 +78,7 @@ module Lit
           ::Lit::Native::Fn.new("sleep", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
             seconds = arguments[0]
 
-            if seconds.is_a?(Float64)
+            if seconds.is_a?(Number)
               sleep(Time::Span.new(nanoseconds: (seconds * 1_000_000_000).to_i64))
               seconds
             else
