@@ -16,7 +16,7 @@ module Lit
     end
 
     def find_method(name)
-      @methods[name]? # TODO: might change to has_key? + []
+      @methods[name]?
     end
 
     def arity
