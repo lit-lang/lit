@@ -6,8 +6,8 @@ type CustomType {
 fn fun {}
 
 println typeof("hello") # expect: String
-println typeof(1) # expect: Number
-println typeof(1.5) # expect: Number
+println typeof(1) # expect: Integer
+println typeof(1.5) # expect: Float
 println typeof(nil) # expect: Nil
 println typeof(true) # expect: Bool
 println typeof(panic) # expect: Function

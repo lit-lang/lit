@@ -8,7 +8,7 @@ type FooCustom {
 }
 
 println 1 # expect: 1
-println 1.0 # expect: 1
+println 1.0 # expect: 1.0
 println 1.5 # expect: 1.5
 println "foo" # expect: foo
 println true # expect: true

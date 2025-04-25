@@ -1,1 +1,1 @@
-1 + nil # error: [line 1] Runtime error: Undefined operator + for Number and Nil.
+1 + nil # error: [line 1] Runtime error: Undefined operator + for Integer and Nil.

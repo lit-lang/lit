@@ -3,11 +3,10 @@ module Lit
 
   UNINITIALIZED = Uninitialized.new
 
-  alias Value = Float64 | String | Bool | Nil | Callable | Type | Instance | Uninitialized
+  alias Value = Int64 | Float64 | String | Bool | Nil | Callable | Type | Instance | Uninitialized
 
   def self.stringify_value(value : Value, interpreter : Interpreter, token : Token, inspect = false) : String
     return "nil" if value.nil?
-    return value.to_s.rchop(".0") if value.is_a? Float64
 
     # if the type defines a `to_s` method, call it
     if value.is_a? Instance && (method = value.as(Instance).get_method(token.with_lexeme("to_s")))

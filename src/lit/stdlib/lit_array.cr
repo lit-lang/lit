@@ -15,14 +15,14 @@ module Lit
     def get(name : Token) : Value
       case name.lexeme
       when "get"
-        ::Lit::Native::Fn.new(name.lexeme, 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+        ::Lit::Native::Fn.new(name.lexeme, 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
           index = arguments[0]
 
           begin
-            if index.is_a?(Float64)
-              @elements[index.to_i32]
+            if index.is_a?(Int64)
+              @elements[index]
             else
-              raise RuntimeError.new(token, "Expected number as the first argument.")
+              raise RuntimeError.new(token, "Expected Integer as the first argument, got #{interpreter.type_of(index)}.")
             end
           rescue e : IndexError
             nil
@@ -39,18 +39,17 @@ module Lit
           @elements.pop
         })
       when "set"
-        ::Lit::Native::Fn.new(name.lexeme, 2, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+        ::Lit::Native::Fn.new(name.lexeme, 2, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
           index = arguments[0]
           value = arguments[1]
 
-          if index.is_a?(Float64)
-            index = index.to_i32
+          if index.is_a?(Int64)
             if index >= @elements.size
               @elements.concat(Array.new(index - @elements.size + 1, nil))
             end
             @elements[index] = value
           else
-            raise RuntimeError.new(token, "Expected number as the first argument.")
+            raise RuntimeError.new(token, "Expected Integer as the first argument, got #{interpreter.type_of(index)}.")
           end
         })
       when "concat", "add"
@@ -65,7 +64,7 @@ module Lit
         })
       when "size"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
-          @elements.size.to_f
+          @elements.size.to_i64
         })
       when "is_empty?"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {

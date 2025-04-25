@@ -14,7 +14,7 @@ module AstGenerator
       "Get      = object : Expr, name : Token",
       "Set      = object : Expr, name : Token, value : Expr",
       "Grouping = expression : Expr",
-      "Literal  = value : Union(String | Float64 | Bool | Nil)",
+      "Literal  = value : Union(String | Int64 | Float64 | Bool | Nil)",
       "Ternary  = condition : Expr, left : Expr, right : Expr, operator : Token",
       "Logical  = left : Expr, operator : Token, right : Expr",
       "Self     = keyword : Token",

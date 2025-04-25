@@ -2,11 +2,13 @@ require "../instance"
 require "./native_fn"
 
 module Lit
-  class LitFloat < Instance
-    TYPE  = Type.new("Float", {} of String => Function)
+  class LitInteger < Instance
+    TYPE  = Type.new("Integer", {} of String => Function)
     EMPTY = {} of String => Value
 
-    def initialize(value : Float64)
+    @value : Int64
+
+    def initialize(value)
       super(TYPE, EMPTY)
       @value = value
     end
@@ -17,21 +19,13 @@ module Lit
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
           @value.abs
         })
-      when "floor"
+      when "to_f"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
-          @value.floor
+          @value.to_f
         })
-      when "ceil"
+      when "chr"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
-          @value.ceil
-        })
-      when "round"
-        ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
-          @value.round
-        })
-      when "to_i"
-        ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
-          @value.to_i64
+          @value.chr.to_s
         })
       when "to_s"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(interpreter : Interpreter, _arguments : ::Array(Value), token : Token) : Value {

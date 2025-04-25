@@ -101,7 +101,7 @@ module Lit
     end
 
     class Literal < Expr
-      getter value : Union(String | Float64 | Bool | Nil)
+      getter value : Union(String | Int64 | Float64 | Bool | Nil)
 
       def initialize(@value); end
 

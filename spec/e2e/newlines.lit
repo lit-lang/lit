@@ -106,6 +106,6 @@ Foo().
 # expect: 3
 # expect: -1
 # expect: 2
-# expect: 0.5
+# expect: 0
 # expect: 1
 # expect: 4

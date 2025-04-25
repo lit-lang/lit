@@ -151,20 +151,24 @@ module Lit
     end
 
     private def consume_number
-      scan_digits_with_underscores
+      successful = scan_digits_with_underscores
+      return unless successful
+      number = current_token_string.dup.delete('_').to_i64
 
       # the next character can't be a _ but I'm allowing it here to give it a
       # better error message inside `scan_digits_with_underscores`
       if peek == '.' && (digit?(peek_next) || peek_next == '_')
         advance # consuming the .
-        scan_digits_with_underscores
+        successful = scan_digits_with_underscores
+        return unless successful
+        number = current_token_string.delete('_').to_f
       end
 
       if current_token_string.ends_with?("_")
         return syntax_error("Trailing underscore in number literal")
       end
 
-      add_token(TokenType::NUMBER, current_token_string.delete('_').to_f)
+      add_token(TokenType::NUMBER, number)
     end
 
     private def scan_digits_with_underscores
@@ -174,16 +178,21 @@ module Lit
 
         if current_char == '_'
           if !digit?(previous_char)
-            return syntax_error("Invalid underscore placement in number literal")
+            syntax_error("Invalid underscore placement in number literal")
+            return false
           end
         elsif !digit?(current_char)
-          return syntax_error("Unexpected character #{current_char.inspect}")
+          syntax_error("Unexpected character #{current_char.inspect}")
+          return false
         end
       end
 
       if peek_previous == '_' && peek == '.'
         syntax_error("Invalid underscore placement in number literal")
+        return false
       end
+
+      true
     end
 
     private def consume_line_comment

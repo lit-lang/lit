@@ -8,6 +8,7 @@ require "./callable"
 require "./stdlib/native"
 require "./stdlib/lit_array"
 require "./stdlib/lit_string"
+require "./stdlib/lit_integer"
 require "./stdlib/lit_float"
 require "./function"
 require "./type"
@@ -187,10 +188,10 @@ module Lit
 
       case expr.operator.type
       when .minus?
-        if right.is_a?(Float64)
-          return -right.as(Float64)
+        if right.is_a?(Number)
+          return -right
         elsif right.is_a? Instance
-          return right.as(Instance).call_method(expr.operator.with_lexeme("neg"), ([] of Value), self)
+          return right.call_method(expr.operator.with_lexeme("neg"), ([] of Value), self)
         else
           return runtime_error(expr.operator, "Operand must be a number or implement the 'neg' method.")
         end
@@ -317,7 +318,9 @@ module Lit
     def type_of(value : Value) : String
       case value
       in Float64
-        "Number"
+        "Float"
+      in Int64
+        "Integer"
       in ::Lit::Native::Fn
         "Function"
       in String, Bool, Nil, Type, Function
@@ -363,6 +366,8 @@ module Lit
         LitString.new(value)
       when Float64
         LitFloat.new(value)
+      when Int64
+        LitInteger.new(value)
       else
         nil
       end
@@ -386,18 +391,48 @@ module Lit
     }
 
     private macro apply_binary_operator(operation, expr_token, left, right)
-      if left.is_a? Float64 && right.is_a? Float64
-        return left.as(Float64) {{ operation.id }} right.as(Float64)
+      # Float operations
+      if left.is_a? Float && right.is_a? Number
+        return left {{ operation.id }} right
+      end
+      # Int operations
+      if left.is_a? Int64
+        {% if operation == "%" %}
+          if right.is_a? Int64
+            return left {{ operation.id }} right
+          end
+          if right.is_a? Float64
+            # Crystal doesn't support Int % Float, so we need to convert left to
+            # float for modulus with another float
+            return left.to_f {{ operation.id }} right
+          end
+        {% elsif operation == "/" %}
+          if right.is_a? Int64
+            begin
+              return left // right
+            rescue DivisionByZeroError
+              runtime_error({{ expr_token }}, "Division by zero.")
+            end
+          elsif right.is_a? Float64
+            return left / right
+          end
+        {% else %}
+          if right.is_a? Number
+            return left {{ operation.id }} right
+          end
+        {% end %}
       end
 
+      # String operations
       {% if operation != "-" && operation != "*" && operation != "/" && operation != "%" %}
         if left.is_a? String && right.is_a? String
-          return left.as(String) {{ operation.id }} right.as(String)
+          return left {{ operation.id }} right
         end
       {% end %}
 
+      # For instances, go through normal method dispatch
       if left.is_a? Instance
-        return left.as(Instance).call_method({{expr_token}}.with_lexeme(BINARY_OP_TO_METHOD[{{ operation }}]), [right], self)
+        return left.call_method({{expr_token}}.with_lexeme(BINARY_OP_TO_METHOD[{{ operation }}]), [right], self)
       end
 
       runtime_error({{ expr_token }}, "Undefined operator #{{{operation}}} for #{type_of(left)} and #{type_of(right)}.")
