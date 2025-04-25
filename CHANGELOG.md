@@ -1,10 +1,34 @@
 ## v0.2.0
 
-- Remove required semicolon
+- Remove required semicolon to separate statements
+
+Look how clean it is now:
+
+```lit
+println "Hello, world!" # no semicolon needed!
+```
+
+Semicolons are still allowed, but not required.
 
 - Treat primitives as instances
 
+Now it's possible to call methods on primitives. For example:
+
+```lit
+println 1.odd?() # true
+
+let s = "abc"
+println s.empty?() # false
+println s.size() # 3
+println s.chars() # ["a", "b", "c"]
+```
+
 - Add function literals (anon functions)
+
+```lit
+let add = fn { |a, b| return a + b; }
+println add(1, 2); # 3
+```
 
 - Allow overloading operators on custom types. Here's a list of the currently supported operators and the methods you need to implement in your type to overload them:
 
@@ -25,6 +49,16 @@
 
 - allow `else if`
 
+```lit
+if x == 1 {
+  println "x is 1";
+} else if x == 2 {
+  println "x is 2";
+} else {
+  println "x is neither 1 nor 2";
+}
+```
+
 - Add `Map` type
 
 ```lit
@@ -37,11 +71,32 @@ println m.get("c"); # nil
 println m.merge(Map("a", 2)) # Map("a" => 2, "b" => 2)
 ```
 
-- Allow fn keyword before method definitions
+- Allow `fn` keyword before method definitions
 
-- new stdlib stuff: sleep, argv
+```lit
+type Foo {
+  # this wasn't allowed before
+  fn bar { println "bar"; }
+
+  # this was allowed before and still works. I might deprecate it in the future
+  baz { println "baz"; }
+}
+```
 
 - Change default instance representation
+
+```lit
+type User {
+  init { |name, age|
+    self.name = name
+    self.age = age
+  }
+}
+
+println User("Alice", 30) # User(name: "Alice", age: 30)
+```
+
+- New stdlib functions: sleep, argv, exit, panic, eprint, eprintln
 
 ## v0.1.0 - If you squint, it's Lox
 
