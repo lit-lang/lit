@@ -1,0 +1,175 @@
+# A Brainf*ck interpreter
+
+type Tape {
+  fn init {
+    self.tape = Array(0)
+    self.pos = 0
+  }
+
+  fn get {
+    return self.tape.get(self.pos)
+  }
+
+  fn inc {
+    let value = (self.tape.get(self.pos) + 1) % 256
+    self.tape.set(self.pos, value)
+  }
+
+  fn dec {
+    let value = (self.tape.get(self.pos) - 1) % 256
+    if value < 0 {
+      self.tape.set(self.pos, 255)
+    } else {
+      self.tape.set(self.pos, value)
+    }
+  }
+
+  fn advance {
+    self.pos = self.pos + 1
+    if self.tape.size() <= self.pos {
+      self.tape.push(0)
+    }
+  }
+
+  fn devance {
+    self.pos = self.pos - 1
+    if self.pos < 0 {
+      panic("pos should be > 0")
+    }
+  }
+
+  fn set { |value|
+    self.tape.set(self.pos, value)
+  }
+}
+
+type Parser {
+  fn parse { |program|
+    let valid_chars = '><.,[]+-'
+    let size = program.size()
+    let bracket_stack = Array()
+    let bracket_map = Map()
+    let chars = Array()
+    var i = 0
+
+    program.chars().each(fn { |c|
+      if valid_chars.includes?(c) {
+        chars.push(c)
+
+        if c == "[" {
+          bracket_stack.push(i)
+        } else if c == "]" && !bracket_stack.is_empty?() {
+          let left = bracket_stack.pop()
+          let right = i
+          bracket_map.set(left, right)
+          bracket_map.set(right, left)
+        }
+
+        i = i + 1
+      }
+    })
+
+    return Array(chars, bracket_map)
+  }
+}
+
+type Interpreter {
+  fn init { |chars, bracket_map|
+    self.chars = chars
+    self.bracket_map = bracket_map
+  }
+
+  fn run {
+    let tape = Tape()
+    let size = self.chars.size()
+    var pc = 0
+    var output = ""
+
+    while pc < size {
+      let c = self.chars.get(pc)
+
+      if c == ">" {
+        tape.advance()
+      } else if c == "<" {
+        tape.devance()
+      } else if c == "+" {
+        tape.inc()
+      } else if c == "-" {
+        tape.dec()
+      } else if c == "." {
+        print tape.get().chr()
+      } else if c == "," {
+        let byte = readln().bytes().first()
+        tape.set(byte)
+      } else if c == "[" {
+        if tape.get() == 0 {
+          pc = self.bracket_map.get(pc)
+        }
+      } else if c == "]" {
+        if tape.get() != 0 {
+          pc = self.bracket_map.get(pc)
+        }
+      }
+
+      pc = pc + 1
+    }
+
+    println ""
+  }
+}
+
+
+fn help {
+  eprintln("Usage: lit brainfuck.lit [options]")
+  eprintln("\t--hello-world\tPrints 'Hello world!'")
+  eprintln("\t--benchmark\tRuns a benchmark program that prints chars from Z to A")
+  eprintln("\t--triangles\tPrints Sierpinski triangle on 80-column display")
+  eprintln("\t--squares\tPrints square numbers from 0 to 10000")
+  eprintln("\t--f=PATH\tEvaluates the brainfuck code in the given file")
+  eprintln("\t--eval=CODE\tEvaluates the given brainfuck code")
+  exit(-1)
+}
+
+fn parse_options {
+  if argv().is_empty?() {
+    help()
+  } else if "--hello-world".includes?(argv().get(0)) {
+    return "
+      Hello world!
+      ++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.
+    "
+  } else if "--benchmark".includes?(argv().get(0)) {
+    return "
+      Benchmark brainf*ck program
+      >++[<+++++++++++++>-]<[[>+>+<<-]>[<+>-]++++++++
+      [>++++++++<-]>.[-]<<>++++++++++[>++++++++++[>++
+      ++++++++[>++++++++++[>++++++++++[>++++++++++[>+
+      +++++++++[-]<-]<-]<-]<-]<-]<-]<-]++++++++++.
+    "
+  } else if "--triangles".includes?(argv().get(0)) {
+    return "
+      >++++[<++++++++>-]>++++++++[>++++<-]>>++>>>+>>>+<<<<<<<<<<[-[->+<]>[-<+>>>.<<]>>>[[->++++++++[>++++<-]>.<<[->+<]+>[->++++++++++<<+>]>.[-]>]]+<<<[-[->+<]+>[-<+>>>-[->+<]++>[-<->]<<<]<<<<]++++++++++.+++.[-]<]+++++*****Made*By:*NYYRIKKI*2002*****
+    "
+  } else if "--squares".includes?(argv().get(0)) {
+    return "
+      ++++[>+++++<-]>[<+++++>-]+<+[
+          >[>+>+<<-]++>>[<<+>>-]>>>[-]++>[-]+
+          >>>+[[-]++++++>>>]<<<[[<++++++++<++>>-]+<.<[>----<-]<]
+          <<[>>>>>[>>>[-]+++++++++<[>-<-]+++++++++>[-[<->-]+[<<<]]<[>+<-]>]<<-]<<-
+      ]
+      [Outputs square numbers from 0 to 10000.
+      Daniel B Cristofani (cristofdathevanetdotcom)
+      http://www.hevanet.com/cristofd/brainfuck/]
+
+    "
+  } else if "--file".includes?(argv().get(0)) && argv().get(1) {
+    return open(argv().get(1))
+  } else if "--eval".includes?(argv().get(0)) && argv().get(1) {
+    return argv().get(1)
+  } else {
+    help()
+  }
+}
+
+let result = parse_options() |> Parser().parse()
+Interpreter(result.get(0), result.get(1)).run()
