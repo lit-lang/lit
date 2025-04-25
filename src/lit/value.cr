@@ -10,7 +10,7 @@ module Lit
 
     if value.is_a? Instance
       # if the type defines a `to_s` method, call it
-      if (method = value.get_method(token.with_lexeme("to_s")))
+      if method = value.get_method(token.with_lexeme("to_s"))
         return method.call(interpreter, [] of Value, token).to_s
       else
         # if the type doesn't define a `to_s` method, use the default implementation

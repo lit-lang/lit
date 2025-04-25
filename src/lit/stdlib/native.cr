@@ -15,7 +15,7 @@ module Lit
               LitArray.new(arguments)
             end
           }),
-          ::Lit::Native::Fn.new("Map", 0.., ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          ::Lit::Native::Fn.new("Map", 0.., ->(_interpreter : Interpreter, arguments : ::Array(Value), _token : Token) : Value {
             if arguments.size == 0
               LitMap.new
             else
