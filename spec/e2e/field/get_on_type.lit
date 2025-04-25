@@ -1,2 +1,2 @@
 type Foo {}
-Foo.bar # error: [line 2] Runtime error: Only instances have properties.
+Foo.bar # error: [line 2] Runtime error: Only instances have properties, got Type.

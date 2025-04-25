@@ -156,11 +156,8 @@ module Lit
       if instance = box(object)
         return instance.get(expr.name)
       end
-      # if object.is_a? Instance
-      # return object.as(Instance).get(expr.name)
-      # # end
 
-      runtime_error(expr.name, "Only instances have properties.")
+      runtime_error(expr.name, "Only instances have properties, got #{type_of(object)}.")
     end
 
     def visit_set_expr(expr) : Value
