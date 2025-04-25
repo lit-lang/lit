@@ -205,7 +205,7 @@ module Lit
         return falsey?(right)
       end
 
-      runtime_error(expr.operator, "Unknown unary operator #{expr.operator}. This is probably a parsing error. My bad =(")
+      runtime_error(expr.operator, "Unknown unary operator #{expr.operator}. This is probably a parsing bug. My bad =(")
     end
 
     def visit_binary_expr(expr) : Value
