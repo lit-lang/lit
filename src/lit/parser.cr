@@ -388,6 +388,8 @@ module Lit
       loop do
         if match?(TokenType::LEFT_PAREN)
           expr = finish_call(expr)
+        elsif match?(TokenType::LEFT_BRACKET)
+          expr = subscript(expr)
         elsif match?(TokenType::DOT)
           ignore_newlines
           name = consume(TokenType::IDENTIFIER, "I was expecting a property name after '.'.")
@@ -398,24 +400,6 @@ module Lit
       end
 
       expr
-    end
-
-    private def finish_call(callee)
-      ignore_newlines
-      arguments = [] of Expr
-
-      if !check(TokenType::RIGHT_PAREN)
-        loop do
-          arguments.push(expression)
-
-          break unless match?(TokenType::COMMA)
-        end
-      end
-
-      ignore_newlines
-      paren = consume(TokenType::RIGHT_PAREN, "I was expecting a ')' after the arguments.")
-
-      Expr::Call.new(callee, paren, arguments)
     end
 
     private def primary
@@ -469,6 +453,49 @@ module Lit
       body, params = block_with_params
 
       Expr::Function.new(params, body)
+    end
+
+    private def finish_call(callee)
+      ignore_newlines
+      arguments, paren = call_args(TokenType::RIGHT_PAREN, ')')
+
+      Expr::Call.new(callee, paren, arguments)
+    end
+
+    private def subscript(callee)
+      opening_bracket = previous
+      arguments, closing_bracket = call_args(TokenType::RIGHT_BRACKET, ']')
+
+      if match?(TokenType::EQUAL)
+        token = previous
+        value = expression
+
+        arguments.push(value)
+        get_expr = Expr::Get.new(callee, token.with_lexeme("set"))
+      else
+        get_expr = Expr::Get.new(callee, opening_bracket.with_lexeme("get"))
+      end
+
+      Expr::Call.new(get_expr, closing_bracket, arguments)
+    end
+
+    private def call_args(closed_by : TokenType, s)
+      ignore_newlines
+
+      args = [] of Expr
+
+      if !check(closed_by)
+        loop do
+          args.push(expression)
+
+          break unless match?(TokenType::COMMA)
+        end
+      end
+
+      ignore_newlines
+      closing_token = consume(closed_by, "I was expecting a '#{s}' after the arguments.")
+
+      {args, closing_token}
     end
 
     private def match?(*types) : Bool

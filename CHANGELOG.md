@@ -46,6 +46,8 @@ println add(1, 2); # 3
 | <= | lte |
 | > | gt |
 | >= | gte |
+| [] | get |
+| []= | set |
 
 - allow `else if`
 
