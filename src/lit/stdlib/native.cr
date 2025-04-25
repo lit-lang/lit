@@ -1,5 +1,6 @@
 require "../interpreter"
 require "./lit_array"
+require "./lit_map"
 require "./native_fn"
 
 module Lit
@@ -13,6 +14,16 @@ module Lit
             else
               LitArray.new(arguments)
             end
+          }),
+          ::Lit::Native::Fn.new("Map", 0.., ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+            if arguments.size == 0
+              LitMap.new
+            else
+              elements = arguments
+              elements.push(nil) if elements.size.odd?
+              LitMap.new(elements.each_slice(2).to_h)
+            end
+          }),
           }),
           ::Lit::Native::Fn.new("clock", 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
             Time.local.to_unix_f

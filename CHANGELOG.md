@@ -25,6 +25,18 @@
 
 - allow `else if`
 
+- Add `Map` type
+
+```lit
+let m = Map();
+m.set("a", 1);
+m.set("b", 2);
+println m.get("a"); # 1
+println m.get("b"); # 2
+println m.get("c"); # nil
+println m.merge(Map("a", 2)) # Map("a" => 2, "b" => 2)
+```
+
 - Allow fn keyword before method definitions
 
 - new stdlib stuff: sleep, argv
