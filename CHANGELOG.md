@@ -51,6 +51,10 @@ println add(1, 2); # 3
 | [] | get |
 | []= | set |
 
+Check out [this example] to see how to overload operators on custom types.
+
+[this example]: https://github.com/lit-lang/lit/blob/a90eec865a6ca1ac850dc6f6fedf8b5cd7c3d955/spec/e2e/custom_types/operator_overload.lit
+
 - allow `else if`
 
 ```lit
@@ -62,10 +66,6 @@ if x == 1 {
   println "x is neither 1 nor 2";
 }
 ```
-
-Check out [this example] to see how to overload operators on custom types.
-
-[this example]: https://github.com/lit-lang/lit/blob/a90eec865a6ca1ac850dc6f6fedf8b5cd7c3d955/spec/e2e/custom_types/operator_overload.lit
 
 - Add `Map` type
 
