@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: crystal-lang/install-crystal@v1
         with:
-          crystal: 1.15.1
+          crystal: 1.16.1
       - name: Cache shards
         uses: actions/cache@v4
         with:
