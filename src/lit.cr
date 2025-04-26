@@ -1,7 +1,7 @@
 require "./lit/lit"
 
 module Lit
-  VERSION = "0.1.0"
+  VERSION = "0.2.0"
 
   def self.run(opts : Array(String) = ARGV)
     if opts.first?
