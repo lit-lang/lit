@@ -1,4 +1,6 @@
-## v0.2.0
+## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
+
+## v0.2.0 - One fewer keystroke per statement | [Full diff](https://github.com/lit-lang/lit/compare/v0.1.0...v0.2.0)
 
 - Remove required semicolon to separate statements
 
@@ -23,7 +25,7 @@ println s.size() # 3
 println s.chars() # ["a", "b", "c"]
 ```
 
-- Add function literals (anon functions)
+- Add function literals (anonymous functions)
 
 ```lit
 let add = fn { |a, b| return a + b; }
@@ -61,6 +63,10 @@ if x == 1 {
 }
 ```
 
+Check out [this example] to see how to overload operators on custom types.
+
+[this example]: https://github.com/lit-lang/lit/blob/a90eec865a6ca1ac850dc6f6fedf8b5cd7c3d955/spec/e2e/custom_types/operator_overload.lit
+
 - Add `Map` type
 
 ```lit
@@ -85,7 +91,7 @@ type Foo {
 }
 ```
 
-- Change default instance representation
+- Change default string representation for instances of custom types
 
 ```lit
 type User {
