@@ -89,7 +89,7 @@ module Lit
             fn = arguments[0]
             if fn.is_a?(Function)
               start = Time.monotonic
-              result = fn.call(interpreter, [] of Value, token)
+              fn.call(interpreter, [] of Value, token)
               end_time = Time.monotonic
 
               (end_time - start).to_f
