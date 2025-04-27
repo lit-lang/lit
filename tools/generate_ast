@@ -7,19 +7,20 @@ module AstGenerator
     output_dir = ARGV.first || "src/lit"
 
     define_ast(output_dir, "Expr", [
-      "Assign   = name : Token, value : Expr",
-      "Binary   = left : Expr, operator : Token, right : Expr",
-      "Call     = callee : Expr, paren : Token, arguments : Array(Expr)",
-      "Function = params : Array(Token), body : Array(Stmt)",
-      "Get      = object : Expr, name : Token",
-      "Set      = object : Expr, name : Token, value : Expr",
-      "Grouping = expression : Expr",
-      "Literal  = value : Union(String | Int64 | Float64 | Bool | Nil)",
-      "Ternary  = condition : Expr, left : Expr, right : Expr, operator : Token",
-      "Logical  = left : Expr, operator : Token, right : Expr",
-      "Self     = keyword : Token",
-      "Unary    = operator : Token, right : Expr",
-      "Variable = name : Token",
+      "ArrayLiteral        = elements : Array(Expr)",
+      "Assign              = name : Token, value : Expr",
+      "Binary              = left : Expr, operator : Token, right : Expr",
+      "Call                = callee : Expr, paren : Token, arguments : Array(Expr)",
+      "Function            = params : Array(Token), body : Array(Stmt)",
+      "Get                 = object : Expr, name : Token",
+      "Set                 = object : Expr, name : Token, value : Expr",
+      "Grouping            = expression : Expr",
+      "Literal             = value : Union(String | Int64 | Float64 | Bool | Nil)",
+      "Ternary             = condition : Expr, left : Expr, right : Expr, operator : Token",
+      "Logical             = left : Expr, operator : Token, right : Expr",
+      "Self                = keyword : Token",
+      "Unary               = operator : Token, right : Expr",
+      "Variable            = name : Token",
       "StringInterpolation = parts : Array(Expr), token : Token",
     ])
 

@@ -5,6 +5,7 @@ require "./token"
 module Lit
   abstract class Expr
     module Visitor(T)
+      abstract def visit_array_literal_expr(expr : ArrayLiteral) : T
       abstract def visit_assign_expr(expr : Assign) : T
       abstract def visit_binary_expr(expr : Binary) : T
       abstract def visit_call_expr(expr : Call) : T
@@ -19,6 +20,16 @@ module Lit
       abstract def visit_unary_expr(expr : Unary) : T
       abstract def visit_variable_expr(expr : Variable) : T
       abstract def visit_string_interpolation_expr(expr : StringInterpolation) : T
+    end
+
+    class ArrayLiteral < Expr
+      getter elements : Array(Expr)
+
+      def initialize(@elements); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_array_literal_expr(self)
+      end
     end
 
     class Assign < Expr

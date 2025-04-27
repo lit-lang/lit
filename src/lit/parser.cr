@@ -411,6 +411,7 @@ module Lit
       return Expr::Variable.new(previous) if match?(TokenType::IDENTIFIER)
       return string_interpolation if match?(TokenType::STRING_INTERPOLATION)
       return function_body("function", anonymous: true) if match?(TokenType::FN)
+      return array if match?(TokenType::LEFT_BRACKET)
 
       if match?(TokenType::LEFT_PAREN)
         ignore_newlines
@@ -455,16 +456,22 @@ module Lit
       Expr::Function.new(params, body)
     end
 
+    private def array
+      elements, _ = expression_list(TokenType::RIGHT_BRACKET, "I was expecting a ']' after the array elements.")
+
+      Expr::ArrayLiteral.new(elements)
+    end
+
     private def finish_call(callee)
       ignore_newlines
-      arguments, paren = call_args(TokenType::RIGHT_PAREN, ')')
+      arguments, paren = expression_list(TokenType::RIGHT_PAREN, "I was expecting a ')' after the arguments.")
 
       Expr::Call.new(callee, paren, arguments)
     end
 
     private def subscript(callee)
       opening_bracket = previous
-      arguments, closing_bracket = call_args(TokenType::RIGHT_BRACKET, ']')
+      arguments, closing_bracket = expression_list(TokenType::RIGHT_BRACKET, "I was expecting a ']' after the arguments.")
 
       if match?(TokenType::EQUAL)
         token = previous
@@ -479,23 +486,23 @@ module Lit
       Expr::Call.new(get_expr, closing_bracket, arguments)
     end
 
-    private def call_args(closed_by : TokenType, s)
+    private def expression_list(closed_by : TokenType, msg)
       ignore_newlines
 
-      args = [] of Expr
+      exprs = [] of Expr
 
       if !check(closed_by)
         loop do
-          args.push(expression)
+          exprs.push(expression)
 
           break unless match?(TokenType::COMMA)
         end
       end
 
       ignore_newlines
-      closing_token = consume(closed_by, "I was expecting a '#{s}' after the arguments.")
+      closing_token = consume(closed_by, msg)
 
-      {args, closing_token}
+      {exprs, closing_token}
     end
 
     private def match?(*types) : Bool

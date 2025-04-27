@@ -298,6 +298,11 @@ module Lit
       Function.new(nil, expr, @environment, initializer: false)
     end
 
+    def visit_array_literal_expr(expr) : Value
+      elements = expr.elements.map { |e| evaluate(e) }
+      LitArray.new(elements)
+    end
+
     def execute(stmt : Stmt) : Value
       stmt.accept(self)
     end

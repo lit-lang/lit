@@ -1,5 +1,14 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Add array literal syntax
+
+```lit
+let a = [1, 2, 3]
+println a[0] # 1
+a[0] = 4
+println a # [4, 2, 3]
+```
+
 ## v0.2.0 - One fewer keystroke per statement | [Full diff](https://github.com/lit-lang/lit/compare/v0.1.0...v0.2.0)
 
 - Remove required semicolon to separate statements
