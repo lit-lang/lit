@@ -2,7 +2,7 @@
 
 type Tape {
   fn init {
-    self.tape = Array(0)
+    self.tape = [0]
     self.pos = 0
   }
 
@@ -47,9 +47,9 @@ type Parser {
   fn parse { |program|
     let valid_chars = '><.,[]+-'
     let size = program.size()
-    let bracket_stack = Array()
-    let bracket_map = Map()
-    let chars = Array()
+    let bracket_stack = []
+    let bracket_map = {:}
+    let chars = []
     var i = 0
 
     program.chars().each(fn { |c|
