@@ -303,6 +303,18 @@ module Lit
       LitArray.new(elements)
     end
 
+    def visit_map_literal_expr(expr) : Value
+      map = LitMap.new
+      expr.entries.each do |entry|
+        key = evaluate(entry[0])
+        value = evaluate(entry[1])
+
+        # TODO: warn on duplicate keys
+        map.elements[key] = value
+      end
+      map
+    end
+
     def execute(stmt : Stmt) : Value
       stmt.accept(self)
     end

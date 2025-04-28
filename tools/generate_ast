@@ -8,6 +8,7 @@ module AstGenerator
 
     define_ast(output_dir, "Expr", [
       "ArrayLiteral        = elements : Array(Expr)",
+      "MapLiteral          = entries : Array(Tuple(Expr, Expr))",
       "Assign              = name : Token, value : Expr",
       "Binary              = left : Expr, operator : Token, right : Expr",
       "Call                = callee : Expr, paren : Token, arguments : Array(Expr)",
@@ -87,7 +88,9 @@ module AstGenerator
   private def define_type(file, base_name, class_name, field_list, is_last)
     file.puts "    class #{class_name} < #{base_name}"
 
-    fields = field_list.split(", ")
+    # Split field list by commas that are not inside parentheses
+    fields = field_list.split(/,\s*(?![^()]*\))/)
+    pp fields
 
     define_getters(file, fields)
     define_initializer(file, fields)

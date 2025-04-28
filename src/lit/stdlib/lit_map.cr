@@ -45,7 +45,9 @@ module Lit
         })
       when "to_s"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(interpreter : Interpreter, _arguments : ::Array(Value), token : Token) : Value {
-          "Map(#{@elements.map { |k, v| "#{::Lit.inspect_value(k, interpreter, token)} => #{::Lit.inspect_value(v, interpreter, token)}" }.join(", ")})"
+          return "{:}" if @elements.empty?
+
+          "{#{@elements.map { |k, v| "#{::Lit.inspect_value(k, interpreter, token)} : #{::Lit.inspect_value(v, interpreter, token)}" }.join(", ")}}"
         })
       else
         super

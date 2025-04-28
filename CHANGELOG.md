@@ -9,6 +9,21 @@ a[0] = 4
 println a # [4, 2, 3]
 ```
 
+- Add map literal syntax
+
+Maps are key-value pairs (separated by a colon), also known as dictionaries or
+hashes in other languages.
+
+```lit
+let user = {
+  "name" : "Alice",
+  "age" : 30, # trailing comma is allowed
+}
+
+println user["name"] # Alice
+println {:}.size() # 0
+```
+
 ## v0.2.0 - One fewer keystroke per statement | [Full diff](https://github.com/lit-lang/lit/compare/v0.1.0...v0.2.0)
 
 - Remove required semicolon to separate statements

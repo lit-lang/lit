@@ -130,10 +130,6 @@ module Lit
       end
     end
 
-    def visit_array_literal_expr(expr) : Nil
-      expr.elements.each { |element| resolve(element) }
-    end
-
     def visit_call_expr(expr) : Nil
       resolve(expr.callee)
       expr.arguments.each { |arg| resolve(arg) }
@@ -203,6 +199,17 @@ module Lit
 
     def visit_function_expr(expr) : Nil
       resolve_function(expr, FunctionType::Function)
+    end
+
+    def visit_array_literal_expr(expr) : Nil
+      expr.elements.each { |element| resolve(element) }
+    end
+
+    def visit_map_literal_expr(expr) : Nil
+      expr.entries.each do |entry|
+        resolve(entry[0])
+        resolve(entry[1])
+      end
     end
 
     def resolve(stmt : Stmt) : Nil

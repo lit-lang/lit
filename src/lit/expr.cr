@@ -6,6 +6,7 @@ module Lit
   abstract class Expr
     module Visitor(T)
       abstract def visit_array_literal_expr(expr : ArrayLiteral) : T
+      abstract def visit_map_literal_expr(expr : MapLiteral) : T
       abstract def visit_assign_expr(expr : Assign) : T
       abstract def visit_binary_expr(expr : Binary) : T
       abstract def visit_call_expr(expr : Call) : T
@@ -29,6 +30,16 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_array_literal_expr(self)
+      end
+    end
+
+    class MapLiteral < Expr
+      getter entries : Array(Tuple(Expr, Expr))
+
+      def initialize(@entries); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_map_literal_expr(self)
       end
     end
 

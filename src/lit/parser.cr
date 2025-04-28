@@ -412,6 +412,7 @@ module Lit
       return string_interpolation if match?(TokenType::STRING_INTERPOLATION)
       return function_body("function", anonymous: true) if match?(TokenType::FN)
       return array if match?(TokenType::LEFT_BRACKET)
+      return map if match?(TokenType::LEFT_BRACE)
 
       if match?(TokenType::LEFT_PAREN)
         ignore_newlines
@@ -460,6 +461,34 @@ module Lit
       elements, _ = expression_list(TokenType::RIGHT_BRACKET, "I was expecting a ']' after the array elements.")
 
       Expr::ArrayLiteral.new(elements)
+    end
+
+    private def map
+      if match?(TokenType::COLON) # empty map
+        consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the map.")
+        return Expr::MapLiteral.new([] of Tuple(Expr, Expr))
+      end
+
+      elements = [] of Tuple(Expr, Expr)
+
+      loop do
+        ignore_newlines
+        key = expression
+        consume(TokenType::COLON, "I was expecting a ':' after a map key.")
+        value = expression
+        ignore_newlines
+
+        elements << {key, value}
+
+        break if !match?(TokenType::COMMA)
+        ignore_newlines
+        # Allow trailing comma by checking if we're at the end of the map
+        break if check(TokenType::RIGHT_BRACE)
+      end
+
+      consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the map.")
+
+      Expr::MapLiteral.new(elements)
     end
 
     private def finish_call(callee)
