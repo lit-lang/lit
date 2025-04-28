@@ -29,7 +29,7 @@ println a[2] = "hey" # expect: hey
 println a # expect: [nil, nil, "hey"]
 
 # negative index
-a = [1, 2, 3]
+a = [1, 2, 3,] # trailing comma
 println a[-1] # expect: 3
 println a[-2] # expect: 2
 println a[-3] # expect: 1

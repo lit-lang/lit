@@ -516,15 +516,18 @@ module Lit
     end
 
     private def expression_list(closed_by : TokenType, msg)
-      ignore_newlines
-
       exprs = [] of Expr
 
       if !check(closed_by)
         loop do
+          ignore_newlines
           exprs.push(expression)
+          ignore_newlines
 
-          break unless match?(TokenType::COMMA)
+          break if !match?(TokenType::COMMA)
+          ignore_newlines
+          # Allow trailing comma by checking if we're at the end of the list
+          break if check(closed_by)
         end
       end
 

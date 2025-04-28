@@ -2,7 +2,8 @@ fn f0 { | | return 0; }
 println f0() # expect: 0
 
 fn f1 { |a| return a; }
-println f1(1) # expect: 1
+# allows trailing comma
+println f1(1,) # expect: 1
 
 fn f2 { |a, b| return a + b; }
 println f2(1, 2) # expect: 3

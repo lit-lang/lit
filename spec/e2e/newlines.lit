@@ -79,6 +79,23 @@ type Foo {
 
       )
 
+      println [
+        1,
+
+        2
+        ,
+
+        3,
+      ]
+
+      println {
+
+        "foo" : "bar",
+
+        "bar" : "foo",
+
+      }
+
     } else {
 
       var a = 2
@@ -109,3 +126,5 @@ Foo().
 # expect: 0
 # expect: 1
 # expect: 4
+# expect: [1, 2, 3]
+# expect: {"foo" : "bar", "bar" : "foo"}
