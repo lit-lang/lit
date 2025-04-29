@@ -31,17 +31,21 @@ module Lit
       REPL.run(self)
     end
 
+    def self.run_code(code : String)
+      run(code)
+    ensure
+      exit(ExitCode::DATAERR) if had_error?
+      exit(ExitCode::SOFTWARE) if had_runtime_error?
+    end
+
     def self.run_file(path : String)
-      run(File.read(path))
+      run_code(File.read(path))
     rescue File::NotFoundError
       STDERR.puts Text.error("Error: File not found!")
       exit(ExitCode::NOINPUT)
     rescue IO::Error
       STDERR.puts Text.error("Error: Unable to read file!")
       exit(ExitCode::NOINPUT)
-    ensure
-      exit(ExitCode::DATAERR) if had_error?
-      exit(ExitCode::SOFTWARE) if had_runtime_error?
     end
 
     def self.runtime_error(error)

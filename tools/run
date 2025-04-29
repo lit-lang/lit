@@ -1,2 +1,2 @@
 #!/bin/bash
-tools/build-dev && bin/lit $@
+tools/build-dev && bin/lit "$@"

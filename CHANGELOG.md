@@ -1,5 +1,15 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Add -e/--eval option to CLI
+
+This option allows you to execute some code directly from the command line. For
+example:
+
+```sh
+lit -e 'println "Hello, world!"'
+# Hello, world!
+```
+
 - Add array literal syntax
 
 ```lit
