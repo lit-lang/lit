@@ -42,15 +42,6 @@ describe Lit::Parser do
         error_msg.should contain("I was expecting a variable name here")
       end
     end
-
-    context "when there's no newline after variable declaration" do
-      it do
-        tokens = Create.tokens(:var, :identifier, :eof)
-        error_msg = output_of { Lit::Parser.parse(tokens) }
-
-        error_msg.should contain("I was expecting a newline after variable declaration")
-      end
-    end
   end
 
   describe "println statements" do
@@ -59,16 +50,6 @@ describe Lit::Parser do
       stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Println)
 
       stmt.expression.as(Lit::Expr::Literal).value.should eq 1
-    end
-
-    context "when newline is missing" do
-      it "errors" do
-        tokens = Create.tokens(:println, :number_1, :eof)
-
-        output_of {
-          Lit::Parser.parse(tokens)
-        }.should contain("I was expecting a newline after the println statement")
-      end
     end
   end
 

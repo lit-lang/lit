@@ -589,6 +589,8 @@ module Lit
     end
 
     private def consume_line(msg)
+      return if at_end?
+
       consume(TokenType::NEWLINE, msg)
       ignore_newlines
     end
