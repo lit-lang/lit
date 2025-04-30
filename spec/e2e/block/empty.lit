@@ -4,4 +4,4 @@
 if (true) {}
 if (false) {} else {}
 
-println "ok" # expect: ok
+println("ok") # expect: ok

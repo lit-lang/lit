@@ -44,15 +44,6 @@ describe Lit::Parser do
     end
   end
 
-  describe "println statements" do
-    it "parses println statements" do
-      tokens = Create.tokens(:println, :number_1, :newline, :eof)
-      stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Println)
-
-      stmt.expression.as(Lit::Expr::Literal).value.should eq 1
-    end
-  end
-
   describe "assignment expression" do
     it "parses the assignment" do
       tokens = Create.tokens(:identifier, :equal, :number, :newline, :eof)

@@ -1,7 +1,7 @@
 type Foo {
   say_name { |a|
-    println self.name
-    println a
+    println(self.name)
+    println(a)
   }
 }
 

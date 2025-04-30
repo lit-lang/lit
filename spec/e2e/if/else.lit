@@ -1,6 +1,6 @@
 # Evaluate the 'else' expression if the condition is false.
-if true { println "good"; } else { println "bad"; } # expect: good
-if false { println "bad"; } else { println "good"; } # expect: good
+if true { println("good"); } else { println("bad"); } # expect: good
+if false { println("bad"); } else { println("good"); } # expect: good
 
 # Allow parentheses around the condition.
-if (false) {} else { println "parentheses"; } # expect: parentheses
+if (false) {} else { println("parentheses"); } # expect: parentheses

@@ -1,5 +1,16 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- **BREAKING:** Make println/print functions, not keywords
+
+This is a super breaking change, but I'm the only user, so screw it. The
+functions at least support multiple arguments, so that's nice. Now you can use
+them with the pipeline operator too.
+
+```lit
+println "Hello, world!" # doesn't work anymore
+print("Hello", ",", " ", "world!", "\n") # works now
+```
+
 - Add -e/--eval option to CLI
 
 This option allows you to execute some code directly from the command line. For

@@ -102,10 +102,6 @@ module Create
     case type
     when :expression
       Lit::Stmt::Expression.new(self.expr(*opts))
-    when :print
-      Lit::Stmt::Print.new(self.expr(*opts))
-    when :println
-      Lit::Stmt::Println.new(self.expr(*opts))
     else
       raise "Don't know hot to build statement with type '#{type}'"
     end

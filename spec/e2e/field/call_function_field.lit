@@ -1,9 +1,9 @@
 type Foo {}
 
 fn bar { |a, b|
-  println "bar"
-  println a
-  println b
+  println("bar")
+  println(a)
+  println(b)
 }
 
 var foo = Foo()

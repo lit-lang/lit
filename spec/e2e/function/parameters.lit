@@ -1,27 +1,27 @@
 fn f0 { | | return 0; }
-println f0() # expect: 0
+println(f0()) # expect: 0
 
 fn f1 { |a| return a; }
 # allows trailing comma
-println f1(1,) # expect: 1
+println(f1(1,)) # expect: 1
 
 fn f2 { |a, b| return a + b; }
-println f2(1, 2) # expect: 3
+println(f2(1, 2)) # expect: 3
 
 fn f3 { |a, b, c| return a + b + c; }
-println f3(1, 2, 3) # expect: 6
+println(f3(1, 2, 3)) # expect: 6
 
 fn f4 { |a, b, c, d| return a + b + c + d; }
-println f4(1, 2, 3, 4) # expect: 10
+println(f4(1, 2, 3, 4)) # expect: 10
 
 fn f5 { |a, b, c, d, e| return a + b + c + d + e; }
-println f5(1, 2, 3, 4, 5) # expect: 15
+println(f5(1, 2, 3, 4, 5)) # expect: 15
 
 fn f6 { |a, b, c, d, e, f| return a + b + c + d + e + f; }
-println f6(1, 2, 3, 4, 5, 6) # expect: 21
+println(f6(1, 2, 3, 4, 5, 6)) # expect: 21
 
 fn f7 { |a, b, c, d, e, f, g| return a + b + c + d + e + f + g; }
-println f7(1, 2, 3, 4, 5, 6, 7) # expect: 28
+println(f7(1, 2, 3, 4, 5, 6, 7)) # expect: 28
 
 fn f8 { |a, b, c, d, e, f, g, h| return a + b + c + d + e + f + g + h; }
-println f8(1, 2, 3, 4, 5, 6, 7, 8) # expect: 36
+println(f8(1, 2, 3, 4, 5, 6, 7, 8)) # expect: 36

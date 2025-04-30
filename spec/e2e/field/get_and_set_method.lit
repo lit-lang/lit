@@ -1,12 +1,12 @@
 # Bound methods have identity equality.
 type Foo {
   method { |a|
-    println "method"
-    println a
+    println("method")
+    println(a)
   }
   other { |a|
-    println "other"
-    println a
+    println("other")
+    println(a)
   }
 }
 

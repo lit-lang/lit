@@ -5,12 +5,12 @@ type CustomType {
 }
 fn fun {}
 
-println typeof("hello") # expect: String
-println typeof(1) # expect: Integer
-println typeof(1.5) # expect: Float
-println typeof(nil) # expect: Nil
-println typeof(true) # expect: Bool
-println typeof(panic) # expect: Function
-println typeof(fun) # expect: Function
-println typeof(CustomType) # expect: Type
-println typeof(CustomType()) # expect: CustomType
+println(typeof("hello")) # expect: String
+println(typeof(1)) # expect: Integer
+println(typeof(1.5)) # expect: Float
+println(typeof(nil)) # expect: Nil
+println(typeof(true)) # expect: Bool
+println(typeof(panic)) # expect: Function
+println(typeof(fun)) # expect: Function
+println(typeof(CustomType)) # expect: Type
+println(typeof(CustomType())) # expect: CustomType

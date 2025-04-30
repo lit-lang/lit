@@ -94,8 +94,6 @@ module Lit
       return break_statement if match?(TokenType::BREAK)
       return next_statement if match?(TokenType::NEXT)
       return return_statement if match?(TokenType::RETURN)
-      return println_statement if match?(TokenType::PRINTLN)
-      return print_statement if match?(TokenType::PRINT)
       return Stmt::Block.new(block_statements) if match?(TokenType::LEFT_BRACE)
 
       expression_statement
@@ -172,22 +170,6 @@ module Lit
       keyword = previous
       consume_line("I was expecting a newline after the next statement.")
       Stmt::Next.new(keyword)
-    end
-
-    private def println_statement
-      token = previous
-      expr = expression
-      consume_line("I was expecting a newline after the println statement.")
-
-      Stmt::Println.new(token, expr)
-    end
-
-    private def print_statement
-      token = previous
-      expr = expression
-      consume_line("I was expecting a newline after the print statement.")
-
-      Stmt::Print.new(token, expr)
     end
 
     private def block_with_params

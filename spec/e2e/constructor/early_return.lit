@@ -1,10 +1,10 @@
 type Foo {
   init {
-    println "init"
+    println("init")
     return
-    println "nope"
+    println("nope")
   }
 }
 
 var foo = Foo() # expect: init
-println foo # expect: Foo()
+println(foo) # expect: Foo()

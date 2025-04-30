@@ -1,4 +1,4 @@
 type Foo {}
 
 var foo = Foo()
-println foo # expect: Foo()
+println(foo) # expect: Foo()

@@ -33,8 +33,6 @@ module AstGenerator
       "Expression = expression : Expr",
       "Function   = name : Token, function : Expr::Function",
       "If         = condition : Expr, then_branch : Stmt, else_branch : Stmt?",
-      "Println    = keyword : Token, expression : Expr",
-      "Print      = keyword : Token, expression : Expr",
       "Return     = keyword : Token, value : Expr?",
       "Var        = name : Token, initializer : Expr, mutable : Bool",
       "Loop       = body : Stmt",
@@ -90,7 +88,6 @@ module AstGenerator
 
     # Split field list by commas that are not inside parentheses
     fields = field_list.split(/,\s*(?![^()]*\))/)
-    pp fields
 
     define_getters(file, fields)
     define_initializer(file, fields)

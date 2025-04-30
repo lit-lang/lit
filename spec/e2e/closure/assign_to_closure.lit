@@ -4,16 +4,16 @@ var g
 {
   var local = "local"
   fn f_ {
-    println local
+    println(local)
     local = "after f"
-    println local
+    println(local)
   }
   f = f_
 
   fn g_ {
-    println local
+    println(local)
     local = "after g"
-    println local
+    println(local)
   }
   g = g_
 }

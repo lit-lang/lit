@@ -1,6 +1,6 @@
 fn f {
   return
-  println "bad"
+  println("bad")
 }
 
-println f() # expect: nil
+println(f()) # expect: nil

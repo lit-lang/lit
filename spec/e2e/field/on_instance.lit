@@ -2,8 +2,8 @@ type Foo {}
 
 var foo = Foo()
 
-println foo.bar = "bar value" # expect: bar value
-println foo.baz = "baz value" # expect: baz value
+println(foo.bar = "bar value") # expect: bar value
+println(foo.baz = "baz value") # expect: baz value
 
-println foo.bar # expect: bar value
-println foo.baz # expect: baz value
+println(foo.bar) # expect: bar value
+println(foo.baz) # expect: baz value

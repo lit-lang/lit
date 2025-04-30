@@ -30,6 +30,20 @@ module Lit
           ::Lit::Native::Fn.new("clock", 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
             Time.local.to_unix_f
           }),
+          ::Lit::Native::Fn.new("println", 0.., ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+            if arguments.size == 0
+              puts
+            else
+              arguments.each do |arg|
+                puts ::Lit.stringify_value(arg, interpreter, token)
+              end
+            end
+          }),
+          ::Lit::Native::Fn.new("print", 1.., ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+            arguments.each do |arg|
+              print ::Lit.stringify_value(arg, interpreter, token)
+            end
+          }),
           ::Lit::Native::Fn.new("readln", 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
             gets || ""
           }),

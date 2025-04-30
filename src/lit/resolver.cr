@@ -86,14 +86,6 @@ module Lit
       end
     end
 
-    def visit_println_stmt(stmt) : Nil
-      resolve(stmt.expression)
-    end
-
-    def visit_print_stmt(stmt) : Nil
-      resolve(stmt.expression)
-    end
-
     def visit_block_stmt(stmt) : Nil
       begin_scope
       resolve(stmt.statements)

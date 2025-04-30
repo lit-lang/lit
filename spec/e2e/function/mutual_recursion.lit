@@ -8,5 +8,5 @@ fn is_odd { |n|
   return is_even(n - 1)
 }
 
-println is_even(4) # expect: true
-println is_odd(3) # expect: true
+println(is_even(4)) # expect: true
+println(is_odd(3)) # expect: true

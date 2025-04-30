@@ -3,7 +3,7 @@
 
   {
     var a = "a"
-    fn f_ { println a; }
+    fn f_ { println(a); }
     f = f_
   }
 

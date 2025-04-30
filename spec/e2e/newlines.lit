@@ -15,61 +15,60 @@ type Foo {
 
       loop {
 
-        println "foo"
+        println("foo")
         break
 
       }
 
-      println 1 ==
-          2
+      println( 1 ==
+          2)
 
       let a =
         "bar" |>
           twice()
 
-      println a
+      println(a)
 
-      println true and
-          "and"
+      println(true and
+          "and")
 
-      println false or
-          "or"
+      println(false or
+          "or")
 
+      println("bar" ==
+          "bar")
 
-      println "bar" ==
-          "bar"
+      println("bar" !=
+          "bar")
 
-      println "bar" !=
-          "bar"
+      println(1 <
+          2)
 
-      println 1 <
-          2
+      println(1 >
+          2)
 
-      println 1 >
-          2
+      println(1 <=
+          2)
 
-      println 1 <=
-          2
+      println(1 >=
+          2)
 
-      println 1 >=
-          2
+      println(1 +
+          2)
 
-      println 1 +
-          2
+      println(1 -
+          2)
 
-      println 1 -
-          2
+      println(1 *
+          2)
 
-      println 1 *
-          2
+      println(1 /
+          2)
 
-      println 1 /
-          2
+      println(1 %
+          2)
 
-      println 1 %
-          2
-
-      println twice(
+      println(twice(
 
         (
 
@@ -78,23 +77,24 @@ type Foo {
         )
 
       )
+      )
 
-      println [
+      println( [
         1,
 
         2
         ,
 
         3,
-      ]
+      ])
 
-      println {
+      println( {
 
         "foo" : "bar",
 
         "bar" : "foo",
 
-      }
+      })
 
     } else {
 

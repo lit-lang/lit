@@ -1,7 +1,7 @@
 var a = "outer"
 {
   fn foo {
-    println a
+    println(a)
   }
 
   foo() # expect: outer

@@ -1,12 +1,12 @@
 let who = "Matz"
-println "{who} is awesome!" # expect: Matz is awesome!
+println("{who} is awesome!") # expect: Matz is awesome!
 
 # single quote strings don't have interpolation
-println '{who} is awesome!' # expect: {who} is awesome!
+println('{who} is awesome!') # expect: {who} is awesome!
 
 type Matz {
   to_s {
     return "Matz"
   }
 }
-println "{Matz()} is nice." # expect: Matz is nice.
+println("{Matz()} is nice.") # expect: Matz is nice.

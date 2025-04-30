@@ -10,6 +10,6 @@ fib(25);
 var after = clock();
 print "Time taken: ";
 print (after - before);
-println "s";
+println("s")
 # Time taken: 10.763844966888428s
 # on release build

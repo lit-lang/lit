@@ -7,7 +7,7 @@ fn return_fun_call_with_arg { |func, arg|
 }
 
 fn print_arg { |arg|
-  println arg
+  println(arg)
 }
 
 return_fun_call_with_arg(print_arg, "hello world") # expect: hello world

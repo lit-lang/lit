@@ -10,5 +10,5 @@ while i < 1_000 {
   }
   i = i + 1
 }
-println sum
-println "Took {clock() - start}s"
+println(sum)
+println("Took {clock() - start}s")

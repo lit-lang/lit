@@ -1,8 +1,8 @@
 # False and nil are false.
-if false { println "bad"; } else { println "false"; } # expect: false
-if nil { println "bad"; } else { println "nil"; } # expect: nil
+if false { println("bad"); } else { println("false"); } # expect: false
+if nil { println("bad"); } else { println("nil"); } # expect: nil
 
 # Everything else is true.
-if true { println true; } # expect: true
-if 0 { println 0; } # expect: 0
-if "" { println "empty"; } # expect: empty
+if true { println(true); } # expect: true
+if 0 { println(0); } # expect: 0
+if "" { println("empty"); } # expect: empty

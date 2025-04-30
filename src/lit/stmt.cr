@@ -12,8 +12,6 @@ module Lit
       abstract def visit_expression_stmt(stmt : Expression) : T
       abstract def visit_function_stmt(stmt : Function) : T
       abstract def visit_if_stmt(stmt : If) : T
-      abstract def visit_println_stmt(stmt : Println) : T
-      abstract def visit_print_stmt(stmt : Print) : T
       abstract def visit_return_stmt(stmt : Return) : T
       abstract def visit_var_stmt(stmt : Var) : T
       abstract def visit_loop_stmt(stmt : Loop) : T
@@ -91,28 +89,6 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_if_stmt(self)
-      end
-    end
-
-    class Println < Stmt
-      getter keyword : Token
-      getter expression : Expr
-
-      def initialize(@keyword, @expression); end
-
-      def accept(visitor : Visitor)
-        visitor.visit_println_stmt(self)
-      end
-    end
-
-    class Print < Stmt
-      getter keyword : Token
-      getter expression : Expr
-
-      def initialize(@keyword, @expression); end
-
-      def accept(visitor : Visitor)
-        visitor.visit_print_stmt(self)
       end
     end
 

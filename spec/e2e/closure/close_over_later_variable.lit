@@ -7,8 +7,8 @@ fn f {
   var a = "a"
   var b = "b"
   fn g {
-    println b # expect: b
-    println a # expect: a
+    println(b) # expect: b
+    println(a) # expect: a
   }
   g()
 }

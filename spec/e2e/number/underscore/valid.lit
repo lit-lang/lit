@@ -1,5 +1,5 @@
-println 1_234_567 # expect: 1234567
-println 1_234.567 # expect: 1234.567
-println 1.234_567 # expect: 1.234567
-println 1_234.567_890 # expect: 1234.56789
-println 1_2_3 # expect: 123
+println(1_234_567) # expect: 1234567
+println(1_234.567) # expect: 1234.567
+println(1.234_567) # expect: 1.234567
+println(1_234.567_890) # expect: 1234.56789
+println(1_2_3) # expect: 123

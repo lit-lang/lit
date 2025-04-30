@@ -1,5 +1,5 @@
 if (false) {
-  println notDefined
+  println(notDefined)
 }
 
-println "ok" # expect: ok
+println("ok") # expect: ok

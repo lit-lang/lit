@@ -7,9 +7,9 @@ fn f1 {
     fn f3 {
       var c = "c"
       fn f4 {
-        println a
-        println b
-        println c
+        println(a)
+        println(b)
+        println(c)
       }
       f = f4
     }

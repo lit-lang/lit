@@ -24,5 +24,5 @@ var closure
     }
   }
 
-  println closure() # expect: a
+  println(closure()) # expect: a
 }

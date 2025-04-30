@@ -6,27 +6,27 @@ println(m.is_empty?()) # expect: true
 
 # set
 m["key"] = 1
-println m # expect: {"key" : 1}
-println m.size() # expect: 1
+println(m) # expect: {"key" : 1}
+println(m.size()) # expect: 1
 
 # get
-println m.get("key") # expect: 1
+println(m.get("key")) # expect: 1
 
 # getting an undefined index
-println m.get("undefined") # expect: nil
+println(m.get("undefined")) # expect: nil
 
 let m2 = { # multi-line
   1.0 : 2
 }
 let m3 = m.merge(m2)
-println m3 # expect: {"key" : 1, 1.0 : 2}
+println(m3) # expect: {"key" : 1, 1.0 : 2}
 
 m2[1.0] = 3
 
 # merging doesn't keep the reference
-println m3 # expect: {"key" : 1, 1.0 : 2}
+println(m3) # expect: {"key" : 1, 1.0 : 2}
 
 # merging overwrites same keys
-println m3.merge({"key" : 2}) # expect: {"key" : 2, 1.0 : 2}
+println(m3.merge({"key" : 2})) # expect: {"key" : 2, 1.0 : 2}
 
 m.merge(1) # error: [line 32] Runtime error: I was expecting a Map, but got Integer.

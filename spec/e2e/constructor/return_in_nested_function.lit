@@ -3,8 +3,8 @@ type Foo {
     fn init {
       return "bar"
     }
-    println init() # expect: bar
+    println(init()) # expect: bar
   }
 }
 
-println Foo() # expect: Foo()
+println(Foo()) # expect: Foo()

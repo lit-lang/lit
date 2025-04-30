@@ -2,4 +2,4 @@ type Foo {
   method { }
 }
 var foo = Foo()
-println foo.method # expect: <fn method>
+println(foo.method) # expect: <fn method>

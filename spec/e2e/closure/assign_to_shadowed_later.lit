@@ -7,7 +7,7 @@ var a = "global"
 
   var a = "inner"
   assign()
-  println a # expect: inner
+  println(a) # expect: inner
 }
 
-println a # expect: assigned
+println(a) # expect: assigned

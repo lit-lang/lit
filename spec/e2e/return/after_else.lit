@@ -2,4 +2,4 @@ fn f {
   if false{ "no"; } else { return "ok"; }
 }
 
-println f() # expect: ok
+println(f()) # expect: ok

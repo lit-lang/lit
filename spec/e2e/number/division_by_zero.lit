@@ -1,17 +1,17 @@
 # float zero / float zero
-println 0.0 / 0.0 # expect: NaN
+println(0.0 / 0.0) # expect: NaN
 
 # float zero / int zero
-println 0.0/0 # expect: NaN
+println(0.0/0) # expect: NaN
 
 # int zero / float zero
-println 0/0.0 # expect: NaN
+println(0/0.0) # expect: NaN
 
 # float number / float zero
-println 1.0 / 0.0 # expect: Infinity
+println(1.0 / 0.0) # expect: Infinity
 
 # int number / float zero
-println 1/0.0 # expect: Infinity
+println(1/0.0) # expect: Infinity
 
 # int number / int zero
-println 0/0 # error: [line 17] Runtime error: Division by zero.
+println(0/0) # error: [line 17] Runtime error: Division by zero.

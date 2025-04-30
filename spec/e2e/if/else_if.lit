@@ -1,15 +1,15 @@
 if false {
-  println 'wrong'
+  println('wrong')
 } else if true {
-  println 'right' # expect: right
+  println('right') # expect: right
 } else {
-  println 'wrong2'
+  println('wrong2')
 }
 
 if false {
-  println 'wrong'
+  println('wrong')
 } else if false {
-  println 'wrong2'
+  println('wrong2')
 } else {
-  println 'right' # expect: right
+  println('right') # expect: right
 }

@@ -13,6 +13,6 @@ sum(10_000_000);
 var after = clock();
 print "Time taken: ";
 print (after - before);
-println "s";
+println("s")
 # Time taken: 2.559272050857544s
 # on release build

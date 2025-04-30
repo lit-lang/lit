@@ -7,7 +7,7 @@ var foo = Foo()
 var foo_method = foo.method
 
 # Same bound method.
-println foo_method == foo_method # expect: true
+println(foo_method == foo_method) # expect: true
 
 # Different closurizations.
-println foo.method == foo.method # expect: false
+println(foo.method == foo.method) # expect: false

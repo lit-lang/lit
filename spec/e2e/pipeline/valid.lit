@@ -1,12 +1,12 @@
 fn double { |x| return x * 2; }
 fn difference { |a, b| return a - b; }
-fn side_effect { |x| println x; return x; }
+fn side_effect { |x| println(x); return x; }
 
 # passes lhs to rhs
-println 10 |> double() # expect: 20
+println(10 |> double()) # expect: 20
 # pipes to first argument
-println 10 |> difference(1) # expect: 9
+println(10 |> difference(1)) # expect: 9
 # chains
-println 10 |> double() |> double() # expect: 40
+println(10 |> double() |> double()) # expect: 40
 # accepts any expression as lhs
-println (1 + 2) |> double() # expect: 6
+println((1 + 2) |> double()) # expect: 6

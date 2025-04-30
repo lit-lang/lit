@@ -2,7 +2,7 @@ var a = "outer"
 
 {
   var a = "inner"
-  println a # expect: inner
+  println(a) # expect: inner
 }
 
-println a # expect: outer
+println(a) # expect: outer

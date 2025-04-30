@@ -4,7 +4,7 @@ while i <= 5 {
   if i % 2 == 0 {
     next
   }
-  println i
+  println(i)
 }
 # expect: 1
 # expect: 3

@@ -2,7 +2,7 @@ var f
 
 fn foo { |param|
   fn f_ {
-    println param
+    println(param)
   }
   f = f_
 }

@@ -10,4 +10,4 @@ type Foo {
 }
 
 var closure = Foo().get_closure()
-println closure() # expect: Foo
+println(closure()) # expect: Foo
