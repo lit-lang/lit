@@ -1,5 +1,17 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- **BREAKING:** Only allow setting new fields on initializers
+
+```lit
+type Foo {
+  init { |x| self.x = x; }
+}
+
+let f = Foo(1);
+f.x = 2; # Ok
+f.y = 3; # Runtime error: Undefined property 'y' for Foo.
+```
+
 - **BREAKING:** Make println/print functions, not keywords
 
 This is a super breaking change, but I'm the only user, so screw it. The

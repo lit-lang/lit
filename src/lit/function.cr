@@ -14,7 +14,7 @@ module Lit
         environment.define(param.lexeme, arguments[index])
       end
 
-      interpreter.execute_block(@declaration.body, environment)
+      interpreter.execute_block(@declaration.body, environment, initializer?)
 
       @closure.get_at(0, "self") if initializer?
     rescue e : Interpreter::Return

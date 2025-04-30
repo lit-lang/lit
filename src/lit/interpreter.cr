@@ -40,6 +40,7 @@ module Lit
         @globals.define(fn.name, fn)
       end
       @environment = @globals
+      @in_initializer = false
       @argv = LitArray.new.tap do |a|
         if !ARGV.empty?
           ARGV[1..].each do |arg|
@@ -113,7 +114,7 @@ module Lit
     end
 
     def visit_block_stmt(stmt) : Nil
-      execute_block(stmt.statements, Environment.new(@environment))
+      execute_block(stmt.statements, Environment.new(@environment), @in_initializer)
     end
 
     def visit_function_stmt(stmt) : Nil
@@ -169,7 +170,7 @@ module Lit
       end
 
       value = evaluate(expr.value)
-      object.as(Instance).set(expr.name, value)
+      object.set(expr.name, value, @in_initializer)
       value
     end
 
@@ -315,14 +316,15 @@ module Lit
       expr.accept(self)
     end
 
-    def execute_block(stmts : Array(Stmt), environment : Environment) : Nil
-      previous = @environment
+    def execute_block(stmts : Array(Stmt), environment : Environment, in_initializer : Bool) : Nil
+      previous = {@environment, @in_initializer}
 
       begin
         @environment = environment
+        @in_initializer = in_initializer
         stmts.each { |stmt| execute(stmt) }
       ensure
-        @environment = previous
+        @environment, @in_initializer = previous
       end
     end
 

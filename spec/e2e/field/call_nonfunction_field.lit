@@ -1,6 +1,10 @@
-type Foo {}
+type Foo {
+  init {
+    self.bar = nil
+  }
+}
 
 var foo = Foo()
 foo.bar = "not fn"
 
-foo.bar() # error: [line 6] Runtime error: Can only call functions and types.
+foo.bar() # error: [line 10] Runtime error: Can only call functions and types.

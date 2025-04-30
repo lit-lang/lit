@@ -1,4 +1,9 @@
-type Foo {}
+type Foo {
+  init {
+    self.bar = nil
+    self.baz = nil
+  }
+}
 
 var foo = Foo()
 

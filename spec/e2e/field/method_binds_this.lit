@@ -1,4 +1,9 @@
 type Foo {
+  init {
+    self.name = nil
+    self.f = nil
+  }
+
   say_name { |a|
     println(self.name)
     println(a)

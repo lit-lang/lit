@@ -1,4 +1,8 @@
-type Foo {}
+type Foo {
+  init {
+    self.bar = nil
+  }
+}
 
 fn bar { |a, b|
   println("bar")

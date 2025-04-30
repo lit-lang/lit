@@ -32,8 +32,12 @@ module Lit
       end
     end
 
-    def set(name, value)
-      fields[name.lexeme] = value
+    def set(name, value, in_initializer)
+      if fields.has_key?(name.lexeme) || in_initializer
+        fields[name.lexeme] = value
+      else
+        raise RuntimeError.new(name, "Undefined property '#{name.lexeme}' for #{type.name}.")
+      end
     end
 
     def to_s(interpreter, token) : String
