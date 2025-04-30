@@ -1,5 +1,17 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Add symbol strings
+
+Symbol strings are just a different syntax for strings. They don't support
+interpolation or escaping, but they look prettier in DSLs.
+
+```lit
+println(:hey == 'hey' && :hey == "hey") # true
+println(:hey) # hey
+println(:123) # 123
+println(:1a2b3c) # 1a2b3c
+```
+
 - **BREAKING:** Only allow setting new fields on initializers
 
 ```lit

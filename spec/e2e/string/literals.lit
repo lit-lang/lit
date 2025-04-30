@@ -8,3 +8,9 @@ println('a\nstring') # expect: a\nstring
 
 # Non-ASCII.
 println("A~¶Þॐஃ") # expect: A~¶Þॐஃ
+
+# symbol strings
+println(:hey == 'hey' && :hey == "hey") # expect: true
+println(:hey) # expect: hey
+println(:123) # expect: 123
+println(:1a2b3c) # expect: 1a2b3c

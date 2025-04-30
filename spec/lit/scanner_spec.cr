@@ -37,6 +37,7 @@ describe Lit::Scanner do
   it_scans "|>", to_type: token(PIPE_GREATER)
   it_scans "!=", to_type: token(BANG_EQUAL)
   it_scans "silverchair!?", to_type: token(IDENTIFIER)
+  it_scans ":hey", to_type: token(STRING), to_literal: "hey"
 
   it_scans_keywords
 

@@ -78,7 +78,7 @@ module Lit
       when '.'
         add_token(TokenType::DOT)
       when ':'
-        add_token(TokenType::COLON)
+        alphanumeric?(peek) ? consume_symbol_string : add_token(TokenType::COLON)
       when ';'
         add_token(TokenType::NEWLINE)
       when '+'
@@ -275,6 +275,16 @@ module Lit
       end
 
       add_token(token_type, string)
+    end
+
+    private def consume_symbol_string : Nil
+      s = String.build do |str|
+        while alphanumeric?(peek)
+          str << advance
+        end
+      end
+
+      add_token(TokenType::STRING, s)
     end
 
     private def consume_identifier
