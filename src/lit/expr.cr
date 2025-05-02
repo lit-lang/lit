@@ -6,6 +6,7 @@ module Lit
   abstract class Expr
     module Visitor(T)
       abstract def visit_array_literal_expr(expr : ArrayLiteral) : T
+      abstract def visit_block_expr(expr : Block) : T
       abstract def visit_map_literal_expr(expr : MapLiteral) : T
       abstract def visit_assign_expr(expr : Assign) : T
       abstract def visit_binary_expr(expr : Binary) : T
@@ -30,6 +31,16 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_array_literal_expr(self)
+      end
+    end
+
+    class Block < Expr
+      getter statements : Array(Stmt)
+
+      def initialize(@statements); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_block_expr(self)
       end
     end
 

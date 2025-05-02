@@ -86,9 +86,9 @@ module Lit
       end
     end
 
-    def visit_block_stmt(stmt) : Nil
+    def visit_block_expr(expr) : Nil
       begin_scope
-      resolve(stmt.statements)
+      resolve(expr.statements)
       end_scope
     end
 

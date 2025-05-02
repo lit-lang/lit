@@ -1,5 +1,20 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Make block an expression, not statement
+
+Blocks being expressions allow us to group expressions (like parentheses) and
+also will open the space not to need explicit returns in the future.
+
+```lit
+let x = {
+  let a = 1;
+  let b = 2;
+  a + b # no need for return
+}
+
+println(x) # 3
+```
+
 - Add symbol strings
 
 Symbol strings are just a different syntax for strings. They don't support

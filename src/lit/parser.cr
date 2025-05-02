@@ -9,6 +9,7 @@ module Lit
 
     getter tokens : Array(Token)
     getter current : Int32 = 0
+    private property errors = [] of Tuple(Token, String)
 
     def initialize(@tokens); end
 
@@ -26,10 +27,23 @@ module Lit
         ignore_newlines # TODO: ignore or require?
       end
 
+      report_errors
+
       stmts
     end
 
-    private def declaration
+    def declaration
+      declaration!
+    rescue ParserError
+      synchronize
+
+      # NOTE: Since there's an error, return this dumb expr just to get going
+      # TODO: there's no need to create a new literal every time. move to a
+      # constant. Same for other fixed literals.
+      Stmt::Expression.new(Expr::Literal.new("ERROR"))
+    end
+
+    private def declaration!
       if check(TokenType::FN) && check_next(TokenType::IDENTIFIER)
         consume(TokenType::FN, "BUG")
         return function("function")
@@ -39,13 +53,6 @@ module Lit
       return type_declaration if match?(TokenType::TYPE)
 
       statement
-    rescue ParserError
-      synchronize
-
-      # NOTE: Since there's an error, return this dumb expr just to get going
-      # TODO: there's no need to create a new literal every time. move to a
-      # constant. Same for other fixed literals.
-      Stmt::Expression.new(Expr::Literal.new("ERROR"))
     end
 
     private def function(kind : String)
@@ -94,7 +101,6 @@ module Lit
       return break_statement if match?(TokenType::BREAK)
       return next_statement if match?(TokenType::NEXT)
       return return_statement if match?(TokenType::RETURN)
-      return Stmt::Block.new(block_statements) if match?(TokenType::LEFT_BRACE)
 
       expression_statement
     end
@@ -116,15 +122,15 @@ module Lit
       consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the if condition.")
       ignore_newlines
 
-      then_branch = Stmt::Block.new(block_statements)
+      then_branch = Expr::Block.new(block_statements)
 
       if match?(TokenType::ELSE)
-        if match?(TokenType::IF) # else if
-          else_branch = if_statement
+        if match?(TokenType::IF)                                # else if
+          else_branch = Expr::Block.new([if_statement] of Stmt) # TODO: hack to get else if to be a block
         else
           ignore_newlines
           consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the else keyword.")
-          else_branch = Stmt::Block.new(block_statements)
+          else_branch = Expr::Block.new(block_statements)
         end
       end
 
@@ -135,7 +141,7 @@ module Lit
       condition = expression
       consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the while condition.")
 
-      body = Stmt::Block.new(block_statements)
+      body = Expr::Block.new(block_statements)
 
       Stmt::While.new(condition, body)
     end
@@ -144,7 +150,7 @@ module Lit
       condition = expression
       consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the until condition.")
 
-      body = Stmt::Block.new(block_statements)
+      body = Expr::Block.new(block_statements)
 
       # desugar until to while
       Stmt::While.new(Expr::Unary.new(Token.new(TokenType::BANG, "!", nil, 0), condition), body)
@@ -154,7 +160,7 @@ module Lit
       consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the loop keyword.")
       ignore_newlines
 
-      body = Stmt::Block.new(block_statements)
+      body = Expr::Block.new(block_statements)
 
       Stmt::Loop.new(body)
     end
@@ -394,7 +400,7 @@ module Lit
       return string_interpolation if match?(TokenType::STRING_INTERPOLATION)
       return function_body("function", anonymous: true) if match?(TokenType::FN)
       return array if match?(TokenType::LEFT_BRACKET)
-      return map if match?(TokenType::LEFT_BRACE)
+      return block_or_map if match?(TokenType::LEFT_BRACE)
 
       if match?(TokenType::LEFT_PAREN)
         ignore_newlines
@@ -445,12 +451,37 @@ module Lit
       Expr::ArrayLiteral.new(elements)
     end
 
-    private def map
+    private def block_or_map
       if match?(TokenType::COLON) # empty map
         consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the map.")
         return Expr::MapLiteral.new([] of Tuple(Expr, Expr))
       end
 
+      ignore_newlines
+      if match?(TokenType::RIGHT_BRACE) # empty block
+        return Expr::Block.new([] of Stmt)
+      end
+
+      # HACK: until everything is an expression, we try to parse a declaration.
+      # If it fails, then it's not a block and we try to parse a map. I dislike
+      # the rewinding of the parser state, but it's a good compromise for now.
+      # I'll migrate everything to expressions in several steps.
+      checkpoint = @current
+      errors_before = @errors.dup
+
+      begin
+        decl = declaration!
+
+        Expr::Block.new(block_statements.unshift(decl))
+      rescue e : ParserError # if cannot parse a statement, go back and try to parse a map
+        @current = checkpoint
+        @errors = errors_before
+
+        map
+      end
+    end
+
+    private def map
       elements = [] of Tuple(Expr, Expr)
 
       loop do
@@ -550,6 +581,10 @@ module Lit
       tokens[current]
     end
 
+    private def peek_next
+      tokens[current + 1]
+    end
+
     private def previous
       tokens[current - 1]
     end
@@ -588,8 +623,14 @@ module Lit
       match_line?
     end
 
+    private def report_errors
+      @errors.each do |(token, msg)|
+        Lit.error(token, msg)
+      end
+    end
+
     private def error(token, msg)
-      Lit.error(token, msg)
+      @errors << {token, msg}
 
       ParserError.new
     end

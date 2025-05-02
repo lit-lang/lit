@@ -8,6 +8,7 @@ module AstGenerator
 
     define_ast(output_dir, "Expr", [
       "ArrayLiteral        = elements : Array(Expr)",
+      "Block               = statements : Array(Stmt)",
       "MapLiteral          = entries : Array(Tuple(Expr, Expr))",
       "Assign              = name : Token, value : Expr",
       "Binary              = left : Expr, operator : Token, right : Expr",
@@ -26,17 +27,16 @@ module AstGenerator
     ])
 
     define_ast(output_dir, "Stmt", [
-      "Block      = statements : Array(Stmt)",
       "Break      = keyword : Token",
       "Next       = keyword : Token",
       "Type       = name : Token, methods : Array(Stmt::Function)",
       "Expression = expression : Expr",
       "Function   = name : Token, function : Expr::Function",
-      "If         = condition : Expr, then_branch : Stmt, else_branch : Stmt?",
+      "If         = condition : Expr, then_branch : Expr::Block, else_branch : Expr::Block?",
       "Return     = keyword : Token, value : Expr?",
       "Var        = name : Token, initializer : Expr, mutable : Bool",
-      "Loop       = body : Stmt",
-      "While      = condition : Expr, body : Stmt",
+      "Loop       = body : Expr::Block",
+      "While      = condition : Expr, body : Expr::Block",
     ])
   end
 

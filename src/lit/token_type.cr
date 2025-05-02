@@ -20,5 +20,9 @@ module Lit
     AND; ELSE; FALSE; FN; IF; VAR; LET; NIL; OR; PRINT; PRINTLN; RETURN; TRUE; TYPE; SELF; WHILE; UNTIL; LOOP; BREAK; NEXT
 
     EOF
+
+    def keyword? : Bool
+      self.in? KEYWORDS.values
+    end
   end
 end

@@ -32,6 +32,7 @@ module Lit
 
     getter environment # current environment
     getter argv : LitArray
+    @last_value : Value
 
     def initialize
       @locals = {} of Expr => Int32
@@ -41,6 +42,7 @@ module Lit
       end
       @environment = @globals
       @in_initializer = false
+      @last_value = nil
       @argv = LitArray.new.tap do |a|
         if !ARGV.empty?
           ARGV[1..].each do |arg|
@@ -75,16 +77,18 @@ module Lit
 
     def visit_if_stmt(stmt) : Nil
       if truthy?(evaluate(stmt.condition))
-        execute(stmt.then_branch)
+        evaluate(stmt.then_branch)
       elsif stmt.else_branch
-        execute(stmt.else_branch.not_nil!)
+        evaluate(stmt.else_branch.not_nil!)
+      else
+        @last_value = nil
       end
     end
 
     def visit_while_stmt(stmt) : Nil
       while truthy?(evaluate(stmt.condition))
         begin
-          execute(stmt.body)
+          evaluate(stmt.body)
         rescue e : Break
           break
         rescue e : Next
@@ -96,7 +100,7 @@ module Lit
     def visit_loop_stmt(stmt) : Nil
       loop do
         begin
-          execute(stmt.body)
+          evaluate(stmt.body)
         rescue e : Break
           break
         rescue e : Next
@@ -113,8 +117,8 @@ module Lit
       raise Next.new(nil)
     end
 
-    def visit_block_stmt(stmt) : Nil
-      execute_block(stmt.statements, Environment.new(@environment), @in_initializer)
+    def visit_block_expr(expr) : Value
+      execute_block(expr.statements, Environment.new(@environment), @in_initializer)
     end
 
     def visit_function_stmt(stmt) : Nil
@@ -309,14 +313,15 @@ module Lit
     end
 
     def execute(stmt : Stmt) : Value
+      @last_value = nil
       stmt.accept(self)
     end
 
     def evaluate(expr : Expr) : Value
-      expr.accept(self)
+      @last_value = expr.accept(self)
     end
 
-    def execute_block(stmts : Array(Stmt), environment : Environment, in_initializer : Bool) : Nil
+    def execute_block(stmts : Array(Stmt), environment : Environment, in_initializer : Bool) : Value
       previous = {@environment, @in_initializer}
 
       begin
@@ -326,6 +331,8 @@ module Lit
       ensure
         @environment, @in_initializer = previous
       end
+
+      @last_value
     end
 
     def resolve(expr, depth)

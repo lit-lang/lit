@@ -5,7 +5,6 @@ require "./token"
 module Lit
   abstract class Stmt
     module Visitor(T)
-      abstract def visit_block_stmt(stmt : Block) : T
       abstract def visit_break_stmt(stmt : Break) : T
       abstract def visit_next_stmt(stmt : Next) : T
       abstract def visit_type_stmt(stmt : Type) : T
@@ -16,16 +15,6 @@ module Lit
       abstract def visit_var_stmt(stmt : Var) : T
       abstract def visit_loop_stmt(stmt : Loop) : T
       abstract def visit_while_stmt(stmt : While) : T
-    end
-
-    class Block < Stmt
-      getter statements : Array(Stmt)
-
-      def initialize(@statements); end
-
-      def accept(visitor : Visitor)
-        visitor.visit_block_stmt(self)
-      end
     end
 
     class Break < Stmt
@@ -82,8 +71,8 @@ module Lit
 
     class If < Stmt
       getter condition : Expr
-      getter then_branch : Stmt
-      getter else_branch : Stmt?
+      getter then_branch : Expr::Block
+      getter else_branch : Expr::Block?
 
       def initialize(@condition, @then_branch, @else_branch); end
 
@@ -116,7 +105,7 @@ module Lit
     end
 
     class Loop < Stmt
-      getter body : Stmt
+      getter body : Expr::Block
 
       def initialize(@body); end
 
@@ -127,7 +116,7 @@ module Lit
 
     class While < Stmt
       getter condition : Expr
-      getter body : Stmt
+      getter body : Expr::Block
 
       def initialize(@condition, @body); end
 
