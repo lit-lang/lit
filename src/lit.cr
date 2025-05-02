@@ -22,9 +22,7 @@ module Lit
       end
 
       parser.invalid_option do |flag|
-        STDERR.puts Text.error("Error: #{flag} is not a valid option.")
-        STDERR.puts parser
-        exit(1)
+        # pass down as ARGV
       end
     end
 
