@@ -21,7 +21,7 @@ module Lit
         exit
       end
 
-      parser.invalid_option do |flag|
+      parser.invalid_option do
         # pass down as ARGV
       end
     end
