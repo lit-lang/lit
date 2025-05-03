@@ -16,5 +16,5 @@ until (a >= 3) {
 # expect: 2
 
 # Statement bodies.
-until true { if true { 1; } else { 2; } }
+until true { fn foo {} }
 until true { while true { 1; } }

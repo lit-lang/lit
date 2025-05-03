@@ -17,6 +17,7 @@ module Lit
       abstract def visit_grouping_expr(expr : Grouping) : T
       abstract def visit_literal_expr(expr : Literal) : T
       abstract def visit_ternary_expr(expr : Ternary) : T
+      abstract def visit_if_expr(expr : If) : T
       abstract def visit_logical_expr(expr : Logical) : T
       abstract def visit_self_expr(expr : Self) : T
       abstract def visit_unary_expr(expr : Unary) : T
@@ -153,6 +154,18 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_ternary_expr(self)
+      end
+    end
+
+    class If < Expr
+      getter condition : Expr
+      getter then_branch : Expr::Block
+      getter else_branch : Expr::Block?
+
+      def initialize(@condition, @then_branch, @else_branch); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_if_expr(self)
       end
     end
 

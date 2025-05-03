@@ -1,5 +1,19 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Remove ternary operator
+
+- Make if an expression, not statement
+
+```lit
+let value = if true {
+  "lucky"
+} else {
+  "not lucky"
+}
+
+println(value) # lucky
+```
+
 - Make block an expression, not statement
 
 Blocks being expressions allow us to group expressions (like parentheses) and

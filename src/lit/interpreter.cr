@@ -75,14 +75,12 @@ module Lit
       environment.assign(stmt.name, type)
     end
 
-    def visit_if_stmt(stmt) : Nil
-      if truthy?(evaluate(stmt.condition))
-        evaluate(stmt.then_branch)
-      elsif stmt.else_branch
-        evaluate(stmt.else_branch.not_nil!)
-      else
-        @last_value = nil
-      end
+    def visit_if_expr(expr) : Value
+      @last_value = if truthy?(evaluate(expr.condition))
+                      evaluate(expr.then_branch)
+                    elsif expr.else_branch
+                      evaluate(expr.else_branch.not_nil!)
+                    end
     end
 
     def visit_while_stmt(stmt) : Nil

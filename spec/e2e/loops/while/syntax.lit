@@ -16,5 +16,5 @@ while (a < 3) {
 # expect: 2
 
 # Statement bodies.
-while false { if true { 1; } else { 2; } }
+while false { fn test {} }
 while false { while true { 1; } }

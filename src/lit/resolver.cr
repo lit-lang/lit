@@ -55,10 +55,10 @@ module Lit
       @current_type = enclosing_type
     end
 
-    def visit_if_stmt(stmt) : Nil
-      resolve(stmt.condition)
-      resolve(stmt.then_branch)
-      resolve(stmt.else_branch.not_nil!) if stmt.else_branch
+    def visit_if_expr(expr) : Nil
+      resolve(expr.condition)
+      resolve(expr.then_branch)
+      resolve(expr.else_branch.not_nil!) if expr.else_branch
     end
 
     def visit_while_stmt(stmt) : Nil

@@ -94,7 +94,6 @@ module Lit
     end
 
     private def statement
-      return if_statement if match?(TokenType::IF)
       return while_statement if match?(TokenType::WHILE)
       return until_statement if match?(TokenType::UNTIL)
       return loop_statement if match?(TokenType::LOOP)
@@ -115,26 +114,6 @@ module Lit
       end
 
       Stmt::Return.new(keyword, value)
-    end
-
-    private def if_statement
-      condition = expression
-      consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the if condition.")
-      ignore_newlines
-
-      then_branch = Expr::Block.new(block_statements)
-
-      if match?(TokenType::ELSE)
-        if match?(TokenType::IF)                                # else if
-          else_branch = Expr::Block.new([if_statement] of Stmt) # TODO: hack to get else if to be a block
-        else
-          ignore_newlines
-          consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the else keyword.")
-          else_branch = Expr::Block.new(block_statements)
-        end
-      end
-
-      Stmt::If.new(condition, then_branch, else_branch)
     end
 
     private def while_statement
@@ -224,7 +203,7 @@ module Lit
     end
 
     private def assignment
-      expr = ternary
+      expr = if_expr
 
       if match?(TokenType::EQUAL)
         equals = previous
@@ -246,19 +225,30 @@ module Lit
       expr
     end
 
-    private def ternary
-      expr = pipeline_expr
+    private def if_expr
+      if match?(TokenType::IF)
+        condition = expression
+        consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the if condition.")
+        ignore_newlines
 
-      if match?(TokenType::QUESTION)
-        question_mark = previous
-        left = ternary
-        consume(TokenType::COLON, "I was expecting a colon after the truthy condition on the ternary expression.")
-        right = ternary
+        then_branch = Expr::Block.new(block_statements)
 
-        return Expr::Ternary.new(expr, left, right, question_mark)
+        if match?(TokenType::ELSE)
+          if check(TokenType::IF) # else if
+            else_branch = Expr::Block.new([
+              Stmt::Expression.new(if_expr),
+            ] of Stmt)
+          else
+            ignore_newlines
+            consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the else keyword.")
+            else_branch = Expr::Block.new(block_statements)
+          end
+        end
+
+        return Expr::If.new(condition, then_branch, else_branch) # TODO: hack to get else if to be a stmt
       end
 
-      expr
+      pipeline_expr
     end
 
     private def pipeline_expr

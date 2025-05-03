@@ -63,27 +63,6 @@ describe Lit::Parser do
     end
   end
 
-  describe "ternary expression" do
-    it "parses the ternary" do
-      tokens = Create.tokens(:true, :question, :number, :colon, :number_2, :newline, :eof)
-      expr = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Expression).expression.as(Lit::Expr::Ternary)
-
-      expr.operator.type.question?.should be_true
-      expr.left.as(Lit::Expr::Literal).value.should eq 1.0
-      expr.right.as(Lit::Expr::Literal).value.should eq 2.0
-    end
-
-    context "when colon is missing" do
-      it "errors" do
-        tokens = Create.tokens(:true, :question, :number, :number_2, :newline, :eof)
-
-        output_of { Lit::Parser.parse(tokens) }.should contain(
-          "I was expecting a colon after the truthy condition on the ternary expression"
-        )
-      end
-    end
-  end
-
   describe "logical expression" do
     it "parses 'and' expressions" do
       tokens = Create.tokens(:number, :and, :number_2, :newline, :eof)

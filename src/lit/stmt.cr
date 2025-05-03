@@ -10,7 +10,6 @@ module Lit
       abstract def visit_type_stmt(stmt : Type) : T
       abstract def visit_expression_stmt(stmt : Expression) : T
       abstract def visit_function_stmt(stmt : Function) : T
-      abstract def visit_if_stmt(stmt : If) : T
       abstract def visit_return_stmt(stmt : Return) : T
       abstract def visit_var_stmt(stmt : Var) : T
       abstract def visit_loop_stmt(stmt : Loop) : T
@@ -66,18 +65,6 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_function_stmt(self)
-      end
-    end
-
-    class If < Stmt
-      getter condition : Expr
-      getter then_branch : Expr::Block
-      getter else_branch : Expr::Block?
-
-      def initialize(@condition, @then_branch, @else_branch); end
-
-      def accept(visitor : Visitor)
-        visitor.visit_if_stmt(self)
       end
     end
 

@@ -79,14 +79,6 @@ module Create
       Lit::Expr::Variable.new(self.token(:identifier, "my_var"))
     when :assign
       Lit::Expr::Assign.new(self.token(:identifier, "my_var"), expr(:literal))
-    when :ternary
-      value = true if value.nil?
-
-      condition = expr(:literal, value)
-      left = left || expr(:literal)
-      right = right || expr(:literal, 2.0)
-
-      Lit::Expr::Ternary.new(condition, left, right, self.token(:question))
     when :call
       Lit::Expr::Call.new(expr(:variable), self.token(:left_paren), exprs(:literal, :literal))
     else
