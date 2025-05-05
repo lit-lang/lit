@@ -1,0 +1,13 @@
+type Foo {
+  foo {
+    "foo"
+  }
+}
+
+fn foo {
+  let a = "asdf"
+  123
+}
+
+println(foo()) # expect: 123
+println(Foo().foo()) # expect: foo

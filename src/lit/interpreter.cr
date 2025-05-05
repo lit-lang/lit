@@ -321,6 +321,7 @@ module Lit
 
     def execute_block(stmts : Array(Stmt), environment : Environment, in_initializer : Bool) : Value
       previous = {@environment, @in_initializer}
+      @last_value = nil # reset in case block is empty
 
       begin
         @environment = environment
