@@ -120,7 +120,7 @@ module Lit
       condition = expression
       consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the while condition.")
 
-      body = Expr::Block.new(block_statements)
+      body = block_statements
 
       Stmt::While.new(condition, body)
     end
@@ -129,7 +129,7 @@ module Lit
       condition = expression
       consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the until condition.")
 
-      body = Expr::Block.new(block_statements)
+      body = block_statements
 
       # desugar until to while
       Stmt::While.new(Expr::Unary.new(Token.new(TokenType::BANG, "!", nil, 0), condition), body)
@@ -139,7 +139,7 @@ module Lit
       consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the loop keyword.")
       ignore_newlines
 
-      body = Expr::Block.new(block_statements)
+      body = block_statements
 
       Stmt::Loop.new(body)
     end
@@ -188,7 +188,7 @@ module Lit
       ignore_newlines
       consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the block.")
 
-      statements
+      Expr::Block.new(statements)
     end
 
     private def expression_statement
@@ -231,7 +231,7 @@ module Lit
         consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the if condition.")
         ignore_newlines
 
-        then_branch = Expr::Block.new(block_statements)
+        then_branch = block_statements
 
         if match?(TokenType::ELSE)
           if check(TokenType::IF) # else if
@@ -241,7 +241,7 @@ module Lit
           else
             ignore_newlines
             consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the else keyword.")
-            else_branch = Expr::Block.new(block_statements)
+            else_branch = block_statements
           end
         end
 
@@ -432,7 +432,7 @@ module Lit
 
       body, params = block_with_params
 
-      Expr::Function.new(params, body)
+      Expr::Function.new(params, body.statements)
     end
 
     private def array
@@ -462,7 +462,9 @@ module Lit
       begin
         decl = declaration!
 
-        Expr::Block.new(block_statements.unshift(decl))
+        block = block_statements
+        block.statements.unshift(decl)
+        block
       rescue e : ParserError # if cannot parse a statement, go back and try to parse a map
         @current = checkpoint
         @errors = errors_before

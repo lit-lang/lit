@@ -213,7 +213,7 @@ module Lit
     end
 
     private def resolve_function(stmt, type : FunctionType) : Nil
-      enclosing_function = @current_function
+      enclosing_function_type = @current_function
       @current_function = type
 
       begin_scope
@@ -224,7 +224,7 @@ module Lit
       resolve(stmt.body)
       end_scope
 
-      @current_function = enclosing_function
+      @current_function = enclosing_function_type
     end
 
     private def resolve_local(expr : Expr, name : Token) : Nil
