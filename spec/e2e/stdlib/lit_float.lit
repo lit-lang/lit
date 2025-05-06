@@ -1,4 +1,4 @@
 println((-123.0).abs()) # expect: 123.0
 println(1.9.floor()) # expect: 1.0
 println(1.1.ceil()) # expect: 2.0
-println(1.5.ceil()) # expect: 2.0
+println(1.5.round()) # expect: 2.0
