@@ -2,42 +2,42 @@ require "../spec_helper"
 
 describe Lit::Scanner do
   ((0..10).to_a + [504, 69.420]).each do |n|
-    it_scans n.to_s, to_type: token(NUMBER), to_literal: n
+    it_scans n.to_s, to_type: token_type(NUMBER), to_literal: n
   end
 
-  it_scans "", to_type: token(EOF)
-  it_scans "\n", to_type: token(NEWLINE), at_line: 1
-  it_scans ";", to_type: token(NEWLINE), at_line: 0
-  it_scans "(", to_type: token(LEFT_PAREN)
-  it_scans ")", to_type: token(RIGHT_PAREN)
-  it_scans "[", to_type: token(LEFT_BRACKET)
-  it_scans "]", to_type: token(RIGHT_BRACKET)
-  it_scans "{", to_type: token(LEFT_BRACE)
-  it_scans "}", to_type: token(RIGHT_BRACE)
-  it_scans ",", to_type: token(COMMA)
-  it_scans ".", to_type: token(DOT)
-  it_scans ":", to_type: token(COLON)
-  it_scans "!", to_type: token(BANG)
-  it_scans "?", to_type: token(QUESTION)
-  it_scans "+", to_type: token(PLUS)
-  it_scans "-", to_type: token(MINUS)
-  it_scans "/", to_type: token(SLASH)
-  it_scans "*", to_type: token(STAR)
-  it_scans "%", to_type: token(PERCENT)
-  it_scans "**", to_type: token(STAR_STAR)
-  it_scans "=", to_type: token(EQUAL)
-  it_scans "==", to_type: token(EQUAL_EQUAL)
-  it_scans ">", to_type: token(GREATER)
-  it_scans ">=", to_type: token(GREATER_EQUAL)
-  it_scans "<", to_type: token(LESS)
-  it_scans "<=", to_type: token(LESS_EQUAL)
-  it_scans "|", to_type: token(BAR)
-  it_scans "||", to_type: token(OR)
-  it_scans "&&", to_type: token(AND)
-  it_scans "|>", to_type: token(PIPE_GREATER)
-  it_scans "!=", to_type: token(BANG_EQUAL)
-  it_scans "silverchair!?", to_type: token(IDENTIFIER)
-  it_scans ":hey", to_type: token(STRING), to_literal: "hey"
+  it_scans "", to_type: token_type(EOF)
+  it_scans "\n", to_type: token_type(NEWLINE), at_line: 1
+  it_scans ";", to_type: token_type(NEWLINE), at_line: 0
+  it_scans "(", to_type: token_type(LEFT_PAREN)
+  it_scans ")", to_type: token_type(RIGHT_PAREN)
+  it_scans "[", to_type: token_type(LEFT_BRACKET)
+  it_scans "]", to_type: token_type(RIGHT_BRACKET)
+  it_scans "{", to_type: token_type(LEFT_BRACE)
+  it_scans "}", to_type: token_type(RIGHT_BRACE)
+  it_scans ",", to_type: token_type(COMMA)
+  it_scans ".", to_type: token_type(DOT)
+  it_scans ":", to_type: token_type(COLON)
+  it_scans "!", to_type: token_type(BANG)
+  it_scans "?", to_type: token_type(QUESTION)
+  it_scans "+", to_type: token_type(PLUS)
+  it_scans "-", to_type: token_type(MINUS)
+  it_scans "/", to_type: token_type(SLASH)
+  it_scans "*", to_type: token_type(STAR)
+  it_scans "%", to_type: token_type(PERCENT)
+  it_scans "**", to_type: token_type(STAR_STAR)
+  it_scans "=", to_type: token_type(EQUAL)
+  it_scans "==", to_type: token_type(EQUAL_EQUAL)
+  it_scans ">", to_type: token_type(GREATER)
+  it_scans ">=", to_type: token_type(GREATER_EQUAL)
+  it_scans "<", to_type: token_type(LESS)
+  it_scans "<=", to_type: token_type(LESS_EQUAL)
+  it_scans "|", to_type: token_type(BAR)
+  it_scans "||", to_type: token_type(OR)
+  it_scans "&&", to_type: token_type(AND)
+  it_scans "|>", to_type: token_type(PIPE_GREATER)
+  it_scans "!=", to_type: token_type(BANG_EQUAL)
+  it_scans "silverchair!?", to_type: token_type(IDENTIFIER)
+  it_scans ":hey", to_type: token_type(STRING), to_literal: "hey"
 
   it_scans_keywords
 
@@ -46,7 +46,7 @@ describe Lit::Scanner do
 
     token = Lit::Scanner.scan(str).first
     token.should be_a Lit::Token
-    token.type.should eq token(STRING)
+    token.type.should eq token_type(STRING)
     token.lexeme.should eq str
     token.literal.should eq "This is a string. 1 + 1"
     token.line.should eq 1
@@ -57,7 +57,7 @@ describe Lit::Scanner do
 
     token = Lit::Scanner.scan(str).first
     token.should be_a Lit::Token
-    token.type.should eq token(STRING)
+    token.type.should eq token_type(STRING)
     token.lexeme.should eq str
     token.literal.should eq "This is a string. 1 + 1"
     token.line.should eq 1
@@ -68,7 +68,7 @@ describe Lit::Scanner do
 
     token = Lit::Scanner.scan(str).first
     token.should be_a Lit::Token
-    token.type.should eq token(STRING)
+    token.type.should eq token_type(STRING)
     token.lexeme.should eq str
     token.literal.should eq "multi\nline\nstring"
     token.line.should eq 3
@@ -79,7 +79,7 @@ describe Lit::Scanner do
 
     token = Lit::Scanner.scan(str).first
     token.should be_a Lit::Token
-    token.type.should eq token(STRING)
+    token.type.should eq token_type(STRING)
     token.lexeme.should eq str
     token.literal.should eq %(\n \t \\ ' " y)
     token.line.should eq 1
@@ -92,19 +92,19 @@ describe Lit::Scanner do
       tokens = Lit::Scanner.scan(str)
 
       tokens.size.should eq 6
-      [tokens[0].type, tokens[0].literal].should eq [token(STRING_INTERPOLATION), "a "]
-      [tokens[1].type, tokens[1].lexeme].should eq [token(IDENTIFIER), "b"]
-      [tokens[2].type, tokens[2].literal].should eq [token(STRING_INTERPOLATION), " c "]
-      [tokens[3].type, tokens[3].lexeme].should eq [token(IDENTIFIER), "d"]
-      [tokens[4].type, tokens[4].literal].should eq [token(STRING), ""]
-      tokens[5].type.should eq token(EOF)
+      [tokens[0].type, tokens[0].literal].should eq [token_type(STRING_INTERPOLATION), "a "]
+      [tokens[1].type, tokens[1].lexeme].should eq [token_type(IDENTIFIER), "b"]
+      [tokens[2].type, tokens[2].literal].should eq [token_type(STRING_INTERPOLATION), " c "]
+      [tokens[3].type, tokens[3].lexeme].should eq [token_type(IDENTIFIER), "d"]
+      [tokens[4].type, tokens[4].literal].should eq [token_type(STRING), ""]
+      tokens[5].type.should eq token_type(EOF)
     end
   end
 
   it "scans spaces" do
     token = Lit::Scanner.scan(" \r\t\r   1  \r\r\t      ").first
     token.should be_a Lit::Token
-    token.type.should eq token(NUMBER)
+    token.type.should eq token_type(NUMBER)
     token.lexeme.should eq "1"
     token.literal.should eq 1
     token.line.should eq 1
@@ -113,12 +113,12 @@ describe Lit::Scanner do
   context "when comment is found" do
     it "scans one-line comments" do
       tokens = Lit::Scanner.scan("# This is a comment.\n###### 1 + 1\n1")
-      tokens.shift.type.should eq token(NEWLINE)
-      tokens.shift.type.should eq token(NEWLINE)
+      tokens.shift.type.should eq token_type(NEWLINE)
+      tokens.shift.type.should eq token_type(NEWLINE)
 
       token = tokens[0]
       token.should be_a Lit::Token
-      token.type.should eq token(NUMBER)
+      token.type.should eq token_type(NUMBER)
       token.lexeme.should eq "1"
       token.literal.should eq 1
       token.line.should eq 3
@@ -126,11 +126,11 @@ describe Lit::Scanner do
 
     it "scans block comments" do
       tokens = Lit::Scanner.scan("#=\nThis\n2\nShould\nBe\nIgnored\n# Commentception\n= #\n=#\n1")
-      tokens.shift.type.should eq token(NEWLINE)
+      tokens.shift.type.should eq token_type(NEWLINE)
 
       token = tokens[0]
       token.should be_a Lit::Token
-      token.type.should eq token(NUMBER)
+      token.type.should eq token_type(NUMBER)
       token.lexeme.should eq "1"
       token.literal.should eq 1
       token.line.should eq 10
@@ -139,7 +139,7 @@ describe Lit::Scanner do
     it "scans nested comments" do
       token = Lit::Scanner.scan("#=\n #=\n  Nested comments!\n =#\n=#1").first
       token.should be_a Lit::Token
-      token.type.should eq token(NUMBER)
+      token.type.should eq token_type(NUMBER)
       token.lexeme.should eq "1"
       token.literal.should eq 1
       token.line.should eq 5
@@ -148,7 +148,7 @@ describe Lit::Scanner do
     it "scans inlined block comments" do
       token = Lit::Scanner.scan("#=2=#1").first
       token.should be_a Lit::Token
-      token.type.should eq token(NUMBER)
+      token.type.should eq token_type(NUMBER)
       token.lexeme.should eq "1"
       token.literal.should eq 1
       token.line.should eq 1
@@ -157,13 +157,13 @@ describe Lit::Scanner do
 
   it "scans new lines" do
     tokens = Lit::Scanner.scan("\n\n\n1")
-    tokens.shift.type.should eq token(NEWLINE)
-    tokens.shift.type.should eq token(NEWLINE)
-    tokens.shift.type.should eq token(NEWLINE)
+    tokens.shift.type.should eq token_type(NEWLINE)
+    tokens.shift.type.should eq token_type(NEWLINE)
+    tokens.shift.type.should eq token_type(NEWLINE)
 
     token = tokens[0]
     token.should be_a Lit::Token
-    token.type.should eq token(NUMBER)
+    token.type.should eq token_type(NUMBER)
     token.lexeme.should eq "1"
     token.literal.should eq 1
     token.line.should eq 4

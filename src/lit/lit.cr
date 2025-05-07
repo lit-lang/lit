@@ -1,6 +1,5 @@
 require "readline"
 require "./exit_code"
-require "./macros"
 require "./token"
 require "./scanner"
 require "./parser"

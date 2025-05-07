@@ -10,7 +10,10 @@ Spec.before_suite do
   Process.run("crystal", ["build", "--warnings", "all", "-p", "src/cli.cr", "-o", "bin/lit"])
 end
 
-def run_lit_script(*args)
+macro token_type(type)
+  Lit::TokenType::{{type}}
+end
+
   output = IO::Memory.new
   error = IO::Memory.new
   status = Process.run("bin/lit", args, output: output, error: error)
