@@ -2,6 +2,7 @@
 /bin/
 /.shards/
 *.dwarf
+.crystal
 coverage/
 run_tests*
 tmp/*

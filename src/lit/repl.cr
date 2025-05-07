@@ -16,8 +16,8 @@ module Lit
         break if should_exit?(line)
         next if display_help?(line)
 
-        output = evaluate(line, runner)
-        print_output(output)
+        _output = evaluate(line, runner)
+        # print_output(output)
       end
 
       display_goodbye
@@ -27,12 +27,10 @@ module Lit
       (Readline.readline("lit> ", add_history: true) || "") + "\n"
     end
 
-    private def evaluate(line : String, runner) : String?
-      result = runner.run(line)
+    private def evaluate(line : String, runner)
+      _result = runner.run(line)
       runner.had_error = false
       runner.had_runtime_error = false
-
-      result
     end
 
     private def print_output(output)

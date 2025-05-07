@@ -1,19 +1,5 @@
 # Preferred system exit codes as defined by sysexits.h
-#
-# Exit code constants intended to be passed to
-# `Process.exit`
-#
-# Example:
-# ```
-# require "./exitcode"
-#
-# Process.exit(ExitCode::OK)
-# ```
-
-module ExitCode
-  # Alias for the numeric type that holds system exit codes.
-  alias ExitCode = Int32
-
+enum ExitCode
   # Successful exit
   OK = 0
 

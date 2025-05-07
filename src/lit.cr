@@ -27,7 +27,7 @@ module Lit
     end
 
     if opts.first?
-      Lit.run_file(opts.first)
+      exit(Lit.run_file(opts.first).to_i)
     else
       Lit.run_repl
     end

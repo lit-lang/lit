@@ -13,17 +13,19 @@ module Lit
     class_property? had_error = false, had_runtime_error = false
     class_property interpreter = Interpreter.new
 
-    def self.run(src : String) : String?
+    def self.run(src : String)
       tokens = Scanner.scan(src)
       statements = Parser.parse(tokens)
 
-      return if had_error?
+      return false if had_error?
 
       Resolver.new(interpreter).resolve(statements)
 
-      return if had_error?
+      return false if had_error?
 
       interpreter.interpret(statements)
+
+      !had_runtime_error?
     end
 
     def self.run_repl
@@ -32,19 +34,23 @@ module Lit
 
     def self.run_code(code : String)
       run(code)
-    ensure
-      exit(ExitCode::DATAERR) if had_error?
-      exit(ExitCode::SOFTWARE) if had_runtime_error?
+
+      return ExitCode::DATAERR if had_error?
+      return ExitCode::SOFTWARE if had_runtime_error?
+
+      ExitCode::OK
     end
 
     def self.run_file(path : String)
       run_code(File.read(path))
     rescue File::NotFoundError
       STDERR.puts Text.error("Error: File not found!")
-      exit(ExitCode::NOINPUT)
+
+      ExitCode::NOINPUT
     rescue IO::Error
       STDERR.puts Text.error("Error: Unable to read file!")
-      exit(ExitCode::NOINPUT)
+
+      ExitCode::NOINPUT
     end
 
     def self.runtime_error(error)
