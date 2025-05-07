@@ -20,8 +20,9 @@ module Lit
       Type
     end
 
-    def initialize(interpreter : Interpreter)
+    def initialize(interpreter : Interpreter, error_reporter : ErrorReporter)
       @interpreter = interpreter
+      @error_reporter = error_reporter
       @scopes = [] of Hash(String, Bool)
       @current_function = FunctionType::None
       @current_type = TypeType::None
@@ -76,13 +77,13 @@ module Lit
 
     def visit_break_stmt(stmt) : Nil
       if @loop_depth == 0
-        Lit.error(stmt.keyword, "Can't use 'break' outside of a loop.")
+        @error_reporter.report_syntax_error(stmt.keyword, "Can't use 'break' outside of a loop.")
       end
     end
 
     def visit_next_stmt(stmt) : Nil
       if @loop_depth == 0
-        Lit.error(stmt.keyword, "Can't use 'next' outside of a loop.")
+        @error_reporter.report_syntax_error(stmt.keyword, "Can't use 'next' outside of a loop.")
       end
     end
 
@@ -110,13 +111,13 @@ module Lit
 
     def visit_return_stmt(stmt) : Nil
       if @current_function.none?
-        Lit.error(stmt.keyword, "Can't return from top-level code.")
+        @error_reporter.report_syntax_error(stmt.keyword, "Can't return from top-level code.")
       end
 
       if stmt.value
         if @current_function.initializer?
           # TODO: this seems arbitrary. While not ideal, I don't see why being specific about it.
-          Lit.error(stmt.keyword, "Can't return a value from an initializer.")
+          @error_reporter.report_syntax_error(stmt.keyword, "Can't return a value from an initializer.")
         end
         resolve(stmt.value.not_nil!)
       end
@@ -171,7 +172,7 @@ module Lit
 
     def visit_self_expr(expr) : Nil
       if @current_type == TypeType::None
-        Lit.error(expr.keyword, "Can't use 'self' outside of a type.")
+        @error_reporter.report_syntax_error(expr.keyword, "Can't use 'self' outside of a type.")
       end
 
       resolve_local(expr, expr.keyword)
@@ -179,7 +180,7 @@ module Lit
 
     def visit_variable_expr(expr) : Nil
       if !scopes.empty? && scopes.last[expr.name.lexeme]? == false
-        Lit.error(expr.name, "Can't read local variable in its own initializer.")
+        @error_reporter.report_syntax_error(expr.name, "Can't read local variable in its own initializer.")
       end
 
       resolve_local(expr, expr.name)
@@ -215,15 +216,21 @@ module Lit
     private def resolve_function(stmt, type : FunctionType) : Nil
       enclosing_function_type = @current_function
       @current_function = type
+      previous_depth = @loop_depth
 
       begin_scope
       stmt.params.each do |param|
         declare(param)
         define(param)
       end
+      # we allow functions to be defined inside loops, but we don't want to
+      # allow break/next to be called inside the functions, so we reset the
+      # depth here temporarily
+      @loop_depth = 0
       resolve(stmt.body)
       end_scope
 
+      @loop_depth = previous_depth
       @current_function = enclosing_function_type
     end
 
@@ -234,6 +241,13 @@ module Lit
           return
         end
       end
+    end
+
+    def with_scope(&)
+      begin_scope
+      yield
+    ensure
+      end_scope
     end
 
     private def begin_scope
@@ -250,7 +264,7 @@ module Lit
       scope = scopes.last
 
       if scope.has_key?(name.lexeme)
-        Lit.error(name, "Already a variable with this name in this scope.")
+        @error_reporter.report_syntax_error(name, "Already a variable with this name in this scope.")
       end
 
       scope[name.lexeme] = false

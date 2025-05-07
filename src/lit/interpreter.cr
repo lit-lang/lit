@@ -32,9 +32,11 @@ module Lit
 
     getter environment # current environment
     getter argv : LitArray
+    getter error_reporter : ErrorReporter
     @last_value : Value
 
-    def initialize
+    def initialize(error_reporter : ErrorReporter)
+      @error_reporter = error_reporter
       @locals = {} of Expr => Int32
       @globals = Environment.new
       Stdlib::Native.all.each do |fn|
@@ -52,14 +54,10 @@ module Lit
       end
     end
 
-    def self.interpret(stmts : Array(Stmt))
-      new.interpret(stmts)
-    end
-
     def interpret(stmts) : Nil
       stmts.each { |stmt| execute(stmt) }
     rescue e : RuntimeError
-      Lit.runtime_error(e)
+      @error_reporter.report_runtime_error(e)
     end
 
     def visit_type_stmt(stmt) : Nil
@@ -108,15 +106,23 @@ module Lit
     end
 
     def visit_break_stmt(stmt) : Nil
-      raise Break.new(nil)
+      raise Break.new
     end
 
     def visit_next_stmt(stmt) : Nil
-      raise Next.new(nil)
+      raise Next.new
     end
 
     def visit_block_expr(expr) : Value
       execute_block(expr.statements, Environment.new(@environment), @in_initializer)
+    rescue e : Exception
+      raise e if e.is_a?(Break) || e.is_a?(Next) || e.is_a?(Return) || e.is_a?(RuntimeError)
+      # I don't know why this rescue clause is necessary at all. If I remove it,
+      # suddenly Break is not rescued anymore. I think this is a bug in the
+      # compiler, because if I add a dummy rescue clause with any kind of
+      # exception, it works again.
+      puts "WTF? #{e.class} #{e.message}"
+      abort "WTF? #{e.class} #{e.message}"
     end
 
     def visit_function_stmt(stmt) : Nil

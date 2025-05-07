@@ -9,7 +9,4 @@ echo "[CHECK] Running linter..."
 bin/ameba --fix
 
 echo "[CHECK] Running tests..."
-crystal spec --order=random --tag "~e2e"
-
-echo "[CHECK] Running e2e tests..."
-tools/e2e-test
+crystal spec --order=random

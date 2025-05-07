@@ -15,8 +15,18 @@ type Foo {
 
       loop {
 
-        println("foo")
+        println("loop break")
         break
+
+      }
+
+      var i =0
+      while i == 0 {
+
+        i = i + 1
+        println("while next")
+
+        next
 
       }
 
@@ -109,7 +119,8 @@ type Foo {
 Foo().
   foo()
 
-# expect: foo
+# expect: loop break
+# expect: while next
 # expect: false
 # expect: barbar
 # expect: and

@@ -5,6 +5,8 @@ module Lit
     EXIT_REGEX = /\b(quit|exit)\b/i
     HELP_REGEX = /\b(help)\b/i
 
+    class_getter interpreter = Interpreter.new(ErrorReporter.new)
+
     extend self
 
     def run(runner)
@@ -28,8 +30,8 @@ module Lit
     end
 
     private def evaluate(line : String, runner)
-      _result = runner.run(line)
-      runner.reset_errors
+      _result = runner.run(line, interpreter)
+      interpreter.error_reporter.reset!
     end
 
     private def print_output(output)

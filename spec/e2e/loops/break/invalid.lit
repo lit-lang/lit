@@ -5,3 +5,10 @@ fn function {
 
 # error: [line 7] Error at "break": Can't use 'break' outside of a loop.
 break
+
+# error: [line 12] Error at "break": Can't use 'break' outside of a loop.
+loop {
+  fn foo {
+    break
+  }
+}

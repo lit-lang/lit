@@ -25,14 +25,10 @@ describe "e2e tests", tags: "e2e" do
 
       expected += "\n" if !expected.empty?
 
-      status = nil
-      if ENV["CI"]?
-        status, full_output = run_lit_script(file)
+      if ENV["PROCESS"]?
+        status, full_output = run_lit_in_process(file)
       else
-        # Fork is deprecated, but this is SO much faster!
-        full_output = output_of {
-          status = Process.fork { Lit.run([file]) }.wait
-        }
+        status, full_output = run_lit(file)
       end
 
       full_output.should eq expected

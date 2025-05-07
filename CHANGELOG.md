@@ -1,5 +1,20 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Prevent `break`/`next` from being used in functions inside loops:
+
+```lit
+   loop {
+     fn foo {
+       break
+    }
+    }
+  ```
+
+- Fix a bug where the interpreter state would leak between several runs (in the same process).
+  - I've removed the class variables in favor of local variables, which was part of the fix.
+  - For some reason this made the `Break`/`Next` exceptions not to be rescued anymore.
+  I suspect this is a bug in the codegen pipeline of Crystal.
+
 - Remove ternary operator
 
 - Make if an expression, not statement

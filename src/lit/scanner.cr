@@ -6,7 +6,8 @@ module Lit
   class Scanner
     MAX_INTERPOLATION_DEPTH = 8
 
-    def initialize(src : String)
+    def initialize(src : String, error_reporter : ErrorReporter)
+      @error_reporter = error_reporter
       @tokens = [] of Token
       @src = src
       # Interpolated strings make the lexer not strictly regular: we don't know
@@ -28,7 +29,7 @@ module Lit
     end
 
     def self.scan(src : String) : Array(Token)
-      new(src).scan
+      new(src, ErrorReporter.new).scan
     end
 
     def scan
@@ -258,12 +259,12 @@ module Lit
           elsif c == '{'
             if @interpolation_depth >= MAX_INTERPOLATION_DEPTH
               syntax_error("Interpolation may only nest #{MAX_INTERPOLATION_DEPTH} levels deep.")
+            else
+              @braces[@interpolation_depth] = 1
+              @interpolation_depth += 1
+              token_type = TokenType::STRING_INTERPOLATION
+              break
             end
-
-            @braces[@interpolation_depth] = 1
-            @interpolation_depth += 1
-            token_type = TokenType::STRING_INTERPOLATION
-            break
           else
             @line += 1 if c == '\n'
             string += c # Normal character
@@ -365,7 +366,7 @@ module Lit
     end
 
     private def syntax_error(message : String)
-      Lit.error(@line, message)
+      @error_reporter.report_syntax_error(@line, message)
       synchronize
     end
 

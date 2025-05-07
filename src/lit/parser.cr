@@ -11,10 +11,10 @@ module Lit
     getter current : Int32 = 0
     private property errors = [] of Tuple(Token, String)
 
-    def initialize(@tokens); end
+    def initialize(@tokens, @error_reporter : ErrorReporter); end
 
     def self.parse(tokens)
-      new(tokens).parse
+      new(tokens, ErrorReporter.new).parse
     end
 
     def parse : Array(Stmt)
@@ -617,7 +617,7 @@ module Lit
 
     private def report_errors
       @errors.each do |(token, msg)|
-        Lit.error(token, msg)
+        @error_reporter.report_syntax_error(token, msg)
       end
     end
 

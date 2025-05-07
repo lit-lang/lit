@@ -23,3 +23,6 @@ println(Foo) # expect: Foo
 println(Foo(Foo("baz"))) # expect: Foo(bar: Foo(bar: "baz"))
 println(FooCustom()) # expect: <✨ custom ✨>
 println(Array()) # expect: []
+println(Array(1, 2)) # expect: [1, 2]
+println(Map()) # expect: {:}
+println(Map(1, 2, 3)) # expect: {1 : 2, 3 : nil}

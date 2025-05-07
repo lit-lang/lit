@@ -1,6 +1,7 @@
 #!/bin/bash
 
+rm -rf coverage && \
 echo "require \"./spec/**\"" > run_tests.cr && \
-crystal build run_tests.cr -D skip-integration && \
-kcov --include-path=$(pwd)/src $(pwd)/coverage ./run_tests
-google-chrome coverage/index.html
+crystal build run_tests.cr -d -p -D skip-integration && \
+KCOV=true kcov --include-path=$(pwd)/src --exclude-path=$(pwd)/spec $(pwd)/coverage ./run_tests && \
+open coverage/index.html

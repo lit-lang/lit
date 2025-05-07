@@ -11,22 +11,21 @@ require "./text"
 
 module Lit
   class Lit
-    private class_property error_reporter = ErrorReporter.new
-    private class_property interpreter = Interpreter.new
+    def self.run(src : String, interpreter = Interpreter.new(ErrorReporter.new)) : {Bool, ErrorReporter}
+      error_reporter = interpreter.error_reporter
 
-    def self.run(src : String)
-      tokens = Scanner.scan(src)
-      statements = Parser.parse(tokens)
+      tokens = Scanner.new(src, error_reporter).scan
+      statements = Parser.new(tokens, error_reporter).parse
 
-      return false if had_error?
+      return {false, error_reporter} if error_reporter.had_syntax_error?
 
-      Resolver.new(interpreter).resolve(statements)
+      Resolver.new(interpreter, error_reporter).resolve(statements)
 
-      return false if had_error?
+      return {false, error_reporter} if error_reporter.had_syntax_error?
 
       interpreter.interpret(statements)
 
-      !had_runtime_error?
+      {error_reporter.success?, error_reporter}
     end
 
     def self.run_repl
@@ -34,10 +33,10 @@ module Lit
     end
 
     def self.run_code(code : String)
-      run(code)
+      _, error_reporter = run(code)
 
-      return ExitCode::DATAERR if had_error?
-      return ExitCode::SOFTWARE if had_runtime_error?
+      return ExitCode::DATAERR if error_reporter.had_syntax_error?
+      return ExitCode::SOFTWARE if error_reporter.had_runtime_error?
 
       ExitCode::OK
     end
@@ -52,30 +51,6 @@ module Lit
       STDERR.puts Text.error("Error: Unable to read file!")
 
       ExitCode::NOINPUT
-    end
-
-    def self.reset_errors
-      self.error_reporter = ErrorReporter.new
-    end
-
-    def self.runtime_error(error)
-      error_reporter.add_runtime_error(error)
-    end
-
-    def self.error(line : Int, message : String)
-      error_reporter.add_syntax_error(line, message)
-    end
-
-    def self.error(token : Token, message : String)
-      error_reporter.add_syntax_error(token, message)
-    end
-
-    def self.had_error? : Bool
-      error_reporter.had_syntax_error?
-    end
-
-    def self.had_runtime_error? : Bool
-      error_reporter.had_runtime_error?
     end
   end
 end

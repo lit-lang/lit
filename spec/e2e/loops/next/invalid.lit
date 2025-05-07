@@ -5,3 +5,10 @@ fn function {
 
 # error: [line 7] Error at "next": Can't use 'next' outside of a loop.
 next
+
+# error: [line 12] Error at "next": Can't use 'next' outside of a loop.
+while true {
+  fn foo {
+    next
+  }
+}
