@@ -29,8 +29,7 @@ module Lit
 
     private def evaluate(line : String, runner)
       _result = runner.run(line)
-      runner.had_error = false
-      runner.had_runtime_error = false
+      runner.reset_errors
     end
 
     private def print_output(output)

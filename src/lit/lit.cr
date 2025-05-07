@@ -6,12 +6,13 @@ require "./parser"
 require "./resolver"
 require "./interpreter"
 require "./repl"
+require "./error_reporter"
 require "./text"
 
 module Lit
   class Lit
-    class_property? had_error = false, had_runtime_error = false
-    class_property interpreter = Interpreter.new
+    private class_property error_reporter = ErrorReporter.new
+    private class_property interpreter = Interpreter.new
 
     def self.run(src : String)
       tokens = Scanner.scan(src)
@@ -53,35 +54,28 @@ module Lit
       ExitCode::NOINPUT
     end
 
-    def self.runtime_error(error)
-      STDERR.puts Text.error("[line #{error.token.line}] Runtime error: #{error.message}")
+    def self.reset_errors
+      self.error_reporter = ErrorReporter.new
+    end
 
-      self.had_runtime_error = true
+    def self.runtime_error(error)
+      error_reporter.add_runtime_error(error)
     end
 
     def self.error(line : Int, message : String)
-      report(line, "", message)
+      error_reporter.add_syntax_error(line, message)
     end
 
     def self.error(token : Token, message : String)
-      report(token.line, error_location(token), message)
+      error_reporter.add_syntax_error(token, message)
     end
 
-    private def self.error_location(token : Token) : String
-      if token.type.eof?
-        " at end"
-      elsif token.type.newline?
-        " at end of line"
-      else
-        where = token.lexeme.starts_with?('"') ? token.lexeme : %("#{token.lexeme}")
-        " at #{where}"
-      end
+    def self.had_error? : Bool
+      error_reporter.had_syntax_error?
     end
 
-    private def self.report(line : Int, where : String, message : String)
-      STDERR.puts Text.error("[line #{line}] Error#{where}: #{message}")
-
-      self.had_error = true
+    def self.had_runtime_error? : Bool
+      error_reporter.had_runtime_error?
     end
   end
 end
