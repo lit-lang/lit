@@ -1,6 +1,8 @@
 if true do println("if") # expect: if
 
-if false do println("not ok") else if nil do println("not ok") else do println("else") # expect: else
+if false do println("nope") else do println("if else") # expect: if else
+
+if false do println("not ok") else if nil do println("not ok") else do println("if elseif else") # expect: if elseif else
 
 fn pi do 3.14
 println(pi()) # expect: 3.14

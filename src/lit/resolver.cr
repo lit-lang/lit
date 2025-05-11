@@ -62,16 +62,16 @@ module Lit
       resolve(expr.else_branch.not_nil!) if expr.else_branch
     end
 
-    def visit_while_stmt(stmt) : Nil
+    def visit_while_expr(expr) : Nil
       with_loop_scope do
-        resolve(stmt.condition)
-        resolve(stmt.body)
+        resolve(expr.condition)
+        resolve(expr.body)
       end
     end
 
-    def visit_loop_stmt(stmt) : Nil
+    def visit_loop_expr(expr) : Nil
       with_loop_scope do
-        resolve(stmt.body)
+        resolve(expr.body)
       end
     end
 

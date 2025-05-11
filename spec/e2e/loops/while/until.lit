@@ -17,4 +17,4 @@ until (a >= 3) {
 
 # Statement bodies.
 until true { fn foo {} }
-until true { while true { 1; } }
+until true { type Foo {} }

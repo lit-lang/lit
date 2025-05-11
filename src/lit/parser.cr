@@ -95,9 +95,6 @@ module Lit
     end
 
     private def statement
-      return while_statement if match?(TokenType::WHILE)
-      return until_statement if match?(TokenType::UNTIL)
-      return loop_statement if match?(TokenType::LOOP)
       return break_statement if match?(TokenType::BREAK)
       return next_statement if match?(TokenType::NEXT)
       return return_statement if match?(TokenType::RETURN)
@@ -117,28 +114,28 @@ module Lit
       Stmt::Return.new(keyword, value)
     end
 
-    private def while_statement
+    private def while_expr
       condition = expression
       body = block_expr("I was expecting a block after the while condition.")
 
-      Stmt::While.new(condition, body)
+      Expr::While.new(condition, body)
     end
 
-    private def until_statement
+    private def until_expr
       condition = expression
       body = block_expr("I was expecting a block after the until condition.")
 
       # desugar until to while
-      Stmt::While.new(Expr::Unary.new(Token.new(TokenType::BANG, "!", nil, 0), condition), body)
+      Expr::While.new(Expr::Unary.new(Token.new(TokenType::BANG, "!", nil, 0), condition), body)
     end
 
-    private def loop_statement
+    private def loop_expr
       consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the loop keyword.")
       ignore_newlines
 
       body = brace_block
 
-      Stmt::Loop.new(body)
+      Expr::Loop.new(body)
     end
 
     private def break_statement
@@ -223,7 +220,7 @@ module Lit
     end
 
     private def assignment
-      expr = if_expr
+      expr = control_flow
 
       if match?(TokenType::EQUAL)
         equals = previous
@@ -245,27 +242,38 @@ module Lit
       expr
     end
 
-    private def if_expr
+    private def control_flow
       if match?(TokenType::IF)
-        condition = expression
-        then_branch = block_expr(error_msg: "I was expecting a block after the if condition.")
+        if_expr
+      elsif match?(TokenType::WHILE)
+        while_expr
+      elsif match?(TokenType::UNTIL)
+        until_expr
+      elsif match?(TokenType::LOOP)
+        loop_expr
+      else
+        pipeline_expr
+      end
+    end
 
-        # We're currently requiring else to be in the same line as token that
-        # closes the if block.
-        if match?(TokenType::ELSE)
-          if check(TokenType::IF) # else if
-            else_branch = Expr::Block.new([
-              Stmt::Expression.new(if_expr),
-            ] of Stmt)
-          else
-            else_branch = block_expr(error_msg: "I was expecting a block after the else keyword.")
-          end
+    private def if_expr
+      condition = expression
+      # p! peek
+      then_branch = block_expr(error_msg: "I was expecting a block after the if condition.")
+
+      # We're currently requiring else to be in the same line as token that
+      # closes the if block.
+      if match?(TokenType::ELSE)
+        if match?(TokenType::IF) # else if
+          else_branch = Expr::Block.new([
+            Stmt::Expression.new(if_expr),
+          ] of Stmt)
+        else
+          else_branch = block_expr(error_msg: "I was expecting a block after the else keyword.")
         end
-
-        return Expr::If.new(condition, then_branch, else_branch) # TODO: hack to get else if to be a stmt
       end
 
-      pipeline_expr
+      return Expr::If.new(condition, then_branch, else_branch) # TODO: hack to get else if to be a stmt
     end
 
     private def pipeline_expr

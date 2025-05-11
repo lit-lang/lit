@@ -12,8 +12,6 @@ module Lit
       abstract def visit_function_stmt(stmt : Function) : T
       abstract def visit_return_stmt(stmt : Return) : T
       abstract def visit_var_stmt(stmt : Var) : T
-      abstract def visit_loop_stmt(stmt : Loop) : T
-      abstract def visit_while_stmt(stmt : While) : T
     end
 
     class Break < Stmt
@@ -88,27 +86,6 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_var_stmt(self)
-      end
-    end
-
-    class Loop < Stmt
-      getter body : Expr::Block
-
-      def initialize(@body); end
-
-      def accept(visitor : Visitor)
-        visitor.visit_loop_stmt(self)
-      end
-    end
-
-    class While < Stmt
-      getter condition : Expr
-      getter body : Expr::Block
-
-      def initialize(@condition, @body); end
-
-      def accept(visitor : Visitor)
-        visitor.visit_while_stmt(self)
       end
     end
 

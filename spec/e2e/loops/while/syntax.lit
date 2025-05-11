@@ -1,15 +1,15 @@
 # Single-expression body.
-var c = 0
-while c < 3 { println(c = c + 1); }
+var a = 0
+while a < 3 do println(a = a + 1)
 # expect: 1
 # expect: 2
 # expect: 3
 
 # Parenthesized condition.
-var a = 0
-while (a < 3) {
-  println(a)
-  a = a + 1
+var b = 0
+while (b < 3) {
+  println(b)
+  b = b + 1
 }
 # expect: 0
 # expect: 1
@@ -17,4 +17,39 @@ while (a < 3) {
 
 # Statement bodies.
 while false { fn test {} }
-while false { while true { 1; } }
+while false { type Foo {} }
+
+# return values
+println(while false {}) # expect: nil
+
+var c = 0
+println(
+  while c < 2 {
+    c = c + 1
+    c - 1
+  }
+) # expect: 1
+
+var d = 0
+println(
+  while d < 2 {
+    if d == 1 {
+      break # break returns nil
+    }
+
+    d = d + 1
+  }
+) # expect: nil
+
+var e = 0
+println(
+  while e < 3 {
+    if e == 0 || e == 2 {
+      e = e + 1
+      next # next returns nil
+    }
+
+    e = e + 1
+    e
+  }
+) # expect: nil

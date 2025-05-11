@@ -23,6 +23,8 @@ module Lit
       abstract def visit_unary_expr(expr : Unary) : T
       abstract def visit_variable_expr(expr : Variable) : T
       abstract def visit_string_interpolation_expr(expr : StringInterpolation) : T
+      abstract def visit_loop_expr(expr : Loop) : T
+      abstract def visit_while_expr(expr : While) : T
     end
 
     class ArrayLiteral < Expr
@@ -220,6 +222,27 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_string_interpolation_expr(self)
+      end
+    end
+
+    class Loop < Expr
+      getter body : Expr::Block
+
+      def initialize(@body); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_loop_expr(self)
+      end
+    end
+
+    class While < Expr
+      getter condition : Expr
+      getter body : Expr::Block
+
+      def initialize(@condition, @body); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_while_expr(self)
       end
     end
 

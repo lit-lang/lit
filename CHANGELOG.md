@@ -1,5 +1,23 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Make while/until/loop expressions, not statements
+
+`while`/`until` will return the last value of the block, or `nil` if `break` is used.
+
+`loop` always returns `nil` because `break` is required to exit the loop.
+
+```lit
+println(while false {}) # prints nil
+
+var c = 0
+println(
+  while c < 2 {
+    c = c + 1
+    c - 1
+  }
+) # prints 1
+```
+
 - Add `do` keyword to define single-line blocks
 
 ```lit
@@ -10,7 +28,7 @@ log("Success!") # expect: [LOG] Success!
 
 # You can use it as an expression, even if it doesn't make much sense
 let a = do "Hello"
-println(a) # expect: Hello
+println(a) # prints Hello
 ```
 
 It won't work as the body of a `type` or `loop`, as those need to be multi-line

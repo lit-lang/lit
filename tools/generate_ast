@@ -25,6 +25,8 @@ module AstGenerator
       "Unary               = operator : Token, right : Expr",
       "Variable            = name : Token",
       "StringInterpolation = parts : Array(Expr), token : Token",
+      "Loop                = body : Expr::Block",
+      "While               = condition : Expr, body : Expr::Block",
     ])
 
     define_ast(output_dir, "Stmt", [
@@ -35,8 +37,6 @@ module AstGenerator
       "Function   = name : Token, function : Expr::Function",
       "Return     = keyword : Token, value : Expr?",
       "Var        = name : Token, initializer : Expr, mutable : Bool",
-      "Loop       = body : Expr::Block",
-      "While      = condition : Expr, body : Expr::Block",
     ])
   end
 

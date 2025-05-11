@@ -41,3 +41,6 @@ loop {
 # expect: outer: 2
 # expect:   inner: 0
 # expect:   inner: 1
+
+# return values
+println(loop { break; }) # expect: nil

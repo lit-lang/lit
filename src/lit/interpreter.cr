@@ -81,22 +81,28 @@ module Lit
                     end
     end
 
-    def visit_while_stmt(stmt) : Nil
-      while truthy?(evaluate(stmt.condition))
+    def visit_while_expr(expr) : Value
+      return_value = nil
+
+      while truthy?(evaluate(expr.condition))
         begin
-          evaluate(stmt.body)
+          return_value = evaluate(expr.body)
         rescue e : Break
+          return_value = nil
           break
         rescue e : Next
+          return_value = nil
           next
         end
       end
+
+      return_value
     end
 
-    def visit_loop_stmt(stmt) : Nil
+    def visit_loop_expr(expr) : Nil
       loop do
         begin
-          evaluate(stmt.body)
+          evaluate(expr.body)
         rescue e : Break
           break
         rescue e : Next
