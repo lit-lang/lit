@@ -1,1 +1,1 @@
-fn "asdf" # error: [line 1] Error at "asdf": I was expecting a name or '{' after the 'fn' keyword.
+fn "asdf" # error: [line 1] Error at "asdf": I was expecting a name or block after the 'fn' keyword.

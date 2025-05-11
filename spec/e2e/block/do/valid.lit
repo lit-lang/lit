@@ -1,0 +1,22 @@
+if true do println("if") # expect: if
+
+if false do println("not ok") else if nil do println("not ok") else do println("else") # expect: else
+
+fn pi do 3.14
+println(pi()) # expect: 3.14
+
+let e = fn do 2.71
+println(e()) # expect: 2.71
+
+fn log do |what| println("[LOG] {what}")
+log("named") # expect: [LOG] named
+
+let log2 = fn do |what| println("[LOG] {what}")
+log2("anon") # expect: [LOG] anon
+
+let a = do "expr"
+println(a) # expect: expr
+
+while false do println("not ok")
+
+until true do println("not ok")

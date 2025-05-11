@@ -1,5 +1,21 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Add `do` keyword to define single-line blocks
+
+```lit
+if something_true do println("truthy!") # prints "truthy!"
+
+fn log do |what| println("[LOG] {what}")
+log("Success!") # expect: [LOG] Success!
+
+# You can use it as an expression, even if it doesn't make much sense
+let a = do "Hello"
+println(a) # expect: Hello
+```
+
+It won't work as the body of a `type` or `loop`, as those need to be multi-line
+blocks.
+
 - Prevent `break`/`next` from being used in functions inside loops:
 
 ```lit

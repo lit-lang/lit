@@ -1,0 +1,8 @@
+
+let a = do do 1 # error: [line 2] Error at "do": Sequential do blocks are not allowed.
+
+let a = do |x| x # error: [line 4] Error at "|": I was expecting an expression here.
+
+type Foo do 1 # error: [line 6] Error at "do": I was expecting a '{' after the type name.
+
+loop do break # error: [line 8] Error at "do": I was expecting a '{' after the loop keyword.

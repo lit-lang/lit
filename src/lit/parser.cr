@@ -77,7 +77,8 @@ module Lit
     private def type_declaration
       # TODO: does this allow any kind of identifier be a class name? even lowercase?
       name = consume(TokenType::IDENTIFIER, "I was expecting a type name.")
-      consume(TokenType::LEFT_BRACE, "I was a '{' after the type name.")
+      # I'm intentionally not allowing a do block here because it doesn't make sense
+      consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the type name.")
       ignore_newlines
 
       methods = [] of Stmt::Function
@@ -118,18 +119,14 @@ module Lit
 
     private def while_statement
       condition = expression
-      consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the while condition.")
-
-      body = block_statements
+      body = block_expr("I was expecting a block after the while condition.")
 
       Stmt::While.new(condition, body)
     end
 
     private def until_statement
       condition = expression
-      consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the until condition.")
-
-      body = block_statements
+      body = block_expr("I was expecting a block after the until condition.")
 
       # desugar until to while
       Stmt::While.new(Expr::Unary.new(Token.new(TokenType::BANG, "!", nil, 0), condition), body)
@@ -139,7 +136,7 @@ module Lit
       consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the loop keyword.")
       ignore_newlines
 
-      body = block_statements
+      body = brace_block
 
       Stmt::Loop.new(body)
     end
@@ -157,7 +154,47 @@ module Lit
       Stmt::Next.new(keyword)
     end
 
-    private def block_with_params
+    private def block_with_params(error_msg)
+      if match?(TokenType::LEFT_BRACE)
+        params = block_params
+
+        {brace_block, params}
+      elsif match?(TokenType::DO)
+        params = block_params
+
+        {do_block, params}
+      else
+        raise error(peek, error_msg)
+      end
+    end
+
+    private def block_expr(error_msg)
+      if match?(TokenType::LEFT_BRACE)
+        brace_block
+      elsif match?(TokenType::DO)
+        do_block
+      else
+        raise error(peek, error_msg)
+      end
+    end
+
+    private def brace_block
+      ignore_newlines
+
+      statements = [] of Stmt
+
+      until check(TokenType::RIGHT_BRACE) || at_end?
+        statements.push(declaration)
+        ignore_newlines
+      end
+
+      ignore_newlines
+      consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the block.")
+
+      Expr::Block.new(statements)
+    end
+
+    private def block_params
       params = [] of Token
 
       if match?(TokenType::BAR)   # begin params
@@ -171,24 +208,7 @@ module Lit
         consume(TokenType::BAR, "I was expecting a '|' after the parameters.")
       end
 
-      {block_statements, params}
-    end
-
-    private def block_statements
-      ignore_newlines
-
-      statements = [] of Stmt
-
-      until check(TokenType::RIGHT_BRACE) || at_end?
-        statements.push(declaration)
-        # consume_line("I was expecting a newline after the statement.")
-        ignore_newlines # TODO: ignore or require?
-      end
-
-      ignore_newlines
-      consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the block.")
-
-      Expr::Block.new(statements)
+      params
     end
 
     private def expression_statement
@@ -228,20 +248,17 @@ module Lit
     private def if_expr
       if match?(TokenType::IF)
         condition = expression
-        consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the if condition.")
-        ignore_newlines
+        then_branch = block_expr(error_msg: "I was expecting a block after the if condition.")
 
-        then_branch = block_statements
-
+        # We're currently requiring else to be in the same line as token that
+        # closes the if block.
         if match?(TokenType::ELSE)
           if check(TokenType::IF) # else if
             else_branch = Expr::Block.new([
               Stmt::Expression.new(if_expr),
             ] of Stmt)
           else
-            ignore_newlines
-            consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the else keyword.")
-            else_branch = block_statements
+            else_branch = block_expr(error_msg: "I was expecting a block after the else keyword.")
           end
         end
 
@@ -390,7 +407,8 @@ module Lit
       return string_interpolation if match?(TokenType::STRING_INTERPOLATION)
       return function_body("function", anonymous: true) if match?(TokenType::FN)
       return array if match?(TokenType::LEFT_BRACKET)
-      return block_or_map if match?(TokenType::LEFT_BRACE)
+      return brace_block_or_map if match?(TokenType::LEFT_BRACE)
+      return do_block if match?(TokenType::DO)
 
       if match?(TokenType::LEFT_PAREN)
         ignore_newlines
@@ -402,6 +420,17 @@ module Lit
       end
 
       raise error(peek, "I was expecting an expression here.")
+    end
+
+    private def do_block
+      # There's not a reason to disallow multiple `do`s in a row, but:
+      # 1. It doesn't make sense
+      # 2. It is ugly =)
+      error(previous, "Sequential do blocks are not allowed.") if match?(TokenType::DO)
+
+      body = expression
+
+      Expr::Block.new([Stmt::Expression.new(body)] of Stmt)
     end
 
     private def string_interpolation
@@ -424,13 +453,12 @@ module Lit
     end
 
     private def function_body(kind, anonymous = false)
-      if anonymous
-        consume(TokenType::LEFT_BRACE, "I was expecting a name or '{' after the 'fn' keyword.")
-      else
-        consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the #{kind} name.")
-      end
-
-      body, params = block_with_params
+      error_msg = if anonymous
+                    "I was expecting a name or block after the 'fn' keyword."
+                  else
+                    "I was expecting a block after the #{kind} name."
+                  end
+      body, params = block_with_params(error_msg)
 
       Expr::Function.new(params, body.statements)
     end
@@ -441,7 +469,7 @@ module Lit
       Expr::ArrayLiteral.new(elements)
     end
 
-    private def block_or_map
+    private def brace_block_or_map
       if match?(TokenType::COLON) # empty map
         consume(TokenType::RIGHT_BRACE, "I was expecting a '}' to close the map.")
         return Expr::MapLiteral.new([] of Tuple(Expr, Expr))
@@ -462,7 +490,7 @@ module Lit
       begin
         decl = declaration!
 
-        block = block_statements
+        block = brace_block
         block.statements.unshift(decl)
         block
       rescue e : ParserError # if cannot parse a statement, go back and try to parse a map
