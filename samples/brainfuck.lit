@@ -6,9 +6,9 @@ type Tape {
     self.pos = 0
   }
 
-  fn get {
-    self.tape[self.pos]
-  }
+  fn get do self.tape[self.pos]
+
+  fn set do |value| self.tape.set(self.pos, value)
 
   fn inc {
     let value = (self.tape[self.pos] + 1) % 256
@@ -38,9 +38,6 @@ type Tape {
     }
   }
 
-  fn set { |value|
-    self.tape.set(self.pos, value)
-  }
 }
 
 type Parser {
