@@ -44,3 +44,4 @@ loop {
 
 # return values
 println(loop { break; }) # expect: nil
+println(loop { break 1; }) # expect: 1

@@ -1,5 +1,14 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Allow break to return a value
+
+```lit
+let x = loop {
+  break 1
+}
+println x # prints 1
+```
+
 - Introduce `it` as default parameter for one-line (do) blocks:
 
 ```lit

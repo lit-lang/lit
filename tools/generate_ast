@@ -26,7 +26,7 @@ module AstGenerator
       "Variable            = name : Token",
       "StringInterpolation = parts : Array(Expr), token : Token",
       "Loop                = body : Expr::Block",
-      "Break               = keyword : Token",
+      "Break               = keyword : Token, value : Expr?",
       "Next                = keyword : Token",
       "While               = condition : Expr, body : Expr::Block",
     ])

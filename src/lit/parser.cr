@@ -234,7 +234,9 @@ module Lit
       expr = if match?(TokenType::NEXT)
                Expr::Next.new(previous)
              elsif match?(TokenType::BREAK)
-               Expr::Break.new(previous)
+               value = check(TokenType::NEWLINE) ? nil : expression
+
+               Expr::Break.new(previous, value)
              else
                expression
              end

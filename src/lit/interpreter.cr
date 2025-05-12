@@ -26,7 +26,11 @@ module Lit
       def initialize(@value); end
     end
 
-    class Break < Exception; end
+    class Break < Exception
+      getter value : Value
+
+      def initialize(@value); end
+    end
 
     class Next < Exception; end
 
@@ -88,7 +92,7 @@ module Lit
         begin
           return_value = evaluate(expr.body)
         rescue e : Break
-          return_value = nil
+          return_value = e.value
           break
         rescue e : Next
           return_value = nil
@@ -99,20 +103,29 @@ module Lit
       return_value
     end
 
-    def visit_loop_expr(expr) : Nil
+    def visit_loop_expr(expr) : Value
+      return_value = nil
+
       loop do
         begin
+          return_value = nil
           evaluate(expr.body)
         rescue e : Break
+          return_value = e.value
           break
         rescue e : Next
+          return_value = nil
           next
         end
       end
+
+      return_value
     end
 
     def visit_break_expr(expr) : Nil
-      raise Break.new
+      value = expr.value ? evaluate(expr.value.not_nil!) : nil
+
+      raise Break.new(value)
     end
 
     def visit_next_expr(expr) : Nil

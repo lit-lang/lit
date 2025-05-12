@@ -53,3 +53,15 @@ println(
     e
   }
 ) # expect: nil
+
+var f = 0
+println(
+  while f < 3 {
+    if f == 1 {
+      break "one"
+    }
+
+    f = f + 1
+    f
+  }
+) # expect: one

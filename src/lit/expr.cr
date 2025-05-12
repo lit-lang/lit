@@ -239,8 +239,9 @@ module Lit
 
     class Break < Expr
       getter keyword : Token
+      getter value : Expr?
 
-      def initialize(@keyword); end
+      def initialize(@keyword, @value); end
 
       def accept(visitor : Visitor)
         visitor.visit_break_expr(self)
