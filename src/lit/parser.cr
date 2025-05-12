@@ -273,7 +273,7 @@ module Lit
           return Expr::Set.new(get.object, get.name, value)
         end
 
-        error(equals, "Invalid assignment target.")
+        raise error(equals, "Invalid assignment target.")
       end
 
       expr
@@ -321,7 +321,7 @@ module Lit
         right = call
 
         if !right.is_a? Expr::Call
-          error(operator, "I was expecting a function call after the pipeline operator.")
+          raise error(operator, "I was expecting a function call after the pipeline operator.")
         end
 
         expr = Expr::Binary.new(expr, operator, right)
@@ -475,7 +475,7 @@ module Lit
       # There's not a reason to disallow multiple `do`s in a row, but:
       # 1. It doesn't make sense
       # 2. It is ugly =)
-      error(previous, "Sequential do blocks are not allowed.") if match?(TokenType::DO)
+      raise error(previous, "Sequential do blocks are not allowed.") if match?(TokenType::DO)
 
       body = expression
 
@@ -708,7 +708,7 @@ module Lit
       advance
 
       until at_end?
-        # return if previous.type == TokenType::NEWLINE
+        return if previous.type == TokenType::NEWLINE
 
         case peek.type
         when TokenType::VAR, TokenType::IF, TokenType::PRINTLN, TokenType::PRINT,
