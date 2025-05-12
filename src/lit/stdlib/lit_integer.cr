@@ -27,6 +27,18 @@ module Lit
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
           @value.chr.to_s
         })
+      when "times"
+        ::Lit::Native::Fn.new(name.lexeme, 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          fn = arguments[0]
+
+          if fn.is_a?(Function)
+            @value.times do |i|
+              fn.call(interpreter, [i], token)
+            end
+          else
+            raise RuntimeError.new(token, "Expected function as the first argument, got #{interpreter.type_of(fn)}.")
+          end
+        })
       when "to_s"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(interpreter : Interpreter, _arguments : ::Array(Value), token : Token) : Value {
           ::Lit.stringify_value(@value, interpreter, token)

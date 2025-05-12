@@ -75,6 +75,25 @@ module Lit
             @value.each_byte { |byte| a.elements.push(byte.to_i64) }
           end
         })
+      when "chomp"
+        ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
+          @value.chomp
+        })
+      when "split"
+        ::Lit::Native::Fn.new(name.lexeme, 0..1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          LitArray.new.tap do |a|
+            if arguments.size == 0
+              @value.split("").each { |char| a.elements.push(char.to_s) }
+            else
+              delimiter = arguments[0]
+              if delimiter.is_a?(String)
+                @value.split(delimiter).each { |part| a.elements.push(part.to_s) }
+              else
+                raise RuntimeError.new(token, "Expected string as the first argument.")
+              end
+            end
+          end
+        })
       when "to_s"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(interpreter : Interpreter, _arguments : ::Array(Value), token : Token) : Value {
           ::Lit.stringify_value(@value, interpreter, token)

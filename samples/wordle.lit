@@ -1,0 +1,40 @@
+# Simplified Wordle
+
+let answers = open("wordle-answers.txt")
+let words = answers.split("\n")
+let word = words.sample()
+var guess = ""
+var tries = 0
+    println("The word was: {word}")
+
+while guess != word {
+  tries = tries + 1
+  print("Guess: ")
+  guess = readln().chomp()
+
+  if guess == "give up" {
+    println("The word was: {word}")
+    exit(-1)
+  }
+
+  if guess.size() != 5 {
+    println("Only 5 letter words allowed.")
+    next
+  }
+
+  5.times(fn { |i|
+    if word[i] == guess[i] {
+      print("🟩")
+    } else if word.includes?(guess[i]) {
+      print("🟨")
+    } else {
+      print("🟥")
+    }
+  })
+
+  println()
+}
+
+println("🎉🎉🎉 Right answer! 🎉🎉🎉")
+let w = if tries == 1 do "try" else do "tries"
+println("You guessed the word in {tries} {w}!")
