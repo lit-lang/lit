@@ -1,5 +1,25 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Introduce `it` as default parameter for one-line (do) blocks:
+
+```lit
+fn square do it * it
+
+[1, 2, 3].each(fn do println(square(it))) # prints 1\n4\n9
+```
+
+It isn't allowed in multi-line blocks as I believe that hurts readability more
+than helps. But if you **really** want it, there's a "hack" to do that:
+
+```lit
+["me"].each(fn do {
+  println("No one can stop {it}!")
+})
+# prints "No one can stop me!"
+```
+
+I might remove this in the future, but for now it works.
+
 - Make while/until/loop expressions, not statements
 
 `while`/`until` will return the last value of the block, or `nil` if `break` is used.

@@ -11,6 +11,9 @@ module Lit
     getter current : Int32 = 0
     private property errors = [] of Tuple(Token, String)
 
+    @block_has_explicit_params : Bool = false
+    @default_param : Token? = nil
+
     def initialize(@tokens, @error_reporter : ErrorReporter); end
 
     def self.parse(tokens)
@@ -155,11 +158,19 @@ module Lit
       if match?(TokenType::LEFT_BRACE)
         params = block_params
 
-        {brace_block, params}
+        # It's possible just not to track default param usage if the block is
+        # multi-line, but that would give a worse error message "undefined
+        # variable it". I decided to track but give a proper error message when
+        # using the default param inside a multi-line block.
+        track_default_param_usage(params, allow_default_param: false) do
+          {brace_block, params}
+        end
       elsif match?(TokenType::DO)
         params = block_params
 
-        {do_block, params}
+        track_default_param_usage(params, allow_default_param: true) do
+          {do_block, params}
+        end
       else
         raise error(peek, error_msg)
       end
@@ -206,6 +217,32 @@ module Lit
       end
 
       params
+    end
+
+    private def track_default_param_usage(params : Array(Token), allow_default_param : Bool, &)
+      old_explicit = @block_has_explicit_params
+      old_default_param = @default_param
+
+      @block_has_explicit_params = !params.empty?
+      @default_param = nil
+
+      begin
+        block_body, params = yield
+
+        if @default_param && !allow_default_param
+          raise error(@default_param.not_nil!, "Default parameter can't be used with multi-line blocks.")
+        elsif @default_param && @block_has_explicit_params
+          raise error(@default_param.not_nil!, "Default parameter can't be used when explicit parameters are defined.")
+        elsif @default_param && !@block_has_explicit_params
+          # Inject implicit `it`
+          return {block_body, [Token.new(TokenType::IDENTIFIER, "it", nil, peek.line)]}
+        end
+
+        {block_body, params}
+      ensure
+        @block_has_explicit_params = old_explicit
+        @default_param = old_default_param
+      end
     end
 
     private def expression_statement
@@ -258,7 +295,6 @@ module Lit
 
     private def if_expr
       condition = expression
-      # p! peek
       then_branch = block_expr(error_msg: "I was expecting a block after the if condition.")
 
       # We're currently requiring else to be in the same line as token that
@@ -273,7 +309,7 @@ module Lit
         end
       end
 
-      return Expr::If.new(condition, then_branch, else_branch) # TODO: hack to get else if to be a stmt
+      Expr::If.new(condition, then_branch, else_branch) # TODO: hack to get else if to be a stmt
     end
 
     private def pipeline_expr
@@ -411,7 +447,12 @@ module Lit
       return Expr::Literal.new(nil) if match?(TokenType::NIL)
       return Expr::Literal.new(previous.literal) if match?(TokenType::NUMBER, TokenType::STRING)
       return Expr::Self.new(previous) if match?(TokenType::SELF)
-      return Expr::Variable.new(previous) if match?(TokenType::IDENTIFIER)
+      if match?(TokenType::IDENTIFIER)
+        if previous.lexeme == "it"
+          @default_param = previous
+        end
+        return Expr::Variable.new(previous)
+      end
       return string_interpolation if match?(TokenType::STRING_INTERPOLATION)
       return function_body("function", anonymous: true) if match?(TokenType::FN)
       return array if match?(TokenType::LEFT_BRACKET)

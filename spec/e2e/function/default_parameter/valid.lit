@@ -1,0 +1,20 @@
+let identity = fn do it
+println(identity(1)) # expect: 1
+
+let double = fn do it + it
+println(double("rainbow")) # expect: rainbowrainbow
+
+fn square do it * it
+[1, 2, 3].each(fn do println(square(it)))
+# expect: 1
+# expect: 4
+# expect: 9
+
+[1].each(fn do {
+  println(it)
+  [2].each(fn do println(it))
+  println(it)
+})
+# expect: 1
+# expect: 2
+# expect: 1
