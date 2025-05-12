@@ -1,0 +1,2 @@
+"asdf" = 1 # error: [line 1] Error at "=": Invalid assignment target.
+println("not ok")
