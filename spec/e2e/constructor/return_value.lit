@@ -1,5 +1,5 @@
 type Foo {
   init {
-    return "result" # error: [line 3] Error at "return": Can't return a value from an initializer.
+    return "result" # error: [line 3] Syntax error at "return": Can't return a value from an initializer.
   }
 }

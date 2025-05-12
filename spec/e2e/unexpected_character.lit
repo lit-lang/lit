@@ -1,2 +1,2 @@
-# error: [line 2] Error: Unexpected character '^'
+# error: [line 2] Syntax error: Unexpected character '^'
 foo(a ^ b)

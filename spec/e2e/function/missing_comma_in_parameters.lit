@@ -1,2 +1,2 @@
-# error: [line 2] Error at "c": I was expecting a '|' after the parameters.
+# error: [line 2] Syntax error at "c": I was expecting a '|' after the parameters.
 fn foo { |a, b c, d, e, f| }

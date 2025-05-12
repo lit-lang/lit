@@ -1,2 +1,2 @@
-"asdf" = 1 # error: [line 1] Error at "=": Invalid assignment target.
+"asdf" = 1 # error: [line 1] Syntax error at "=": Invalid assignment target.
 println("not ok")

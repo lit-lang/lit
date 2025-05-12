@@ -1,13 +1,13 @@
-# error: [line 2] Error: Trailing underscore in number literal
+# error: [line 2] Syntax error: Trailing underscore in number literal
 1_
 
-# error: [line 5] Error: Invalid underscore placement in number literal
+# error: [line 5] Syntax error: Invalid underscore placement in number literal
 1__2
 
-# error: [line 8] Error: Invalid underscore placement in number literal
+# error: [line 8] Syntax error: Invalid underscore placement in number literal
 1_.0
 
-# error: [line 11] Error: Invalid underscore placement in number literal
+# error: [line 11] Syntax error: Invalid underscore placement in number literal
 1._0
 
 # this is fine when scanning. It's just an identifier

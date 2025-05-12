@@ -42,7 +42,7 @@ module Lit
     end
 
     private def report(line : Int, where : String, message : String)
-      STDERR.puts Text.error("[line #{line}] Error#{where}: #{message}")
+      STDERR.puts Text.error("[line #{line}] Syntax error#{where}: #{message}")
       @had_syntax_error = true
     end
   end

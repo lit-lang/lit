@@ -1,2 +1,2 @@
-# error: [line 2] Error at "123": I was expecting a block after the function name.
+# error: [line 2] Syntax error at "123": I was expecting a block after the function name.
 fn f 123

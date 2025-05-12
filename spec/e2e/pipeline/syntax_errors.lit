@@ -1,5 +1,5 @@
-1 |> 2 # error: [line 1] Error at "|>": I was expecting a function call after the pipeline operator.
+1 |> 2 # error: [line 1] Syntax error at "|>": I was expecting a function call after the pipeline operator.
 
-1 |> identity # error: [line 3] Error at "|>": I was expecting a function call after the pipeline operator.
+1 |> identity # error: [line 3] Syntax error at "|>": I was expecting a function call after the pipeline operator.
 
-1 |>  # error: [line 6] Error at end: I was expecting an expression here.
+1 |>  # error: [line 6] Syntax error at end: I was expecting an expression here.

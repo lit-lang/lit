@@ -1,12 +1,12 @@
-# error: [line 3] Error at "next": Can't use 'next' outside of a loop.
+# error: [line 3] Syntax error at "next": Can't use 'next' outside of a loop.
 fn function {
   next
 }
 
-# error: [line 7] Error at "next": Can't use 'next' outside of a loop.
+# error: [line 7] Syntax error at "next": Can't use 'next' outside of a loop.
 next
 
-# error: [line 12] Error at "next": Can't use 'next' outside of a loop.
+# error: [line 12] Syntax error at "next": Can't use 'next' outside of a loop.
 while true {
   fn foo {
     next

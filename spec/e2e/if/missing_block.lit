@@ -1,1 +1,1 @@
-if true # error: [line 1] Error at end of line: I was expecting a block after the if condition.
+if true # error: [line 1] Syntax error at end of line: I was expecting a block after the if condition.

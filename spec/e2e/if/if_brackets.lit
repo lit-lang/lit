@@ -1,6 +1,6 @@
 # requires bracket after the if condition
-if (true) println("bad") # error: [line 2] Error at "println": I was expecting a block after the if condition.
+if (true) println("bad") # error: [line 2] Syntax error at "println": I was expecting a block after the if condition.
 
 # requires bracket to close the if block
 if true {
-  println("bad") # error: [line 7] Error at end: I was expecting a '}' to close the block.
+  println("bad") # error: [line 7] Syntax error at end: I was expecting a '}' to close the block.

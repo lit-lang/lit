@@ -178,11 +178,11 @@ describe Lit::Scanner do
   it "errors on unterminated comment" do
     error = output_of { Lit::Scanner.scan("#=Unterminated\ncomment#") }
 
-    error.should contain("[line 2] Error: Unterminated block comment")
+    error.should contain("[line 2] Syntax error: Unterminated block comment")
   end
 
   it "errors on unterminated string" do
-    output_of { Lit::Scanner.scan(%("Unterminated \nstring')) }.should contain("[line 2] Error: Unterminated string")
+    output_of { Lit::Scanner.scan(%("Unterminated \nstring')) }.should contain("[line 2] Syntax error: Unterminated string")
   end
 
   it "errors on unterminated string escape" do
@@ -190,11 +190,11 @@ describe Lit::Scanner do
   end
 
   it "errors on single '&'" do
-    output_of { Lit::Scanner.scan("&") }.should contain("[line 1] Error: Unexpected character '&'")
+    output_of { Lit::Scanner.scan("&") }.should contain("[line 1] Syntax error: Unexpected character '&'")
   end
 
   it "errors on unexpected chars" do
-    output_of { Lit::Scanner.scan("@") }.should contain("[line 1] Error: Unexpected character '@'")
+    output_of { Lit::Scanner.scan("@") }.should contain("[line 1] Syntax error: Unexpected character '@'")
   end
 end
 
