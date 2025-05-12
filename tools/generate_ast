@@ -26,12 +26,12 @@ module AstGenerator
       "Variable            = name : Token",
       "StringInterpolation = parts : Array(Expr), token : Token",
       "Loop                = body : Expr::Block",
+      "Break               = keyword : Token",
+      "Next                = keyword : Token",
       "While               = condition : Expr, body : Expr::Block",
     ])
 
     define_ast(output_dir, "Stmt", [
-      "Break      = keyword : Token",
-      "Next       = keyword : Token",
       "Type       = name : Token, methods : Array(Stmt::Function)",
       "Expression = expression : Expr",
       "Function   = name : Token, function : Expr::Function",

@@ -24,6 +24,8 @@ module Lit
       abstract def visit_variable_expr(expr : Variable) : T
       abstract def visit_string_interpolation_expr(expr : StringInterpolation) : T
       abstract def visit_loop_expr(expr : Loop) : T
+      abstract def visit_break_expr(expr : Break) : T
+      abstract def visit_next_expr(expr : Next) : T
       abstract def visit_while_expr(expr : While) : T
     end
 
@@ -232,6 +234,26 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_loop_expr(self)
+      end
+    end
+
+    class Break < Expr
+      getter keyword : Token
+
+      def initialize(@keyword); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_break_expr(self)
+      end
+    end
+
+    class Next < Expr
+      getter keyword : Token
+
+      def initialize(@keyword); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_next_expr(self)
       end
     end
 

@@ -1,0 +1,1 @@
+let a = break # error: [line 1] Syntax error at "break": I was expecting an expression here.

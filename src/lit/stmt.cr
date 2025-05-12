@@ -5,33 +5,11 @@ require "./token"
 module Lit
   abstract class Stmt
     module Visitor(T)
-      abstract def visit_break_stmt(stmt : Break) : T
-      abstract def visit_next_stmt(stmt : Next) : T
       abstract def visit_type_stmt(stmt : Type) : T
       abstract def visit_expression_stmt(stmt : Expression) : T
       abstract def visit_function_stmt(stmt : Function) : T
       abstract def visit_return_stmt(stmt : Return) : T
       abstract def visit_var_stmt(stmt : Var) : T
-    end
-
-    class Break < Stmt
-      getter keyword : Token
-
-      def initialize(@keyword); end
-
-      def accept(visitor : Visitor)
-        visitor.visit_break_stmt(self)
-      end
-    end
-
-    class Next < Stmt
-      getter keyword : Token
-
-      def initialize(@keyword); end
-
-      def accept(visitor : Visitor)
-        visitor.visit_next_stmt(self)
-      end
     end
 
     class Type < Stmt

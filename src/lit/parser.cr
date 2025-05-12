@@ -98,8 +98,6 @@ module Lit
     end
 
     private def statement
-      return break_statement if match?(TokenType::BREAK)
-      return next_statement if match?(TokenType::NEXT)
       return return_statement if match?(TokenType::RETURN)
 
       expression_statement
@@ -139,19 +137,6 @@ module Lit
       body = brace_block
 
       Expr::Loop.new(body)
-    end
-
-    private def break_statement
-      keyword = previous
-      consume_line("I was expecting a newline after the break statement.")
-
-      Stmt::Break.new(keyword)
-    end
-
-    private def next_statement
-      keyword = previous
-      consume_line("I was expecting a newline after the next statement.")
-      Stmt::Next.new(keyword)
     end
 
     private def block_with_params(error_msg)
@@ -246,7 +231,13 @@ module Lit
     end
 
     private def expression_statement
-      expr = expression
+      expr = if match?(TokenType::NEXT)
+               Expr::Next.new(previous)
+             elsif match?(TokenType::BREAK)
+               Expr::Break.new(previous)
+             else
+               expression
+             end
       consume_line("I was expecting a newline after the expression.")
 
       Stmt::Expression.new(expr)
@@ -265,12 +256,9 @@ module Lit
         value = assignment
 
         if expr.is_a? Expr::Variable
-          name = expr.as(Expr::Variable).name
-
-          return Expr::Assign.new(name, value)
+          return Expr::Assign.new(expr.name, value)
         elsif expr.is_a? Expr::Get
-          get = expr.as(Expr::Get)
-          return Expr::Set.new(get.object, get.name, value)
+          return Expr::Set.new(expr.object, expr.name, value)
         end
 
         raise error(equals, "Invalid assignment target.")

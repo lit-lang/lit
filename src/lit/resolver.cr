@@ -75,15 +75,15 @@ module Lit
       end
     end
 
-    def visit_break_stmt(stmt) : Nil
+    def visit_break_expr(expr) : Nil
       if @loop_depth == 0
-        @error_reporter.report_syntax_error(stmt.keyword, "Can't use 'break' outside of a loop.")
+        @error_reporter.report_syntax_error(expr.keyword, "Can't use 'break' outside of a loop.")
       end
     end
 
-    def visit_next_stmt(stmt) : Nil
+    def visit_next_expr(expr) : Nil
       if @loop_depth == 0
-        @error_reporter.report_syntax_error(stmt.keyword, "Can't use 'next' outside of a loop.")
+        @error_reporter.report_syntax_error(expr.keyword, "Can't use 'next' outside of a loop.")
       end
     end
 

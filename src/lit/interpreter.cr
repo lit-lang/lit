@@ -111,11 +111,11 @@ module Lit
       end
     end
 
-    def visit_break_stmt(stmt) : Nil
+    def visit_break_expr(expr) : Nil
       raise Break.new
     end
 
-    def visit_next_stmt(stmt) : Nil
+    def visit_next_expr(expr) : Nil
       raise Next.new
     end
 
