@@ -163,7 +163,8 @@ module Lit
         return function.call(self, arguments, expr.paren)
       end
 
-      runtime_error(expr.paren, "Expected #{function.arity} arguments but got #{arguments.size}.")
+      s = function.arity == 1 ? "" : "s"
+      runtime_error(expr.paren, "Expected #{function.arity} argument#{s} but got #{arguments.size}.")
     end
 
     def visit_get_expr(expr) : Value
