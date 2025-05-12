@@ -8,7 +8,7 @@ type Tape {
 
   fn get do self.tape[self.pos]
 
-  fn set do |value| self.tape.set(self.pos, value)
+  fn set do self.tape.set(self.pos, it)
 
   fn inc {
     let value = (self.tape[self.pos] + 1) % 256
