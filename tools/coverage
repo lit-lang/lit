@@ -3,5 +3,11 @@
 rm -rf coverage && \
 echo "require \"./spec/**\"" > run_tests.cr && \
 crystal build run_tests.cr -d -p -D skip-integration && \
-KCOV=true kcov --include-path=$(pwd)/src --exclude-path=$(pwd)/spec $(pwd)/coverage ./run_tests && \
-open coverage/index.html
+kcov --include-path=$(pwd)/src --exclude-path=$(pwd)/spec $(pwd)/coverage ./run_tests
+
+if [[ "$@" == *"--open"* ]]; then
+  open coverage/index.html
+else
+  coverage_percent=$(grep '"covered":"' coverage/index.js | sed -E 's/.*"covered":"([^"]+)".*/\1/')
+  echo "Code coverage: $coverage_percent%"
+fi
