@@ -10,7 +10,7 @@ describe Lit::Lit do
       it "outputs the error" do
         status, output = run_lit_in_process("./unknown-path/what.tf")
         output.to_s.should contain "File not found!"
-        status.exit_code.should eq ExitCode::NOINPUT.to_i
+        status.exit_code.should eq Lit::ExitCode::NOINPUT.to_i
       end
     end
   end
