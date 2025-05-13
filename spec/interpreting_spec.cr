@@ -15,6 +15,9 @@ describe "e2e tests", tags: "e2e" do
       will_error = false
       expected = File.read_lines(file)
         .compact_map { |line|
+          # skip commented out lines, but not assertions
+          next if line.strip.starts_with?("#") && !line.strip.starts_with?("# expect: ") && !line.strip.starts_with?("# error: ")
+
           if line.includes?("# error: ")
             will_error = true
             "\e[1m\e[31m" + line.split("# error: ").last + "\e[0m\e[22m"
