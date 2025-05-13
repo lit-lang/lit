@@ -37,6 +37,20 @@ module Lit
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
           @value < 0
         })
+      when "truncate"
+        ::Lit::Native::Fn.new(name.lexeme, 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          decimals = arguments[0]
+
+          unless decimals.is_a?(Int64)
+            raise RuntimeError.new(token, "Expected Integer as the first argument, got #{interpreter.type_of(decimals)}.")
+          end
+          if decimals < 0
+            raise RuntimeError.new(token, "Expected a positive Integer as the first argument, got #{decimals}.")
+          end
+
+          factor = 10_f64 ** decimals
+          ((@value * factor).to_i).to_f / factor
+        })
       when "to_i"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
           @value.to_i64

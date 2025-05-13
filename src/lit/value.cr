@@ -23,7 +23,7 @@ module Lit
 
   def self.inspect_value(value : Value, interpreter, token) : String
     return value.inspect if value.is_a? String
-    return value.to_s(interpreter, token) if value.is_a? Instance
+    return value.to_s(interpreter, token) if value.is_a? Instance && !value.is_a?(LitArray)
 
     stringify_value(value, interpreter, token)
   end

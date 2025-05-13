@@ -5,6 +5,11 @@ println(true == false) # expect: false
 
 println(1 == 1) # expect: true
 println(1 == 2) # expect: false
+println(1.1.to_i() == 1.1.to_i()) # expect: true
+
+println(1.1 == 1.1) # expect: true
+println(1.1 == 2.0) # expect: false
+println(1.to_f() == 1.to_f()) # expect: true
 
 println("str" == "str") # expect: true
 println("str" == "ing") # expect: false

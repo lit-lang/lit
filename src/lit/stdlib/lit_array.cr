@@ -100,6 +100,10 @@ module Lit
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
           @elements.sample
         })
+      when "includes?"
+        ::Lit::Native::Fn.new(name.lexeme, 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), _token : Token) : Value {
+          @elements.includes?(arguments[0])
+        })
       when "to_s"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(interpreter : Interpreter, _arguments : ::Array(Value), token : Token) : Value {
           "[" + @elements.map { |element| ::Lit.inspect_value(element, interpreter, token) }.join(", ") + "]"

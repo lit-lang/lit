@@ -146,8 +146,8 @@ module Lit
           end
         })
       when "to_s"
-        ::Lit::Native::Fn.new(name.lexeme, 0, ->(interpreter : Interpreter, _arguments : ::Array(Value), token : Token) : Value {
-          ::Lit.stringify_value(@value, interpreter, token)
+        ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
+          @value
         })
       else
         super
