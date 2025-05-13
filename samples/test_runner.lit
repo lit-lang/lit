@@ -1,0 +1,292 @@
+type TestRunner {
+  init {
+    self.tests = []
+    self.current_group = nil
+  }
+
+  fn test { |name, block|
+    self.tests.push({ "name" : name, "block" : block })
+  }
+
+  fn describe { |group_name, group_block|
+    self.current_group = group_name
+    group_block(self)
+    self
+  }
+
+  fn run {
+    let start_time = clock()
+    var failed_tests = []
+    var tests_without_assertions = []
+
+    self.tests.each(fn { |t|
+      let result = t[:block](Should())
+
+      if result && result[:ok] == false {
+        print("F")
+        failed_tests.push({ "name" : t[:name], "message" : result[:message] })
+      } else {
+        if result {
+          print(".")
+        } else {
+          print("?")
+          tests_without_assertions.push(t[:name])
+        }
+      }
+    })
+
+    println()
+
+    failed_tests.each(fn { |f|
+      println()
+      println("{f[:name]}:")
+      println("  {f[:message]}")
+    })
+    let end_time = clock()
+    let elapsed = end_time - start_time
+    var total_time = ""
+    if elapsed < 1 {
+      total_time = "{elapsed * 1000}ms"
+    } else {
+      total_time = "{elapsed}s"
+    }
+
+    println()
+    println("Finished in {total_time}")
+    print("{self.tests.size()} examples, {failed_tests.size()} failures")
+    if tests_without_assertions.size() > 0 {
+      println(", {tests_without_assertions.size()} without assertions")
+    } else {
+      println()
+    }
+  }
+}
+
+type Should {
+  init {
+    self.negated = false
+  }
+
+  fn not {
+    let s = Should()
+    s.negated = !self.negated
+    return s
+  }
+
+  fn eq { |actual, expected|
+    let ok = actual == expected
+
+    if self.negated {
+      if ok {
+        return self.fail("Did not expect {expected}, but got {actual}")
+      }
+    } else {
+      if !ok {
+        return self.fail("Expected {expected}, got {actual}")
+      }
+    }
+
+    return self.pass()
+  }
+
+  fn greater_than { |actual, value|
+    let ok = actual > value
+
+    if self.negated {
+      if ok {
+        return self.fail("Expected {actual} to not be greater than {value}")
+      }
+    } else {
+      if !ok {
+        return self.fail("Expected {actual} to be greater than {value}")
+      }
+    }
+
+    return self.pass()
+  }
+
+  fn greater_than_or_equal { |actual, value|
+    let ok = actual >= value
+
+    if self.negated {
+      if ok {
+        return self.fail("Expected {actual} to not be >= {value}")
+      }
+    } else {
+      if !ok {
+        return self.fail("Expected {actual} to be >= {value}")
+      }
+    }
+
+    self.pass()
+  }
+
+  fn less_than { |actual, value|
+    let ok = actual < value
+
+    if self.negated {
+      if ok {
+        return self.fail("Expected {actual} to not be less than {value}")
+      }
+    } else {
+      if !ok {
+        return self.fail("Expected {actual} to be less than {value}")
+      }
+    }
+
+    self.pass()
+  }
+
+  fn less_than_or_equal { |actual, value|
+    let ok = actual <= value
+
+    if self.negated {
+      if ok {
+        return self.fail("Expected {actual} to not be <= {value}")
+      }
+    } else {
+      if !ok {
+        return self.fail("Expected {actual} to be <= {value}")
+      }
+    }
+
+    self.pass()
+  }
+
+  fn include { |actual, item|
+    let ok = actual.includes?(item)
+
+    if self.negated {
+      if ok {
+        return self.fail("Expected {actual} to not include {item}")
+      }
+    } else {
+      if !ok {
+        return self.fail("Expected {actual} to include {item}")
+      }
+    }
+
+    self.pass()
+  }
+
+  fn have_size { |actual, expected_size|
+    let len = actual.size()
+    let ok = len == expected_size
+
+    if self.negated {
+      if ok {
+        return self.fail("Expected size to not be {expected_size}, but got {len}")
+      }
+    } else {
+      if !ok {
+        return self.fail("Expected size {expected_size}, got {len}")
+      }
+    }
+
+    self.pass()
+  }
+
+  fn be_empty { |actual|
+    let ok = actual.size() == 0
+
+    if self.negated {
+      if ok {
+        return self.fail("Expected {inspect(actual)} not to be empty")
+      }
+    } else {
+      if !ok {
+        return self.fail("Expected {inspect(actual)} to be empty")
+      }
+    }
+
+    self.pass()
+  }
+
+  fn be_of_type { |actual, expected_type|
+    let t = typeof(actual)
+    let ok = t == expected_type
+
+    if self.negated {
+      if ok {
+        return self.fail("Expected {actual} to not be of type {expected_type}")
+      }
+    } else {
+      if !ok {
+        return self.fail("Expected {actual} to be of type {expected_type}, but got {t}")
+      }
+    }
+
+    self.pass()
+  }
+
+  fn pass do {"ok" : true, "message" : ""}
+
+  fn fail do {"ok" : false, "message" : it}
+}
+
+# --------------
+
+TestRunner().
+  describe("Basic math", fn { |t|
+    t.test("sum", fn { |should|
+      2 + 2 |> should.eq(4)
+    })
+    t.test("greater than", fn { |should|
+      10 |> should.greater_than(5)
+    })
+    t.test("less than or equal", fn { |should|
+      5 |> should.less_than_or_equal(5)
+    })
+  }).
+  describe("Type checks", fn { |t|
+    t.test("bool", fn { |should|
+      true |> should.be_of_type("Bool")
+    })
+    t.test("not string", fn { |should|
+      42 |> should.not().be_of_type("String")
+    })
+  }).
+  describe("Custom types", fn { |t|
+    type Custom {
+      fn to_s do "<custom></custom>"
+    }
+
+    t.test("type", fn { |should|
+      Custom() |> should.be_of_type("Custom")
+    })
+    t.test("to_s", fn { |should|
+      "{Custom()}" |> should.eq("<custom></custom>")
+    })
+  }).
+  describe("Strings", fn { |t|
+    t.test("include", fn { |should|
+      "hello" |> should.include("ell")
+    })
+    t.test("size", fn { |should|
+      "foo" |> should.have_size(3)
+    })
+    t.test("empty", fn { |should|
+      "" |> should.be_empty()
+    })
+  }).
+  describe("Failures", fn { |t|
+    t.test("equality", fn { |should|
+      true |> should.eq(false)
+    })
+    t.test("comparison", fn { |should|
+      5 |> should.greater_than(10)
+    })
+    t.test("empty", fn { |should|
+      "foo" |> should.be_empty()
+    })
+    t.test("inclusion", fn { |should|
+      "hello" |> should.include("foo")
+    })
+    t.test("type", fn { |should|
+      42 |> should.be_of_type("String")
+    })
+    t.test("size", fn { |should|
+      "foo" |> should.have_size(5)
+    })
+  }).
+  run()
