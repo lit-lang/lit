@@ -53,12 +53,12 @@ module Lit
           end
         })
       when "concat", "add"
-        ::Lit::Native::Fn.new(name.lexeme, 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+        ::Lit::Native::Fn.new(name.lexeme, 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
           other = arguments[0]
           if other.is_a?(LitArray)
             @elements.concat(other.elements)
           else
-            raise RuntimeError.new(token, "Expected array as the first argument.")
+            raise RuntimeError.new(token, "Expected array as the first argument, got #{interpreter.type_of(other)}.")
           end
           self
         })
@@ -78,11 +78,23 @@ module Lit
         ::Lit::Native::Fn.new(name.lexeme, 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
           fn = arguments[0]
           if !fn.is_a?(Function)
-            raise RuntimeError.new(token, "Expected function as the first argument.")
+            raise RuntimeError.new(token, "Expected function as the first argument, got #{interpreter.type_of(fn)}.")
           end
           @elements.each do |element|
             fn.call(interpreter, [element], token)
           end
+        })
+      when "map"
+        ::Lit::Native::Fn.new(name.lexeme, 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          fn = arguments[0]
+          if !fn.is_a?(Function)
+            raise RuntimeError.new(token, "Expected function as the first argument, got #{interpreter.type_of(fn)}.")
+          end
+          LitArray.new(
+            @elements.map do |element|
+              fn.call(interpreter, [element], token)
+            end
+          )
         })
       when "sample"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {

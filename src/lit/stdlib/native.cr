@@ -47,47 +47,65 @@ module Lit
           ::Lit::Native::Fn.new("readln", 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
             gets || ""
           }),
-          ::Lit::Native::Fn.new("eprint", 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          ::Lit::Native::Fn.new("eprint", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
             if arguments[0].is_a?(String)
               STDERR.print(arguments[0])
             else
-              raise RuntimeError.new(token, "Expected string as the first argument.")
+              raise RuntimeError.new(token, "Expected string as the first argument, got #{interpreter.type_of(arguments[0])}.")
             end
           }),
-          ::Lit::Native::Fn.new("eprintln", 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          ::Lit::Native::Fn.new("eprintln", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
             if arguments[0].is_a?(String)
               STDERR.puts(arguments[0])
             else
-              raise RuntimeError.new(token, "Expected string as the first argument.")
+              raise RuntimeError.new(token, "Expected string as the first argument, got #{interpreter.type_of(arguments[0])}.")
             end
           }),
-          ::Lit::Native::Fn.new("panic", 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          ::Lit::Native::Fn.new("panic", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
             if arguments[0].is_a?(String)
               abort(arguments[0])
             else
-              raise RuntimeError.new(token, "Expected string as the first argument.")
+              raise RuntimeError.new(token, "Expected string as the first argument, got #{interpreter.type_of(arguments[0])}.")
             end
           }),
-          ::Lit::Native::Fn.new("exit", 0..1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          ::Lit::Native::Fn.new("exit", 0..1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
             if arguments.size == 0
               exit
             elsif arguments[0].is_a?(Int64)
               exit(arguments[0].as(Int64).to_i32)
             else
-              raise RuntimeError.new(token, "Expected number as the first argument.")
+              raise RuntimeError.new(token, "Expected number as the first argument, got #{interpreter.type_of(arguments[0])}.")
             end
           }),
-          ::Lit::Native::Fn.new("open", 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          ::Lit::Native::Fn.new("open", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
             filename = arguments[0]
 
             if filename.is_a?(String)
-              File.read(filename)
+              File.read(filename) rescue nil
             else
-              raise RuntimeError.new(token, "Expected string as the first argument.")
+              raise RuntimeError.new(token, "Expected string as the first argument, got #{interpreter.type_of(filename)}.")
+            end
+          }),
+          ::Lit::Native::Fn.new("open!", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+            filename = arguments[0]
+
+            if filename.is_a?(String)
+              begin
+                File.read(filename)
+              rescue File::NotFoundError
+                raise RuntimeError.new(token, "File not found: #{filename}")
+              rescue IO::Error
+                raise RuntimeError.new(token, "Unable to read file: #{filename}")
+              end
+            else
+              raise RuntimeError.new(token, "Expected string as the first argument, got #{interpreter.type_of(filename)}.")
             end
           }),
           ::Lit::Native::Fn.new("typeof", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), _token : Token) : Value {
             interpreter.type_of(arguments[0])
+          }),
+          ::Lit::Native::Fn.new("inspect", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+            ::Lit.inspect_value(arguments[0], interpreter, token)
           }),
           ::Lit::Native::Fn.new("sleep", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
             seconds = arguments[0]
