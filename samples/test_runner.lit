@@ -5,7 +5,7 @@ type TestRunner {
   }
 
   fn test { |name, block|
-    self.tests.push({ "name" : name, "block" : block })
+    self.tests.push({ name: name, block: block })
   }
 
   fn describe { |group_name, group_block|
@@ -24,7 +24,7 @@ type TestRunner {
 
       if result && result[:ok] == false {
         print("F")
-        failed_tests.push({ "name" : t[:name], "message" : result[:message] })
+        failed_tests.push({ name: t[:name], message: result[:message] })
       } else {
         if result {
           print(".")
@@ -219,9 +219,8 @@ type Should {
     self.pass()
   }
 
-  fn pass do {"ok" : true, "message" : ""}
-
-  fn fail do {"ok" : false, "message" : it}
+  fn pass do {ok: true, message: ""}
+  fn fail do {ok: false, message: it}
 }
 
 # --------------
