@@ -282,12 +282,6 @@ module Lit
       value
     end
 
-    def visit_ternary_expr(expr) : Value
-      cond = evaluate(expr.condition)
-
-      truthy?(cond) ? evaluate(expr.left) : evaluate(expr.right)
-    end
-
     def visit_logical_expr(expr) : Value
       left = evaluate(expr.left)
 

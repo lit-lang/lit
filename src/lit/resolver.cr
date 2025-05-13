@@ -159,12 +159,6 @@ module Lit
       resolve_local(expr, expr.name)
     end
 
-    def visit_ternary_expr(expr) : Nil
-      resolve(expr.condition)
-      resolve(expr.left)
-      resolve(expr.right)
-    end
-
     def visit_logical_expr(expr) : Nil
       resolve(expr.left)
       resolve(expr.right)

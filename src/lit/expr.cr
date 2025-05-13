@@ -16,7 +16,6 @@ module Lit
       abstract def visit_set_expr(expr : Set) : T
       abstract def visit_grouping_expr(expr : Grouping) : T
       abstract def visit_literal_expr(expr : Literal) : T
-      abstract def visit_ternary_expr(expr : Ternary) : T
       abstract def visit_if_expr(expr : If) : T
       abstract def visit_logical_expr(expr : Logical) : T
       abstract def visit_self_expr(expr : Self) : T
@@ -145,19 +144,6 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_literal_expr(self)
-      end
-    end
-
-    class Ternary < Expr
-      getter condition : Expr
-      getter left : Expr
-      getter right : Expr
-      getter operator : Token
-
-      def initialize(@condition, @left, @right, @operator); end
-
-      def accept(visitor : Visitor)
-        visitor.visit_ternary_expr(self)
       end
     end
 
