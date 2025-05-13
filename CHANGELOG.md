@@ -1,5 +1,17 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Compare arrays/maps by structure
+
+```lit
+let a = [1, 2, 3]
+let b = [1, 2, 3]
+println a == b # true
+
+let m = {a: 1, b: 2}
+let n = {b: 2, a: 1}
+println m == n # true
+```
+
 - Add symbol-string shorthand syntax for maps
 
 ```lit

@@ -57,5 +57,9 @@ module Lit
     def set(name : Token, value : Value)
       raise RuntimeError.new(name, "Cannot set properties on array.")
     end
+
+    def ==(other : LitMap) : Bool
+      @elements == other.elements
+    end
   end
 end

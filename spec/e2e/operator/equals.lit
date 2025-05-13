@@ -12,3 +12,21 @@ println("str" == "ing") # expect: false
 println(nil == false) # expect: false
 println(false == 0) # expect: false
 println(0 == "0") # expect: false
+
+# compound types
+println([] == []) # expect: true
+println([1, "foo"] == [1, "foo"]) # expect: true
+println([1, "foo"] == ["foo", 1]) # expect: false
+
+println({:} == {:}) # expect: true
+println({1 : "a"} == {1 : "a"}) # expect: true
+println({1 : "a", 2 : "b"} == {2 : "b", 1 : "a"}) # expect: true
+println({1 : "a"} == {2 : "b"}) # expect: false
+
+# custom types
+type Foo {}
+println(Foo() == Foo()) # expect: false
+type Bar {
+  init do |x| self.x = x
+}
+println(Bar(1) == Bar(1)) # expect: false
