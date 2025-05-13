@@ -26,10 +26,14 @@ module Lit
       end
     end
 
-    if opts.first?
-      exit(Lit.run_file(opts.first).to_i)
-    else
-      Lit.run_repl
+    begin
+      if opts.first?
+        exit(Lit.run_file(opts.first).to_i)
+      else
+        Lit.run_repl
+      end
+    rescue e : ::Lit::Interpreter::Exit
+      exit(e.status.to_i)
     end
   end
 end

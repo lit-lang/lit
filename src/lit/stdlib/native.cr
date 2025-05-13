@@ -70,9 +70,9 @@ module Lit
           }),
           ::Lit::Native::Fn.new("exit", 0..1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
             if arguments.empty?
-              exit
+              raise Interpreter::Exit.new(0)
             elsif arguments[0].is_a?(Int64)
-              exit(arguments[0].as(Int64).to_i32)
+              raise Interpreter::Exit.new(arguments[0].as(Int64).to_i32)
             else
               raise RuntimeError.new(token, "Expected number as the first argument, got #{interpreter.type_of(arguments[0])}.")
             end

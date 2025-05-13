@@ -24,12 +24,16 @@ def run_lit_in_process(*args)
 end
 
 def run_lit(file)
-  result = nil
+  status = Process::Status.new(0)
   full_output = output_of {
-    result, _ = Lit::Lit.run(File.read(file))
+    begin
+      result = Lit::Lit.run_file(file)
+      status = Process::Status.new(result.ok? ? 0 : 1)
+    rescue e : Lit::Interpreter::Exit
+      status = Process::Status.new(e.status.to_i)
+    end
   }
 
-  status = Process::Status.new(result ? 0 : 1)
   {status, full_output}
 end
 

@@ -32,6 +32,12 @@ module Lit
       def initialize(@value); end
     end
 
+    class Exit < Exception
+      getter status : Int64
+
+      def initialize(@status); end
+    end
+
     class Next < Exception; end
 
     getter environment # current environment
