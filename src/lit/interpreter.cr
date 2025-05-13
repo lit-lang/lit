@@ -220,7 +220,7 @@ module Lit
         elsif right.is_a? Instance
           return right.call_method(expr.operator.with_lexeme("neg"), ([] of Value), self)
         else
-          return runtime_error(expr.operator, "Operand must be a number or implement the 'neg' method.")
+          return runtime_error(expr.operator, "Right side operand of type #{type_of(right)} must implement the 'neg' method.")
         end
       when .bang?
         return falsey?(right)
