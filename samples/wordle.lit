@@ -1,11 +1,10 @@
 # Simplified Wordle
 
-let answers = open("wordle-answers.txt")
+let answers = open("wordle-answers.txt") or panic("Error: could not open answers file!")
 let words = answers.split("\n")
 let word = words.sample()
 var guess = ""
 var tries = 0
-    println("The word was: {word}")
 
 while guess != word {
   tries = tries + 1
