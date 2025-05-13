@@ -9,14 +9,14 @@ module Lit
       def self.all
         [
           ::Lit::Native::Fn.new("Array", 0.., ->(_interpreter : Interpreter, arguments : ::Array(Value), _token : Token) : Value {
-            if arguments.size == 0
+            if arguments.empty?
               LitArray.new
             else
               LitArray.new(arguments)
             end
           }),
           ::Lit::Native::Fn.new("Map", 0.., ->(_interpreter : Interpreter, arguments : ::Array(Value), _token : Token) : Value {
-            if arguments.size == 0
+            if arguments.empty?
               LitMap.new
             else
               elements = arguments
@@ -31,7 +31,7 @@ module Lit
             Time.local.to_unix_f
           }),
           ::Lit::Native::Fn.new("println", 0.., ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
-            if arguments.size == 0
+            if arguments.empty?
               puts
             else
               arguments.each do |arg|
@@ -69,7 +69,7 @@ module Lit
             end
           }),
           ::Lit::Native::Fn.new("exit", 0..1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
-            if arguments.size == 0
+            if arguments.empty?
               exit
             elsif arguments[0].is_a?(Int64)
               exit(arguments[0].as(Int64).to_i32)

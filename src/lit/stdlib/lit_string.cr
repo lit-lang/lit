@@ -78,7 +78,7 @@ module Lit
       when "split"
         ::Lit::Native::Fn.new(name.lexeme, 0..1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
           LitArray.new.tap do |a|
-            if arguments.size == 0
+            if arguments.empty?
               @value.split("").each { |char| a.elements.push(char.to_s) }
             else
               delimiter = arguments[0]
