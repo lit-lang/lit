@@ -1,5 +1,16 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Add symbol-string shorthand syntax for maps
+
+```lit
+let user = {
+  name: "Alice",
+}
+
+# same as { "name": "Alice" }
+# or even { :name : "Alice" }
+```
+
 - Allow break to return a value
 
 ```lit

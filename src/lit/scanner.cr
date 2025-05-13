@@ -294,9 +294,14 @@ module Lit
       end
 
       text = @src[@token_start_pos...@current_pos]
-      type = keyword_from(text) || TokenType::IDENTIFIER
 
-      add_token(type)
+      if peek == ':' # symbol-like string shortcut for maps
+        advance
+        add_token(TokenType::SYMBOL, text)
+      else
+        type = keyword_from(text) || TokenType::IDENTIFIER
+        add_token(type)
+      end
     end
 
     private def peek : Char

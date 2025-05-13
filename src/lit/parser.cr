@@ -545,8 +545,12 @@ module Lit
 
       loop do
         ignore_newlines
-        key = expression
-        consume(TokenType::COLON, "I was expecting a ':' after a map key.")
+        if match?(TokenType::SYMBOL)
+          key = Expr::Literal.new(previous.literal)
+        else
+          key = expression
+          consume(TokenType::COLON, "I was expecting a ':' after a map key.")
+        end
         value = expression
         ignore_newlines
 
