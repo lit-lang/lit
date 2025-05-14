@@ -1,4 +1,4 @@
 type Foo {}
 
 let a = Foo()
-a.x = 1 # error: [line 4] Runtime error: Undefined property 'x' for Foo.
+a.x = 1 # error: Runtime error: Undefined property 'x' for Foo.

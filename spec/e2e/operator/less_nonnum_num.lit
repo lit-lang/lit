@@ -1,1 +1,1 @@
-"1" < 1 # error: [line 1] Runtime error: Undefined operator < for String and Integer.
+"1" < 1 # error: Runtime error: Undefined operator < for String and Integer.

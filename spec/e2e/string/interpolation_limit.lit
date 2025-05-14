@@ -1,1 +1,1 @@
-println("{"{ "{"{"{"{"{"{"{1}"}"}"}"}"}"}"}"}") # error: [line 1] Syntax error: Interpolation may only nest 8 levels deep.
+println("{"{ "{"{"{"{"{"{"{1}"}"}"}"}"}"}"}"}") # error: Syntax error: Interpolation may only nest 8 levels deep.

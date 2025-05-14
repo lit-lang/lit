@@ -1,1 +1,1 @@
-123.foo # error: [line 1] Runtime error: Undefined property 'foo' for Integer.
+123.foo # error: Runtime error: Undefined property 'foo' for Integer.

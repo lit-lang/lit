@@ -1,2 +1,1 @@
-# error: [line 2] Syntax error: Unexpected character '^'
-foo(a ^ b)
+foo(a ^ b) # error: Syntax error: Unexpected character '^'

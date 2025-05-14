@@ -2,4 +2,4 @@ var a = 10
 println(a) # expect: 10
 a = 20
 println(a) # expect: 20
-b = 30 # error: [line 5] Runtime error: Undefined variable 'b'.
+b = 30 # error: Runtime error: Undefined variable 'b'.

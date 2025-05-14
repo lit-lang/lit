@@ -1,6 +1,6 @@
 type Foo {
   Foo {
-    self = "value" # error: [line 3] Syntax error at "=": Invalid assignment target.
+    self = "value" # error: Syntax error at "=": Invalid assignment target.
   }
 }
 

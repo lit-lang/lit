@@ -1,4 +1,4 @@
 type Foo {}
 var foo = Foo()
 
-foo.bar # error: [line 4] Runtime error: Undefined property 'bar' for Foo.
+foo.bar # error: Runtime error: Undefined property 'bar' for Foo.

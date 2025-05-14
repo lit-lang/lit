@@ -1,2 +1,2 @@
-undefined1.bar = # error: [line 1] Runtime error: Undefined variable 'undefined1'.
+undefined1.bar = # error: Runtime error: Undefined variable 'undefined1'.
   undefined2

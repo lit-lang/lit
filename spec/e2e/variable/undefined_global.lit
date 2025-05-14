@@ -1,1 +1,1 @@
-println(notDefined ) # error: [line 1] Runtime error: Undefined variable 'notDefined'.
+println(notDefined ) # error: Runtime error: Undefined variable 'notDefined'.

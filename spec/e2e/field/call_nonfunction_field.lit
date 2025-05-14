@@ -7,4 +7,4 @@ type Foo {
 var foo = Foo()
 foo.bar = "not fn"
 
-foo.bar() # error: [line 10] Runtime error: Can only call functions and types.
+foo.bar() # error: Runtime error: Can only call functions and types.

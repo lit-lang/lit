@@ -8,4 +8,4 @@ println(a.set(1, "cd")) # expect: acc
 let b = a.set(0, "")
 println(b.size()) # expect: 2
 
-println(a.set(100, "B")) # error: [line 11] Runtime error: Index out of bounds.
+println(a.set(100, "B")) # error: Runtime error: Index out of bounds.

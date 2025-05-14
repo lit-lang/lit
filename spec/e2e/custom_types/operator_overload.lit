@@ -99,4 +99,4 @@ let v = Vector2D(1, 2)
 println(v["x"] = 3) # expect: 3
 println(v["x"]) # expect: 3
 
-println(-Undef()) # error: [line 102] Runtime error: Undefined method 'neg' for Undef.
+println(-Undef()) # error: Runtime error: Undefined method 'neg' for Undef.

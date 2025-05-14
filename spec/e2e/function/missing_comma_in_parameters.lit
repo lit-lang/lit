@@ -1,2 +1,1 @@
-# error: [line 2] Syntax error at "c": I was expecting a '|' after the parameters.
-fn foo { |a, b c, d, e, f| }
+fn foo { |a, b c, d, e, f| } # error: Syntax error at "c": I was expecting a '|' after the parameters.

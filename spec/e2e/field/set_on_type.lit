@@ -1,2 +1,2 @@
 type Foo {}
-Foo.bar = "value" # error: [line 2] Runtime error: Only instances have fields.
+Foo.bar = "value" # error: Runtime error: Only instances have fields.

@@ -29,4 +29,4 @@ println(m3) # expect: {"key" : 1, 1.0 : 2}
 # merging overwrites same keys
 println(m3.merge({key: 2})) # expect: {"key" : 2, 1.0 : 2}
 
-m.merge(1) # error: [line 32] Runtime error: I was expecting a Map, but got Integer.
+m.merge(1) # error: Runtime error: I was expecting a Map, but got Integer.

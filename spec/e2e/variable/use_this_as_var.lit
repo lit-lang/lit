@@ -1,2 +1,1 @@
-# error: [line 2] Syntax error at "self": I was expecting a variable name here.
-var self = "value"
+var self = "value" # error: Syntax error at "self": I was expecting a variable name here.

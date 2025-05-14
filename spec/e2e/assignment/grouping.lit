@@ -1,2 +1,2 @@
 var a = "a"
-(a) = "value" # error: [line 2] Syntax error at "=": Invalid assignment target.
+(a) = "value" # error: Syntax error at "=": Invalid assignment target.

@@ -1,1 +1,1 @@
-fn "asdf" # error: [line 1] Syntax error at "asdf": I was expecting a name or block after the 'fn' keyword.
+fn "asdf" # error: Syntax error at "asdf": I was expecting a name or block after the 'fn' keyword.

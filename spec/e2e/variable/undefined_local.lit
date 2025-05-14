@@ -1,3 +1,3 @@
 {
-  println(not_defined ) # error: [line 2] Runtime error: Undefined variable 'not_defined'.
+  println(not_defined ) # error: Runtime error: Undefined variable 'not_defined'.
 }

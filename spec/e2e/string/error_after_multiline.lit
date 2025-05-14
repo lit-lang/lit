@@ -4,4 +4,4 @@ var a = "1
 3
 "
 
-err # error: [line 7] Runtime error: Undefined variable 'err'.
+err # error: Runtime error: Undefined variable 'err'.

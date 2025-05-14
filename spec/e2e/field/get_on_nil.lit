@@ -1,1 +1,1 @@
-nil.foo # error: [line 1] Runtime error: Only instances have properties, got Nil.
+nil.foo # error: Runtime error: Only instances have properties, got Nil.

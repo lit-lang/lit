@@ -1,1 +1,1 @@
-"str".foo # error: [line 1] Runtime error: Undefined property 'foo' for String.
+"str".foo # error: Runtime error: Undefined property 'foo' for String.

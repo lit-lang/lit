@@ -1,2 +1,1 @@
-# error: [line 2] Syntax error at ".": I was expecting an expression here.
-.123
+.123 # error: Syntax error at ".": I was expecting an expression here.

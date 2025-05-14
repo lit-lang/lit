@@ -1,14 +1,11 @@
-# error: [line 3] Syntax error at "break": Can't use 'break' outside of a loop.
 fn function {
-  break
+  break # error: Syntax error at "break": Can't use 'break' outside of a loop.
 }
 
-# error: [line 7] Syntax error at "break": Can't use 'break' outside of a loop.
-break
+break # error: Syntax error at "break": Can't use 'break' outside of a loop.
 
-# error: [line 12] Syntax error at "break": Can't use 'break' outside of a loop.
 loop {
   fn foo {
-    break
+    break # error: Syntax error at "break": Can't use 'break' outside of a loop.
   }
 }

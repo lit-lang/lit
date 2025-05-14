@@ -1,2 +1,1 @@
-# error: [line 2] Syntax error at end: I was expecting a property name after '.'.
-123.
+123. # error: Syntax error at end: I was expecting a property name after '.'.

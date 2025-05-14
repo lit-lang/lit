@@ -1,1 +1,1 @@
-true.foo # error: [line 1] Runtime error: Only instances have properties, got Bool.
+true.foo # error: Runtime error: Only instances have properties, got Bool.

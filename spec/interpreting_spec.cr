@@ -14,17 +14,30 @@ describe "e2e tests", tags: "e2e" do
     it "interprets #{file} correctly" do
       will_error = false
       expected = File.read_lines(file)
-        .compact_map { |line|
+        .map_with_index(1) { |line, i|
           # skip commented out lines, but not assertions
           next if line.strip.starts_with?("#") && !line.strip.starts_with?("# expect: ") && !line.strip.starts_with?("# error: ")
 
           if line.includes?("# error: ")
             will_error = true
-            "\e[1m\e[31m" + line.split("# error: ").last + "\e[0m\e[22m"
+            file_name = Path[file].basename
+
+            error_msg = line.split("# error: ").last
+
+            # if line includes the pattern [line N], use N. Otherwise assume i
+            error_line = if line.includes?("[line ")
+                           e = line.split("[line ").last.split("]")
+                           error_msg = e[1].strip
+                           e[0].to_i
+                         else
+                           i
+                         end
+
+            "\e[1m\e[31m[#{file_name}:#{error_line}] #{error_msg}\e[0m\e[22m"
           elsif line.includes?("# expect: ")
             line.split("# expect: ").last
           end
-        }.join("\n")
+        }.compact.join("\n")
 
       expected += "\n" if !expected.empty?
 

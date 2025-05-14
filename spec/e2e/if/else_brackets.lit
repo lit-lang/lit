@@ -1,6 +1,7 @@
 # requires bracket after the else keyword
-if false { println("bad"); } else println("bad") # error: [line 2] Syntax error at "println": I was expecting a block after the else keyword.
+if false { println("bad"); } else println("bad") # error: Syntax error at "println": I was expecting a block after the else keyword.
 
 # requires bracket to close the else block
 if false { println("bad"); } else {
-  println("bad") # error: [line 7] Syntax error at end: I was expecting a '}' to close the block.
+  println("bad")
+# error: Syntax error at end: I was expecting a '}' to close the block.

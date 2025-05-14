@@ -1,14 +1,11 @@
-# error: [line 3] Syntax error at "next": Can't use 'next' outside of a loop.
 fn function {
-  next
+  next # error: Syntax error at "next": Can't use 'next' outside of a loop.
 }
 
-# error: [line 7] Syntax error at "next": Can't use 'next' outside of a loop.
-next
+next # error: Syntax error at "next": Can't use 'next' outside of a loop.
 
-# error: [line 12] Syntax error at "next": Can't use 'next' outside of a loop.
 while true {
   fn foo {
-    next
+    next # error: Syntax error at "next": Can't use 'next' outside of a loop.
   }
 }

@@ -1,2 +1,1 @@
-# error: [line 2] Syntax error at "false": I was expecting a variable name here.
-var false = "value"
+var false = "value" # error: Syntax error at "false": I was expecting a variable name here.

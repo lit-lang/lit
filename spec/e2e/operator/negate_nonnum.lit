@@ -1,1 +1,1 @@
--"s" # error: [line 1] Runtime error: Right side operand of type String must implement the 'neg' method.
+-"s" # error: Runtime error: Right side operand of type String must implement the 'neg' method.
