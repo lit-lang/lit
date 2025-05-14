@@ -17,6 +17,7 @@ module Lit
       abstract def visit_grouping_expr(expr : Grouping) : T
       abstract def visit_literal_expr(expr : Literal) : T
       abstract def visit_if_expr(expr : If) : T
+      abstract def visit_import_expr(expr : Import) : T
       abstract def visit_logical_expr(expr : Logical) : T
       abstract def visit_self_expr(expr : Self) : T
       abstract def visit_unary_expr(expr : Unary) : T
@@ -156,6 +157,16 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_if_expr(self)
+      end
+    end
+
+    class Import < Expr
+      getter path : Token
+
+      def initialize(@path); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_import_expr(self)
       end
     end
 

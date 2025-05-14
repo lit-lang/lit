@@ -1,5 +1,17 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Add basic import statement
+
+They work similar to Ruby's `require_relative`:
+
+```lit
+import "foo" # imports foo.lit from the same directory
+import "../bar" # imports bar.lit from the parent directory
+```
+
+The error messages now include the file name and line number, so you can find
+the source of the error.
+
 - Compare arrays/maps by structure
 
 ```lit

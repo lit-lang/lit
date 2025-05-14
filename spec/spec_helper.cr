@@ -28,7 +28,8 @@ def run_lit(file)
   full_output = output_of {
     begin
       result = Lit::Lit.run_file(file)
-      status = Process::Status.new(result.ok? ? 0 : 1)
+      code = result.is_a?(Lit::ExitCode) ? result : result[0]
+      status = Process::Status.new(code.to_i)
     rescue e : Lit::Interpreter::Exit
       status = Process::Status.new(e.status.to_i)
     end

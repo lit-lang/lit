@@ -41,16 +41,23 @@ module Lit
       ExitCode::OK
     end
 
-    def self.run_file(path : String)
-      run_code(File.read(path))
+    def self.run_file(path : String) : ExitCode | {ExitCode, String}
+      # TODO: maybe this should raise Exit already?
+      full_path = File.expand_path(path)
+      src = read_file(full_path)
+      return src if !src.is_a?(String)
+
+      ::Lit.with_current_file_path(full_path) do
+        run_code(src)
+      end
+    end
+
+    def self.read_file(path : String) : String | {ExitCode, String}
+      File.read(path)
     rescue File::NotFoundError
-      STDERR.puts Text.error("Error: File not found!")
-
-      ExitCode::NOINPUT
-    rescue IO::Error
-      STDERR.puts Text.error("Error: Unable to read file!")
-
-      ExitCode::NOINPUT
+      {ExitCode::NOINPUT, "File not found '#{path}'"}
+    rescue e : IO::Error
+      {ExitCode::NOINPUT, "Unable to read file: #{path}. Reason: #{e.message}"}
     end
   end
 end

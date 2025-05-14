@@ -36,6 +36,13 @@ module Lit
     end
 
     def declaration
+      if match?(TokenType::IMPORT)
+        path = consume(TokenType::STRING, "I was expecting a path string after the import keyword.")
+        consume_line("I was expecting a newline after the import statement.")
+
+        return Stmt::Expression.new(Expr::Import.new(path))
+      end
+
       declaration!
     rescue ParserError
       synchronize

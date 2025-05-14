@@ -9,7 +9,9 @@ describe Lit::Lit do
     context "when file is not found" do
       it "outputs the error" do
         status, output = run_lit_in_process("./unknown-path/what.tf")
-        output.to_s.should contain "File not found!"
+        dir = File.expand_path("../..", __DIR__)
+
+        output.to_s.should contain "Error: File not found '#{dir}/unknown-path/what.tf'"
         status.exit_code.should eq Lit::ExitCode::NOINPUT.to_i
       end
     end

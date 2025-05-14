@@ -1,0 +1,1 @@
+import '../../fixtures/syntax_error.lit' # error: [syntax_error.lit:2] Syntax error at "1": I was expecting a variable name here.

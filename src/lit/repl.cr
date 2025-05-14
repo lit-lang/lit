@@ -2,8 +2,8 @@ require "./text"
 
 module Lit
   module REPL
-    EXIT_REGEX = /\b(quit|exit)\b/i
-    HELP_REGEX = /\b(help)\b/i
+    QUIT_REGEX = /^\s*quit\s*$/i
+    HELP_REGEX = /^\s*help\s*$/i
 
     class_getter interpreter = Interpreter.new(ErrorReporter.new)
 
@@ -15,14 +15,12 @@ module Lit
 
       loop do
         line = read_line
-        break if should_exit?(line)
+        break if should_quit?(line)
         next if display_help?(line)
 
         _output = evaluate(line, runner)
         # print_output(output)
       end
-
-      display_goodbye
     end
 
     private def read_line
@@ -30,8 +28,10 @@ module Lit
     end
 
     private def evaluate(line : String, runner)
-      _result = runner.run(line, interpreter)
-      interpreter.error_reporter.reset!
+      ::Lit.with_current_file_path("REPL") do
+        _result = runner.run(line, interpreter: interpreter)
+        interpreter.error_reporter.reset!
+      end
     end
 
     private def print_output(output)
@@ -40,8 +40,8 @@ module Lit
       puts "=> #{output}"
     end
 
-    private def should_exit?(line : String) : Bool
-      EXIT_REGEX.matches?(line)
+    private def should_quit?(line : String) : Bool
+      QUIT_REGEX.matches?(line)
     end
 
     private def display_help?(line : String) : Bool
@@ -61,13 +61,9 @@ module Lit
 
     private def display_help : Nil
       puts "Available commands:"
-      puts "  quit | exit    exits repl"
-      puts "  help           displays this message"
+      puts "  quit\tquits the REPL"
+      puts "  help\tdisplays this message"
       puts
-    end
-
-    private def display_goodbye
-      puts "Bye, cya!"
     end
   end
 end

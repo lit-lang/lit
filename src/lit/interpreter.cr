@@ -47,6 +47,7 @@ module Lit
 
     def initialize(error_reporter : ErrorReporter)
       @error_reporter = error_reporter
+      @imported_files = Set(String).new
       @locals = {} of Expr => Int32
       @globals = Environment.new
       Stdlib::Native.all.each do |fn|
@@ -334,6 +335,33 @@ module Lit
         map.elements[key] = value
       end
       map
+    end
+
+    def visit_import_expr(expr) : Nil
+      file = expr.path.literal.as(String)
+      file = file.ends_with?(".lit") ? file : "#{file}.lit"
+      file_path = ::Lit.expand_path(file)
+      return if !@imported_files.add?(file_path)
+
+      result = Lit.read_file(file_path)
+      ::Lit.with_current_file_path(file_path) do
+        if result.is_a?(String)
+          tokens = Scanner.new(result, @error_reporter).scan
+          statements = Parser.new(tokens, @error_reporter).parse
+          raise Exit.new(ExitCode::DATAERR.to_i) if @error_reporter.had_syntax_error?
+          Resolver.new(self, @error_reporter).resolve(statements)
+          raise Exit.new(ExitCode::DATAERR.to_i) if @error_reporter.had_syntax_error?
+
+          interpret(statements)
+        else
+          if result[0].is_a?(ExitCode)
+            runtime_error(expr.path, result[1])
+            exit(result[0].to_i)
+          else
+            raise "Bug in the interpreter: unexpected result from read_file: #{result.inspect}"
+          end
+        end
+      end
     end
 
     def execute(stmt : Stmt) : Value

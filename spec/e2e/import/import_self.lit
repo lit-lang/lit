@@ -1,0 +1,4 @@
+import "./import_self"
+println("self")
+# expect: self
+# expect: self

@@ -199,6 +199,10 @@ module Lit
       end
     end
 
+    def visit_import_expr(expr) : Nil
+      # no op
+    end
+
     def resolve(stmt : Stmt) : Nil
       stmt.accept(self)
     end

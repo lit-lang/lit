@@ -1,0 +1,3 @@
+import 1 # error: Syntax error at "1": I was expecting a path string after the import keyword.
+
+import "no-newline" test # error: Syntax error at "test": I was expecting a newline after the import statement.

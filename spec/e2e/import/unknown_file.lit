@@ -1,0 +1,1 @@
+import "something_else" # error: Runtime error: File not found '__DIR__/e2e/import/something_else.lit'

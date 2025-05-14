@@ -72,7 +72,7 @@ module Lit
             if arguments.empty?
               raise Interpreter::Exit.new(0)
             elsif arguments[0].is_a?(Int64)
-              raise Interpreter::Exit.new(arguments[0].as(Int64).to_i32)
+              raise Interpreter::Exit.new(arguments[0].as(Int64).to_i)
             else
               raise RuntimeError.new(token, "Expected number as the first argument, got #{interpreter.type_of(arguments[0])}.")
             end

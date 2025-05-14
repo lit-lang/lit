@@ -7,6 +7,7 @@ module Lit
     false:  TokenType::FALSE,
     fn:     TokenType::FN,
     if:     TokenType::IF,
+    import: TokenType::IMPORT,
     is:     TokenType::EQUAL_EQUAL,
     var:    TokenType::VAR,
     let:    TokenType::LET,
