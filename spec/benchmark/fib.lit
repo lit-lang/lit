@@ -1,15 +1,13 @@
-var before = clock();
+var before = clock()
 fn fib { |n|
   if n <= 1 {
-    return n;
+    return n
   }
-  return fib(n - 1) + fib(n - 2);
+  return fib(n - 1) + fib(n - 2)
 }
 
-fib(25);
-var after = clock();
-print "Time taken: ";
-print (after - before);
-println("s")
+fib(25)
+var after = clock()
+println("Time taken: {after - before}s")
 # Time taken: 10.763844966888428s
 # on release build

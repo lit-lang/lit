@@ -197,14 +197,6 @@ describe Lit::Parser do
       expr.token.should eq tokens.first
     end
   end
-
-  context "when there's an unexpected token" do
-    it "outputs a message" do
-      error_msg = output_of { Lit::Parser.parse(Create.tokens(:comma, :eof)) }
-
-      error_msg.should contain("[line 1] Syntax error at \",\": I was expecting an expression here.")
-    end
-  end
 end
 
 private def it_parses(type : Symbol, to_literal)

@@ -11,8 +11,6 @@ fn sum { |n|
 
 sum(10_000_000);
 var after = clock();
-print "Time taken: ";
-print (after - before);
-println("s")
+println("Time taken: {after - before}s")
 # Time taken: 2.559272050857544s
 # on release build

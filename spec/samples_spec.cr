@@ -2,6 +2,7 @@ require "./spec_helper"
 
 describe "samples" do
   sample_files = Dir.glob("samples/**/*.lit").sort!
+  sample_files += Dir.glob("spec/benchmark/**/*.lit").sort!
 
   sample_files.each do |file|
     it "statically checks #{file} correctly" do
