@@ -1,0 +1,22 @@
+import "test_runner"
+
+TestRunner().describe("Lit Float", fn { |t|
+  t.test("#is_positive? when number is greater than 0", fn { |should|
+    5.0.is_positive?() |> should.eq(true)
+  })
+  t.test("#is_positive? when number is less than 0", fn { |should|
+    (-5.0).is_positive?() |> should.eq(false)
+  })
+  t.test("#is_positive? when number is 0", fn { |should|
+    0.0.is_positive?() |> should.eq(false)
+  })
+  t.test("#to_i returns the integer value of the float", fn { |should|
+    1.9999.to_i() |> should.eq(1)
+  })
+  t.test("#to_s returns the string value of the float", fn { |should|
+    1.9999.to_s() |> should.eq("1.9999")
+  })
+  t.test("#truncate returns the float number truncated to a given precision", fn { |should|
+    1.2345.truncate(2) |> should.eq(1.23)
+  })
+}).run()

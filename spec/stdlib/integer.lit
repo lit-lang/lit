@@ -1,0 +1,34 @@
+import "test_runner"
+
+TestRunner().describe("Lit Integer", fn { | t |
+  t.test("#is_positive? when number is greater than 0", fn { | should |
+    5.is_positive?() |> should.eq(true)
+  })
+  t.test("#is_positive? when number is less than 0", fn { | should |
+      (-5).is_positive?() |> should.eq(false)
+  })
+  t.test("#is_positive? when number is 0", fn { | should |
+        0.is_positive?() |> should.eq(false)
+  })
+  t.test("#to_f returns the float value of the integer", fn { | should |
+          1.to_f() |> should.eq(1.0)
+  })
+  t.test("#to_s returns the string value of the number", fn { | should |
+            42.to_s() |> should.eq("42")
+  })
+  t.test("#digits returns the digits of the number as an array", fn { | should |
+              1234.digits() |> should.eq([4, 3, 2, 1])
+  })
+  t.test("#chr returns the character representation of the integer", fn { | should |
+                65.chr() |> should.eq("A")
+  })
+  t.test("#times runs the given block n times", fn { | should |
+                  let arr = []
+
+    3.times(fn { | i |
+                    arr.push(i)
+    })
+
+    arr |> should.eq([0, 1, 2])
+  })
+}).run()

@@ -1,0 +1,20 @@
+import "test_runner"
+
+TestRunner().describe("Lit Array", fn { |t|
+  t.test("#is_empty? when array is empty", fn { |should|
+    [].is_empty?() |> should.eq(true)
+  })
+  t.test("#is_empty? when array is not empty", fn { |should|
+    [1].is_empty?() |> should.eq(false)
+  })
+  t.test("#first when array is empty", fn { |should|
+    [].first() |> should.eq(nil)
+  })
+  t.test("#first when array is not empty", fn { |should|
+    [1].first() |> should.eq(1)
+  })
+  t.test("#sample returns a random element of the array", fn { |should|
+    let array = [1, 2, 3, 4, 5]
+    array.sample() |> should.be_in(array)
+  })
+}).run()

@@ -1,0 +1,59 @@
+import "test_runner"
+
+TestRunner().describe("Lit String", fn { |t|
+  t.test("#chars returns the individual characters of the string", fn { |should|
+    "Hi, there!".chars() |> should.eq(["H", "i", ",", " ", "t", "h", "e", "r", "e", "!"])
+  })
+  t.test("#bytes returns the individual bytes of the string", fn { |should|
+    "Abc".bytes() |> should.eq([65, 98, 99])
+  })
+  t.test("#chomp removes the trailing newline character", fn { |should|
+    "Abc\n".chomp() |> should.eq("Abc")
+  })
+  t.test("#is_ascii_only? returns true for ASCII strings", fn { |should|
+    "Abc".is_ascii_only?() |> should.eq(true)
+  })
+  t.test("#is_ascii_only? returns false for non-ASCII strings", fn { |should|
+    "Olá".is_ascii_only?() |> should.eq(false)
+  })
+  t.test("#repeat returns the string repeated n times", fn { |should|
+    "Hue".repeat(3) |> should.eq("HueHueHue")
+  })
+  t.test("#capitalize capitalizes the first character of the string", fn { |should|
+    "foo".capitalize() |> should.eq("Foo")
+  })
+  t.test("#lowercase converts the string to lowercase", fn { |should|
+    "FOO".lowercase() |> should.eq("foo")
+  })
+  t.test("#uppercase converts the string to uppercase", fn { |should|
+    "foo".uppercase() |> should.eq("FOO")
+  })
+  t.test("#split without a param splits the string by whitespace", fn { |should|
+    "abc".split() |> should.eq(["a", "b", "c"])
+  })
+  t.test("#split with a delimiter splits the string by the delimiter", fn { |should|
+    "a,b,c".split(",") |> should.eq(["a", "b", "c"])
+  })
+  t.test("#to_i converts the numeric prefix of a string to an integer", fn { |should|
+    "123asdf".to_i() |> should.eq(123)
+  })
+  t.test("#to_i returns 0 for invalid strings", fn { |should|
+    "abc".to_i() |> should.eq(0)
+  })
+  t.test("#to_f converts the numeric prefix of a string to a float", fn { |should|
+    "123.45asdf".to_f() |> should.eq(123.45)
+  })
+  t.test("#to_f returns 0.0 for invalid strings", fn { |should|
+    "foo".to_f() |> should.eq(0.0)
+  })
+  t.test("#to_s returns self", fn { |should|
+    let s = "foo"
+    s.to_s() |> should.eq(s)
+  })
+  t.test("#includes? returns true if the string includes a substring", fn { |should|
+    "foo".includes?("o") |> should.eq(true)
+  })
+  t.test("#includes? returns false if the string does not include a substring", fn { |should|
+    "foo".includes?("x") |> should.eq(false)
+  })
+}).run()
