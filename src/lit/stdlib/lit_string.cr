@@ -54,6 +54,17 @@ module Lit
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
           @value.size.to_i64
         })
+      when "slice"
+        ::Lit::Native::Fn.new(name.lexeme, 2, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          if !arguments[0].is_a?(Int64)
+            raise RuntimeError.new(token, "Expected Integer as the first argument, got #{interpreter.type_of(arguments[0])}.")
+          end
+          if !arguments[1].is_a?(Int64)
+            raise RuntimeError.new(token, "Expected Integer as the second argument, got #{interpreter.type_of(arguments[1])}.")
+          end
+
+          @value[arguments[0].as(Int64).to_i..arguments[1].as(Int64).to_i]
+        })
       when "includes?"
         ::Lit::Native::Fn.new(name.lexeme, 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
           other = arguments[0]
