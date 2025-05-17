@@ -425,11 +425,21 @@ module Lit
       !value
     end
 
-    private def equal?(a : Value, b : Value, token) : Bool
+    private def equal?(a : Value, b : Value, token : Token) : Bool
       return true if a.nil? && b.nil?
       return false if a.nil?
-      if a.is_a?(Instance) && (method = a.as(Instance).get_method(token.with_lexeme(BINARY_OP_TO_METHOD[:==])))
-        return truthy?(method.call(self, [b], token))
+
+      if a.is_a?(LitArray)
+        return false if !b.is_a?(LitArray)
+        return a.elements.each_with_index.all? { |value, i| equal?(value, b[i], token) }
+      end
+      if a.is_a?(LitMap)
+        return false if !b.is_a?(LitMap)
+        return a.elements.each_with_index.all? { |(key, value), i| equal?(value, b.elements[key], token) }
+      end
+
+      if a.is_a?(Instance) && (instance_eq = a.as(Instance).get_method(token.with_lexeme(BINARY_OP_TO_METHOD[:==])))
+        return truthy?(instance_eq.call(self, [b], token))
       end
 
       a == b
