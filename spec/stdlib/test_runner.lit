@@ -71,88 +71,47 @@ type Should {
   fn not {
     let s = Should()
     s.negated = !self.negated
-
     s
   }
 
   fn eq { |actual, expected|
-    let ok = actual == expected
-
-    if self.negated {
-      if ok {
-        return self.fail("Did not expect {inspect(expected)}, but got {inspect(actual)}")
-      }
-    } else {
-      if !ok {
-        return self.fail("Expected {inspect(expected)}, but got {inspect(actual)}")
-      }
-    }
-
-    self.pass()
+    self.assert(
+      actual == expected,
+      "Expected {inspect(expected)}, but got {inspect(actual)}",
+      "Did not expect {inspect(expected)}, but got {inspect(actual)}"
+    )
   }
 
   fn greater_than { |actual, value|
-    let ok = actual > value
-
-    if self.negated {
-      if ok {
-        return self.fail("Expected {inspect(actual)} to not be greater than {inspect(value)}")
-      }
-    } else {
-      if !ok {
-        return self.fail("Expected {inspect(actual)} to be greater than {inspect(value)}")
-      }
-    }
-
-    self.pass()
+    self.assert(
+      actual > value,
+      "Expected {inspect(actual)} to be greater than {inspect(value)}",
+      "Expected {inspect(actual)} to not be greater than {inspect(value)}"
+    )
   }
 
   fn greater_than_or_equal { |actual, value|
-    let ok = actual >= value
-
-    if self.negated {
-      if ok {
-        return self.fail("Expected {inspect(actual)} to not be >= {inspect(value)}")
-      }
-    } else {
-      if !ok {
-        return self.fail("Expected {inspect(actual)} to be >= {inspect(value)}")
-      }
-    }
-
-    self.pass()
+    self.assert(
+      actual >= value,
+      "Expected {inspect(actual)} to be >= {inspect(value)}",
+      "Expected {inspect(actual)} to not be >= {inspect(value)}"
+    )
   }
 
   fn less_than { |actual, value|
-    let ok = actual < value
-
-    if self.negated {
-      if ok {
-        return self.fail("Expected {inspect(actual)} to not be less than {inspect(value)}")
-      }
-    } else {
-      if !ok {
-        return self.fail("Expected {inspect(actual)} to be less than {inspect(value)}")
-      }
-    }
-
-    self.pass()
+    self.assert(
+      actual < value,
+      "Expected {inspect(actual)} to be less than {inspect(value)}",
+      "Expected {inspect(actual)} to not be less than {inspect(value)}"
+    )
   }
 
   fn less_than_or_equal { |actual, value|
-    let ok = actual <= value
-
-    if self.negated {
-      if ok {
-        return self.fail("Expected {inspect(actual)} to not be <= {inspect(value)}")
-      }
-    } else {
-      if !ok {
-        return self.fail("Expected {inspect(actual)} to be <= {inspect(value)}")
-      }
-    }
-
-    self.pass()
+    self.assert(
+      actual <= value,
+      "Expected {inspect(actual)} to be <= {inspect(value)}",
+      "Expected {inspect(actual)} to not be <= {inspect(value)}"
+    )
   }
 
   fn be_in { |item, collection|
@@ -160,66 +119,42 @@ type Should {
   }
 
   fn include { |collection, item|
-    let ok = collection.includes?(item)
-
-    if self.negated {
-      if ok {
-        return self.fail("Expected {inspect(collection)} to not include {inspect(item)}")
-      }
-    } else {
-      if !ok {
-        return self.fail("Expected {inspect(collection)} to include {inspect(item)}")
-      }
-    }
-
-    self.pass()
+    self.assert(
+      collection.includes?(item),
+      "Expected {inspect(collection)} to include {inspect(item)}",
+      "Expected {inspect(collection)} to not include {inspect(item)}"
+    )
   }
 
   fn have_size { |actual, expected_size|
-    let len = actual.size()
-    let ok = len == expected_size
-
-    if self.negated {
-      if ok {
-        return self.fail("Expected size to not be {expected_size}, but got {len}")
-      }
-    } else {
-      if !ok {
-        return self.fail("Expected size {expected_size}, got {len}")
-      }
-    }
-
-    self.pass()
+    self.assert(
+      actual.size() == expected_size,
+      "Expected size {expected_size}, got {actual.size()}",
+      "Expected size to not be {expected_size}, but got {actual.size()}"
+    )
   }
 
   fn be_empty { |actual|
-    let ok = actual.size() == 0
-
-    if self.negated {
-      if ok {
-        return self.fail("Expected {inspect(actual)} not to be empty")
-      }
-    } else {
-      if !ok {
-        return self.fail("Expected {inspect(actual)} to be empty")
-      }
-    }
-
-    self.pass()
+    self.assert(
+      actual.size() == 0,
+      "Expected {inspect(actual)} to be empty",
+      "Expected {inspect(actual)} not to be empty"
+    )
   }
 
   fn be_of_type { |actual, expected_type|
-    let t = typeof(actual)
-    let ok = t == expected_type
+    self.assert(
+      typeof(actual) == expected_type,
+      "Expected {inspect(actual)} to be of type {expected_type}, but got {typeof(actual)}",
+      "Expected {inspect(actual)} to not be of type {inspect(expected_type)}"
+    )
+  }
 
-    if self.negated {
-      if ok {
-        return self.fail("Expected {inspect(actual)} to not be of type {inspect(expected_type)}")
-      }
-    } else {
-      if !ok {
-        return self.fail("Expected {inspect(actual)} to be of type {expected_type}, but got {t}")
-      }
+  fn assert { |result, msg, neg_msg|
+    if self.negated and result {
+      return self.fail(neg_msg())
+    } else if !self.negated and !result {
+      return self.fail(msg())
     }
 
     self.pass()
