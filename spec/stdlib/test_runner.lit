@@ -59,8 +59,7 @@ type TestRunner {
       println()
     }
 
-    let status = if failed_tests.is_empty?() do 0 else do 1
-    exit(status)
+    if !failed_tests.is_empty?() do exit(1)
   }
 }
 
@@ -72,7 +71,8 @@ type Should {
   fn not {
     let s = Should()
     s.negated = !self.negated
-    return s
+
+    s
   }
 
   fn eq { |actual, expected|
@@ -88,7 +88,7 @@ type Should {
       }
     }
 
-    return self.pass()
+    self.pass()
   }
 
   fn greater_than { |actual, value|
@@ -104,7 +104,7 @@ type Should {
       }
     }
 
-    return self.pass()
+    self.pass()
   }
 
   fn greater_than_or_equal { |actual, value|
