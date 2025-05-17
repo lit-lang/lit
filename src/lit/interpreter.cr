@@ -142,7 +142,7 @@ module Lit
     def visit_block_expr(expr) : Value
       execute_block(expr.statements, Environment.new(@environment), @in_initializer)
     rescue e : Exception
-      raise e if e.is_a?(Break) || e.is_a?(Next) || e.is_a?(Return) || e.is_a?(RuntimeError)
+      raise e if e.is_a?(Break) || e.is_a?(Next) || e.is_a?(Return) || e.is_a?(RuntimeError) || e.is_a?(Exit)
       # I don't know why this rescue clause is necessary at all. If I remove it,
       # suddenly Break is not rescued anymore. I think this is a bug in the
       # compiler, because if I add a dummy rescue clause with any kind of
