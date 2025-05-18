@@ -8,7 +8,6 @@ module Lit
       abstract def visit_type_stmt(stmt : Type) : T
       abstract def visit_expression_stmt(stmt : Expression) : T
       abstract def visit_function_stmt(stmt : Function) : T
-      abstract def visit_return_stmt(stmt : Return) : T
       abstract def visit_var_stmt(stmt : Var) : T
     end
 
@@ -41,17 +40,6 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_function_stmt(self)
-      end
-    end
-
-    class Return < Stmt
-      getter keyword : Token
-      getter value : Expr?
-
-      def initialize(@keyword, @value); end
-
-      def accept(visitor : Visitor)
-        visitor.visit_return_stmt(self)
       end
     end
 

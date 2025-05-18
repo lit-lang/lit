@@ -105,21 +105,24 @@ module Lit
     end
 
     private def statement
-      return return_statement if match?(TokenType::RETURN)
+      expr = if match?(TokenType::NEXT)
+               Expr::Next.new(previous)
+             elsif match?(TokenType::BREAK)
+               token = previous
+               value = check(TokenType::NEWLINE) ? nil : expression
 
-      expression_statement
-    end
+               Expr::Break.new(token, value)
+             elsif match?(TokenType::RETURN)
+               token = previous
+               value = check(TokenType::NEWLINE) ? nil : expression
 
-    private def return_statement
-      keyword = previous
-      value = nil
-      if !match_line?
-        value = expression
+               Expr::Return.new(token, value)
+             else
+               expression
+             end
+      consume_line("I was expecting a newline after the expression.")
 
-        consume_line("I was expecting a newline after the return statement.")
-      end
-
-      Stmt::Return.new(keyword, value)
+      Stmt::Expression.new(expr)
     end
 
     private def while_expr
@@ -235,21 +238,6 @@ module Lit
         @block_has_explicit_params = old_explicit
         @default_param = old_default_param
       end
-    end
-
-    private def expression_statement
-      expr = if match?(TokenType::NEXT)
-               Expr::Next.new(previous)
-             elsif match?(TokenType::BREAK)
-               value = check(TokenType::NEWLINE) ? nil : expression
-
-               Expr::Break.new(previous, value)
-             else
-               expression
-             end
-      consume_line("I was expecting a newline after the expression.")
-
-      Stmt::Expression.new(expr)
     end
 
     private def expression

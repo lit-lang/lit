@@ -164,8 +164,8 @@ module Lit
       evaluate(stmt.expression)
     end
 
-    def visit_return_stmt(stmt) : Nil
-      value = stmt.value ? evaluate(stmt.value.not_nil!) : nil
+    def visit_return_expr(expr) : Nil
+      value = expr.value ? evaluate(expr.value.not_nil!) : nil
 
       raise Return.new(value)
     end

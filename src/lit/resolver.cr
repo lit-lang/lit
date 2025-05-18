@@ -109,17 +109,17 @@ module Lit
       resolve(stmt.expression)
     end
 
-    def visit_return_stmt(stmt) : Nil
+    def visit_return_expr(expr) : Nil
       if @current_function.none?
-        @error_reporter.report_syntax_error(stmt.keyword, "Can't return from top-level code.")
+        @error_reporter.report_syntax_error(expr.keyword, "Can't return from top-level code.")
       end
 
-      if stmt.value
+      if expr.value
         if @current_function.initializer?
           # TODO: this seems arbitrary. While not ideal, I don't see why being specific about it.
-          @error_reporter.report_syntax_error(stmt.keyword, "Can't return a value from an initializer.")
+          @error_reporter.report_syntax_error(expr.keyword, "Can't return a value from an initializer.")
         end
-        resolve(stmt.value.not_nil!)
+        resolve(expr.value.not_nil!)
       end
     end
 

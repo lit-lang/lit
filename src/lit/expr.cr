@@ -26,6 +26,7 @@ module Lit
       abstract def visit_loop_expr(expr : Loop) : T
       abstract def visit_break_expr(expr : Break) : T
       abstract def visit_next_expr(expr : Next) : T
+      abstract def visit_return_expr(expr : Return) : T
       abstract def visit_while_expr(expr : While) : T
     end
 
@@ -252,6 +253,17 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_next_expr(self)
+      end
+    end
+
+    class Return < Expr
+      getter keyword : Token
+      getter value : Expr?
+
+      def initialize(@keyword, @value); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_return_expr(self)
       end
     end
 

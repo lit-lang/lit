@@ -28,6 +28,7 @@ module AstGenerator
       "Loop                = body : Expr::Block",
       "Break               = keyword : Token, value : Expr?",
       "Next                = keyword : Token",
+      "Return              = keyword : Token, value : Expr?",
       "While               = condition : Expr, body : Expr::Block",
     ])
 
@@ -35,7 +36,6 @@ module AstGenerator
       "Type       = name : Token, methods : Array(Stmt::Function)",
       "Expression = expression : Expr",
       "Function   = name : Token, function : Expr::Function",
-      "Return     = keyword : Token, value : Expr?",
       "Var        = name : Token, initializer : Expr, mutable : Bool",
     ])
   end

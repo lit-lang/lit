@@ -1,5 +1,17 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Make `return` an expression, not a statement
+
+This allows using it in a one-line block:
+
+```lit
+fn fib { |n|
+  if n <= 1 do return n
+
+  fib(n - 1) + fib(n - 2)
+}
+```
+
 - Add basic import statement
 
 They work similar to Ruby's `require_relative`:
