@@ -431,11 +431,11 @@ module Lit
 
       if a.is_a?(LitArray)
         return false if !b.is_a?(LitArray)
-        return a.elements.each_with_index.all? { |value, i| equal?(value, b[i], token) }
+        return a.elements.each_with_index.all? { |value, i| equal?(value, b.elements[i]?, token) }
       end
       if a.is_a?(LitMap)
         return false if !b.is_a?(LitMap)
-        return a.elements.each_with_index.all? { |(key, value), i| equal?(value, b.elements[key], token) }
+        return a.elements.each_with_index.all? { |(key, value), i| equal?(value, b.elements[key]?, token) }
       end
 
       if a.is_a?(Instance) && (instance_eq = a.as(Instance).get_method(token.with_lexeme(BINARY_OP_TO_METHOD[:==])))

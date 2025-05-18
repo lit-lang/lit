@@ -20,6 +20,7 @@ println(0 == "0") # expect: false
 
 # compound types
 println([] == []) # expect: true
+println([1] == []) # expect: false
 println([1, "foo"] == [1, "foo"]) # expect: true
 println([1, "foo"] == ["foo", 1]) # expect: false
 
