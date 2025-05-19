@@ -3,7 +3,7 @@ require "./native_fn"
 
 module Lit
   class LitArray < Instance
-    TYPE = Type.new("LitArray", {} of String => Function)
+    TYPE = Type.new("Array", {} of String => Function)
 
     getter elements
 

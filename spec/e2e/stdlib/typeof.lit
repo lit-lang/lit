@@ -12,3 +12,5 @@ println(typeof(panic)) # expect: Function
 println(typeof(fun)) # expect: Function
 println(typeof(CustomType)) # expect: Type
 println(typeof(CustomType())) # expect: CustomType
+println(typeof([])) # expect: Array
+println(typeof({:})) # expect: Map
