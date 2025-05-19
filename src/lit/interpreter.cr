@@ -76,7 +76,7 @@ module Lit
 
       methods = {} of String => Function
       stmt.methods.each do |method|
-        function = Function.new(method.name.lexeme, method.function, @environment, initializer: method.name.lexeme == "init")
+        function = Function.new(method.name.lexeme, method.function, @environment, initializer: method.name.lexeme == "init", method: true)
         methods[method.name.lexeme] = function
       end
       type = Type.new(stmt.name.lexeme, methods)
@@ -152,7 +152,7 @@ module Lit
     end
 
     def visit_function_stmt(stmt) : Nil
-      function = Function.new(stmt.name.lexeme, stmt.function, @environment, false)
+      function = Function.new(stmt.name.lexeme, stmt.function, @environment, initializer: false, method: false)
       @environment.define(stmt.name.lexeme, function)
     end
 
@@ -184,7 +184,14 @@ module Lit
       end
 
       s = function.arity == 1 ? "" : "s"
-      runtime_error(expr.paren, "Expected #{function.arity} argument#{s} but got #{arguments.size}.")
+      type = if callee.is_a? Type
+               "Type"
+             elsif callee.as(Function).method?
+               "Method"
+             else
+               "Function"
+             end
+      runtime_error(expr.paren, "#{type} '#{function.name}' expected #{function.arity} argument#{s} but got #{arguments.size}.")
     end
 
     def visit_get_expr(expr) : Value
@@ -319,7 +326,7 @@ module Lit
     end
 
     def visit_function_expr(expr) : Value
-      Function.new(nil, expr, @environment, initializer: false)
+      Function.new(nil, expr, @environment, initializer: false, method: false)
     end
 
     def visit_array_literal_expr(expr) : Value

@@ -1,9 +1,6 @@
 fn existing do |a| it # error: Syntax error at "it": Default parameter can't be used when explicit parameters are defined.
 existing(1)
 
-fn missing do it
-missing() # errfor: Runtime error: Expected 1 argument, but got 0.
-
 fn multiline {
   println(it) # error: Syntax error at "it": Default parameter can't be used with multi-line blocks.
 }

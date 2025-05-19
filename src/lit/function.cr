@@ -3,9 +3,11 @@ require "./interpreter"
 
 module Lit
   class Function < Callable
+    getter name
+    getter? method
     private getter? initializer
 
-    def initialize(@name : String?, @declaration : Expr::Function, @closure : Environment, @initializer : Bool); end
+    def initialize(@name : String?, @declaration : Expr::Function, @closure : Environment, @initializer : Bool, @method : Bool); end
 
     def call(interpreter, arguments, token) : Value
       environment = Environment.new(@closure)
@@ -37,7 +39,7 @@ module Lit
     def bind(instance)
       environment = Environment.new(@closure)
       environment.define("self", instance)
-      Function.new(@name, @declaration, environment, initializer?)
+      Function.new(@name, @declaration, environment, initializer?, method?)
     end
 
     def to_s

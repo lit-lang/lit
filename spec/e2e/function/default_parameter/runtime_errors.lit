@@ -1,0 +1,2 @@
+fn missing do it
+missing() # error: Runtime error: Function 'missing' expected 1 argument but got 0.

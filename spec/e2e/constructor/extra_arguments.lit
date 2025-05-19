@@ -5,4 +5,4 @@ type Foo {
   }
 }
 
-var foo = Foo(1, 2, 3, 4) # error: Runtime error: Expected 2 arguments but got 4.
+var foo = Foo(1, 2, 3, 4) # error: Runtime error: Type 'Foo' expected 2 arguments but got 4.

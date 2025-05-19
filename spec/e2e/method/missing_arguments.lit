@@ -1,5 +1,5 @@
 type Foo {
-  method { |a, b|}
+  mtd { |a, b|}
 }
 
-Foo().method(1) # error: Runtime error: Expected 2 arguments but got 1.
+Foo().mtd(1) # error: Runtime error: Method 'mtd' expected 2 arguments but got 1.

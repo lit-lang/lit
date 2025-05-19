@@ -5,4 +5,4 @@ type Foo {
   }
 }
 
-Foo().method(1, 2, 3, 4) # error: Runtime error: Expected 2 arguments but got 4.
+Foo().method(1, 2, 3, 4) # error: Runtime error: Method 'method' expected 2 arguments but got 4.
