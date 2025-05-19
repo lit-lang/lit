@@ -63,7 +63,8 @@ module Lit
           }),
           ::Lit::Native::Fn.new("panic", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
             if arguments[0].is_a?(String)
-              abort(arguments[0])
+              STDERR.puts(arguments[0])
+              raise Interpreter::Exit.new(1)
             else
               raise RuntimeError.new(token, "Expected string as the first argument, got #{interpreter.type_of(arguments[0])}.")
             end
