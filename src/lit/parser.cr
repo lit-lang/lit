@@ -105,21 +105,7 @@ module Lit
     end
 
     private def statement
-      expr = if match?(TokenType::NEXT)
-               Expr::Next.new(previous)
-             elsif match?(TokenType::BREAK)
-               token = previous
-               value = check(TokenType::NEWLINE) ? nil : expression
-
-               Expr::Break.new(token, value)
-             elsif match?(TokenType::RETURN)
-               token = previous
-               value = check(TokenType::NEWLINE) ? nil : expression
-
-               Expr::Return.new(token, value)
-             else
-               expression
-             end
+      expr = expression
       consume_line("I was expecting a newline after the expression.")
 
       Stmt::Expression.new(expr)
@@ -241,7 +227,21 @@ module Lit
     end
 
     private def expression
-      assignment
+      if match?(TokenType::NEXT)
+        Expr::Next.new(previous)
+      elsif match?(TokenType::BREAK)
+        token = previous
+        value = check(TokenType::NEWLINE) ? nil : expression
+
+        Expr::Break.new(token, value)
+      elsif match?(TokenType::RETURN)
+        token = previous
+        value = check(TokenType::NEWLINE) ? nil : expression
+
+        Expr::Return.new(token, value)
+      else
+        assignment
+      end
     end
 
     private def assignment

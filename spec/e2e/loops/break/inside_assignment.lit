@@ -1,0 +1,4 @@
+loop {
+  let a = do break
+  println("won't get here: {a}")
+}

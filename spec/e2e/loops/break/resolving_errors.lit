@@ -4,6 +4,8 @@ fn function {
 
 break # error: Syntax error at "break": Can't use 'break' outside of a loop.
 
+let a = do break # error: Syntax error at "break": Can't use 'break' outside of a loop.
+
 loop {
   fn foo {
     break # error: Syntax error at "break": Can't use 'break' outside of a loop.

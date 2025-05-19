@@ -1,1 +1,1 @@
-let a = next # error: Syntax error at "next": I was expecting an expression here.
+let a = next # error: Syntax error at "next": Can't use 'next' outside of a loop.

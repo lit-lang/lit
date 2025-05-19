@@ -1,0 +1,4 @@
+fn foo {
+  let a = return
+  println("won't get here: {a}")
+}

@@ -1,1 +1,1 @@
-let a = break # error: Syntax error at "break": I was expecting an expression here.
+let a = break # error: Syntax error at "break": Can't use 'break' outside of a loop.
