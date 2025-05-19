@@ -25,7 +25,7 @@ module Lit
     end
 
     def report_runtime_error(error)
-      STDERR.puts Text.error("[#{::Lit.current_file_name}:#{error.token.line}] Runtime error: #{error.message}")
+      STDERR.puts Text.error("[#{error.token.filename}:#{error.token.line}] Runtime error: #{error.message}")
 
       @had_runtime_error = true
     end

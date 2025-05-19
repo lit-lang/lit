@@ -121,9 +121,10 @@ module Lit
     private def until_expr
       condition = expression
       body = block_expr("I was expecting a block after the until condition.")
+      filename = previous.filename
 
       # desugar until to while
-      Expr::While.new(Expr::Unary.new(Token.new(TokenType::BANG, "!", nil, 0), condition), body)
+      Expr::While.new(Expr::Unary.new(Token.new(TokenType::BANG, "!", nil, 0, filename), condition), body)
     end
 
     private def loop_expr
@@ -216,7 +217,7 @@ module Lit
           raise error(@default_param.not_nil!, "Default parameter can't be used when explicit parameters are defined.")
         elsif @default_param && !@block_has_explicit_params
           # Inject implicit `it`
-          return {block_body, [Token.new(TokenType::IDENTIFIER, "it", nil, peek.line)]}
+          return {block_body, [Token.new(TokenType::IDENTIFIER, "it", nil, peek.line, peek.filename)]}
         end
 
         {block_body, params}

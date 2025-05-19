@@ -1,0 +1,1 @@
+import '../../fixtures/runtime_error.lit' # error: [runtime_error.lit:2] Runtime error: Undefined variable 'variable'.

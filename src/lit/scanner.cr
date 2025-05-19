@@ -339,11 +339,11 @@ module Lit
     private def add_token(type, literal)
       # Make line tokens appear on the line containing the "\n".
       line = type == TokenType::NEWLINE ? @line - 1 : @line
-      @tokens << Token.new(type, current_token_string, literal, line)
+      @tokens << Token.new(type, current_token_string, literal, line, ::Lit.current_file_name)
     end
 
     private def add_eof_token
-      @tokens << Token.new(TokenType::EOF, "", nil, @line)
+      @tokens << Token.new(TokenType::EOF, "", nil, @line, ::Lit.current_file_name)
     end
 
     private def digit?(c : Char) : Bool

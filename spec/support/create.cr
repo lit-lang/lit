@@ -37,20 +37,20 @@ module Create
   def token(type : Symbol, value = nil) : Lit::Token
     case type
     when :number
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), "1", 1.0, 1)
+      Lit::Token.new(Lit::TokenType.parse(type.to_s), "1", 1.0, 1, ::Lit.current_file_name)
     when :string
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), %("some text"), "some text", 1)
+      Lit::Token.new(Lit::TokenType.parse(type.to_s), %("some text"), "some text", 1, ::Lit.current_file_name)
     when :identifier
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), value || "my_var", nil, 1)
+      Lit::Token.new(Lit::TokenType.parse(type.to_s), value || "my_var", nil, 1, ::Lit.current_file_name)
     when :string_interpolation
-      Lit::Token.new(Lit::TokenType.parse(type.to_s), "#{value}", value, 1)
+      Lit::Token.new(Lit::TokenType.parse(type.to_s), "#{value}", value, 1, ::Lit.current_file_name)
     else
       if TOKENS.has_key?(type)
-        return Lit::Token.new(Lit::TokenType.parse(type.to_s), TOKENS[type], nil, 1)
+        return Lit::Token.new(Lit::TokenType.parse(type.to_s), TOKENS[type], nil, 1, ::Lit.current_file_name)
       elsif type.to_s.starts_with?("number_")
         number = type.to_s.lchop("number_")
 
-        return Lit::Token.new(token_type(NUMBER), number, number.to_f, 1)
+        return Lit::Token.new(token_type(NUMBER), number, number.to_f, 1, ::Lit.current_file_name)
       end
 
       raise "Don't know hot to build token with type '#{type}'"

@@ -1,0 +1,3 @@
+import '../../fixtures/function.lit'
+
+open_file("unknown-file.foobar") # error: [function.lit:4] Runtime error: File not found: unknown-file.foobar

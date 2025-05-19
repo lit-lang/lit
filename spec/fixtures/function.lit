@@ -1,0 +1,5 @@
+# a comment
+
+fn open_file { |path|
+  open!(path)
+}
