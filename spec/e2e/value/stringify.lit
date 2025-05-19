@@ -4,9 +4,7 @@ type Foo {
   init { |bar| self.bar = bar; }
 }
 type FooCustom {
-  to_s {
-    return "<✨ custom ✨>"
-  }
+  to_s do "<✨ custom ✨>"
 }
 
 println(1) # expect: 1

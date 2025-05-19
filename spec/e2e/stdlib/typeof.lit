@@ -1,7 +1,5 @@
 type CustomType {
-  myself {
-    return self
-  }
+  myself do self
 }
 fn fun {}
 

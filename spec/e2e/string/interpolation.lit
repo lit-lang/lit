@@ -5,8 +5,6 @@ println("{who} is awesome!") # expect: Matz is awesome!
 println('{who} is awesome!') # expect: {who} is awesome!
 
 type Matz {
-  to_s {
-    return "Matz"
-  }
+  to_s do "Matz"
 }
 println("{Matz()} is nice.") # expect: Matz is nice.

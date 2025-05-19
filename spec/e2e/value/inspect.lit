@@ -1,9 +1,7 @@
 fn function {}
 type Foo {}
 type FooCustom {
-  to_s {
-    return "✨ custom ✨"
-  }
+  to_s do "✨ custom ✨"
 }
 
 println(Array(1, 1.0, 1.5, "foo", true, false, nil, function, clock, Foo, Foo(), FooCustom()))
