@@ -152,9 +152,9 @@ type Should {
 
   fn assert { |result, msg, neg_msg|
     if self.negated and result {
-      return self.fail(neg_msg())
+      return self.fail(neg_msg)
     } else if !self.negated and !result {
-      return self.fail(msg())
+      return self.fail(msg)
     }
 
     self.pass()
