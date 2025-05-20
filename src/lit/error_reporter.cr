@@ -3,7 +3,7 @@ module Lit
     getter? had_syntax_error
     getter? had_runtime_error
 
-    def self.report_error(message : String)
+    def self.report_error(message : String) : Nil
       STDERR.puts Text.error("Error: #{message}")
     end
 
@@ -24,7 +24,7 @@ module Lit
       report(token.line, syntax_error_location(token), message)
     end
 
-    def report_runtime_error(error)
+    def report_runtime_error(error) : Nil
       STDERR.puts Text.error("[#{error.token.filename}:#{error.token.line}] Runtime error: #{error.message}")
 
       @had_runtime_error = true
@@ -45,7 +45,7 @@ module Lit
       end
     end
 
-    private def report(line : Int, where : String, message : String)
+    private def report(line : Int, where : String, message : String) : Nil
       STDERR.puts Text.error("[#{::Lit.current_file_name}:#{line}] Syntax error#{where}: #{message}")
       @had_syntax_error = true
     end
