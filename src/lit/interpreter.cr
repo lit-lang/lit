@@ -65,8 +65,9 @@ module Lit
       end
     end
 
-    def interpret(stmts) : Nil
+    def interpret(stmts) : Value
       stmts.each { |stmt| execute(stmt) }
+      @last_value
     rescue e : RuntimeError
       @error_reporter.report_runtime_error(e)
     end

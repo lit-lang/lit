@@ -3,15 +3,19 @@ module Lit
     extend self
 
     def keyword(str)
-      as_green(str)
+      format_as(str, yellow, bold)
     end
 
-    def integer(str)
-      as_blue(str)
+    def number(str)
+      format_as(str, cyan, bold)
     end
 
     def string(str)
-      as_blue(str)
+      format_as(str, green)
+    end
+
+    def default(str)
+      as_bold(str)
     end
 
     def warning(str : String)

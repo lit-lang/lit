@@ -29,7 +29,7 @@ module Lit
     end
 
     def self.run_repl
-      REPL.run(self)
+      REPL.run
     end
 
     def self.run_code(code : String)

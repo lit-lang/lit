@@ -1,5 +1,18 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Improve REPL
+
+Now it outputs the result of the last expression. It also has colors for the results.
+
+The result of the last expression is stored in the variable `_`.
+
+```lit
+lit> 1 + 2
+=> 3
+lit> _ * 2
+=> 6
+```
+
 - Make `return` an expression, not a statement
 
 This allows using it in a one-line block:
