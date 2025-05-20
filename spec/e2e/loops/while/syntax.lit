@@ -20,7 +20,7 @@ while false { fn test {} }
 while false { type Foo {} }
 
 # return values
-println(while false {}) # expect: nil
+println(inspect(while false {})) # expect: nil
 
 var c = 0
 println(
@@ -32,18 +32,18 @@ println(
 
 var d = 0
 println(
-  while d < 2 {
+  inspect(while d < 2 {
     if d == 1 {
       break # break returns nil
     }
 
     d = d + 1
-  }
+  })
 ) # expect: nil
 
 var e = 0
 println(
-  while e < 3 {
+  inspect(while e < 3 {
     if e == 0 || e == 2 {
       e = e + 1
       next # next returns nil
@@ -51,7 +51,7 @@ println(
 
     e = e + 1
     e
-  }
+  })
 ) # expect: nil
 
 var f = 0

@@ -1,6 +1,6 @@
 # False and nil are false.
 println(false and "bad") # expect: false
-println(nil and "bad") # expect: nil
+println(inspect(nil and "bad")) # expect: nil
 
 # Everything else is true.
 println(true and "ok") # expect: ok

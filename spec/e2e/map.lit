@@ -13,7 +13,7 @@ println(m.size()) # expect: 1
 println(m.get("key")) # expect: 1
 
 # getting an undefined index
-println(m.get("undefined")) # expect: nil
+println(inspect(m.get("undefined"))) # expect: nil
 
 let m2 = { # multi-line
   1.0 : 2

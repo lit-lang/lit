@@ -96,7 +96,7 @@ println(Vector2D(1, 2) != Vector2D(2, 2)) # expect: true
 println(Vector2D(1, 2) != Vector2D(1, 2)) # expect: false
 println(Vector2D(1, 2)["x"]) # expect: 1
 println(Vector2D(1, 2)["y"]) # expect: 2
-println(Vector2D(1, 2)["z"]) # expect: nil
+println(inspect(Vector2D(1, 2)["z"])) # expect: nil
 let v = Vector2D(1, 2)
 println(v["x"] = 3) # expect: 3
 println(v["x"]) # expect: 3

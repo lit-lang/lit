@@ -3,4 +3,4 @@ fn f {
   println("bad")
 }
 
-println(f()) # expect: nil
+println(inspect(f())) # expect: nil

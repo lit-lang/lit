@@ -1,7 +1,7 @@
 let a = "abc"
 println(a.get(1)) # expect: b
 println(a.get(-1)) # expect: c
-println(a.get(1000)) # expect: nil
+println(inspect(a.get(1000))) # expect: nil
 
 println(a.set(0, "A")) # expect: Abc
 println(a.set(1, "cd")) # expect: acc

@@ -6,8 +6,6 @@ module Lit
   alias Value = Int64 | Float64 | String | Bool | Nil | Callable | Type | Instance | Uninitialized
 
   def self.stringify_value(value : Value, interpreter : Interpreter, token : Token) : String
-    return "nil" if value.nil?
-
     if value.is_a? Instance
       # if the type defines a `to_s` method, call it
       if method = value.get_method(token.with_lexeme("to_s"))
@@ -22,8 +20,9 @@ module Lit
   end
 
   def self.inspect_value(value : Value, interpreter, token) : String
+    return "nil" if value.nil?
     return value.inspect if value.is_a? String
-    return value.to_s(interpreter, token) if value.is_a? Instance && !value.is_a?(LitArray)
+    return value.to_s(interpreter, token) if value.is_a? Instance && !value.is_a?(LitArray) && !value.is_a?(LitMap)
 
     stringify_value(value, interpreter, token)
   end

@@ -13,7 +13,7 @@ fn map { |array, f|
 }
 
 var f = fn {}
-println(f()) # expect: nil
+println(inspect(f())) # expect: nil
 
 f = fn {
   return 1
