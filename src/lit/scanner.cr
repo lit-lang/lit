@@ -338,7 +338,7 @@ module Lit
 
     private def add_token(type, literal)
       # Make line tokens appear on the line containing the "\n".
-      line = type == TokenType::NEWLINE ? @line - 1 : @line
+      line = (type == TokenType::NEWLINE && peek_previous == '\n') ? @line - 1 : @line
       @tokens << Token.new(type, current_token_string, literal, line, ::Lit.current_file_name)
     end
 

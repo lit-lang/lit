@@ -13,7 +13,7 @@ describe Lit::Scanner do
 
   it_scans "", to_type: token_type(EOF)
   it_scans "\n", to_type: token_type(NEWLINE), at_line: 1
-  it_scans ";", to_type: token_type(NEWLINE), at_line: 0
+  it_scans ";", to_type: token_type(NEWLINE), at_line: 1
   it_scans "(", to_type: token_type(LEFT_PAREN)
   it_scans ")", to_type: token_type(RIGHT_PAREN)
   it_scans "[", to_type: token_type(LEFT_BRACKET)
