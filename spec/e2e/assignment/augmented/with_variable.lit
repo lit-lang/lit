@@ -1,0 +1,8 @@
+var a = 0
+println(a += 10) # expect: 10
+println(a -= 2) # expect: 8
+println(a *= 2) # expect: 16
+println(a /= 4) # expect: 4
+println(a %= 3) # expect: 1
+
+a /= 'foo' # error: Runtime error: Undefined operator / for Integer and String.

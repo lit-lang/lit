@@ -1,0 +1,12 @@
+type Foo {
+  init do |a| self.a = a
+}
+
+let foo = Foo(0)
+println(foo.a += 10) # expect: 10
+println(foo.a -= 2) # expect: 8
+println(foo.a *= 2) # expect: 16
+println(foo.a /= 4) # expect: 4
+println(foo.a %= 3) # expect: 1
+
+foo.a /= 'foo' # error: Runtime error: Undefined operator / for Integer and String.

@@ -18,6 +18,10 @@ module Lit
       self.class.new(type, lexeme, literal, line, filename)
     end
 
+    def with_type(type)
+      self.class.new(type, lexeme, literal, line, filename)
+    end
+
     delegate :to_s, to: :inspect
   end
 end

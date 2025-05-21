@@ -83,17 +83,23 @@ module Lit
       when ';'
         add_token(TokenType::NEWLINE)
       when '+'
-        add_token(TokenType::PLUS)
+        match?('=') ? add_token(TokenType::PLUS_EQUAL) : add_token(TokenType::PLUS)
       when '-'
-        add_token(TokenType::MINUS)
+        match?('=') ? add_token(TokenType::MINUS_EQUAL) : add_token(TokenType::MINUS)
       when '/'
-        add_token(TokenType::SLASH)
+        match?('=') ? add_token(TokenType::SLASH_EQUAL) : add_token(TokenType::SLASH)
       when '%'
-        add_token(TokenType::PERCENT)
+        match?('=') ? add_token(TokenType::PERCENT_EQUAL) : add_token(TokenType::PERCENT)
       when '?'
         add_token(TokenType::QUESTION)
       when '*'
-        match?('*') ? add_token(TokenType::STAR_STAR) : add_token(TokenType::STAR)
+        if match?('*')
+          add_token(TokenType::STAR_STAR)
+        elsif match?('=')
+          add_token(TokenType::STAR_EQUAL)
+        else
+          add_token(TokenType::STAR)
+        end
       when '='
         match?('=') ? add_token(TokenType::EQUAL_EQUAL) : add_token(TokenType::EQUAL)
       when '>'

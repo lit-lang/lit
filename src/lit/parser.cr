@@ -248,18 +248,32 @@ module Lit
     private def assignment
       expr = control_flow
 
-      if match?(TokenType::EQUAL)
-        equals = previous
+      if match?(TokenType::EQUAL,
+           TokenType::PLUS_EQUAL,
+           TokenType::MINUS_EQUAL,
+           TokenType::STAR_EQUAL,
+           TokenType::SLASH_EQUAL,
+           TokenType::PERCENT_EQUAL)
+        op = previous
         ignore_newlines
-        value = assignment
+        rhs = assignment
 
-        if expr.is_a? Expr::Variable
-          return Expr::Assign.new(expr.name, value)
-        elsif expr.is_a? Expr::Get
-          return Expr::Set.new(expr.object, expr.name, value)
+        case expr
+        when Expr::Variable, Expr::Get
+          if op.type != TokenType::EQUAL # Desugar augmented assignment operators
+            bin_op = augmented_binary_operator_for(op)
+            rhs = Expr::Binary.new(expr, op.with_type(bin_op), rhs)
+          end
+
+          return case expr
+          in Expr::Variable
+            Expr::Assign.new(expr.name, rhs)
+          in Expr::Get
+            Expr::Set.new(expr.object, expr.name, rhs)
+          end
+        else
+          raise error(op, "Invalid assignment target.")
         end
-
-        raise error(equals, "Invalid assignment target.")
       end
 
       expr
@@ -607,6 +621,20 @@ module Lit
       closing_token = consume(closed_by, msg)
 
       {exprs, closing_token}
+    end
+
+    private AUGMENTED_BINARY_OPERATORS = {
+      TokenType::PLUS_EQUAL    => TokenType::PLUS,
+      TokenType::MINUS_EQUAL   => TokenType::MINUS,
+      TokenType::STAR_EQUAL    => TokenType::STAR,
+      TokenType::SLASH_EQUAL   => TokenType::SLASH,
+      TokenType::PERCENT_EQUAL => TokenType::PERCENT,
+    }
+
+    private def augmented_binary_operator_for(token)
+      AUGMENTED_BINARY_OPERATORS.fetch(token.type) do
+        raise error(token, "BUG: unknown augmented binary operator #{token.type.inspect}")
+      end
     end
 
     private def match?(*types) : Bool

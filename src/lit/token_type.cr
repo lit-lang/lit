@@ -7,6 +7,9 @@ module Lit
     # Math
     PLUS; MINUS; SLASH; STAR; STAR_STAR; PERCENT
 
+    # Augmented assignment
+    PLUS_EQUAL; MINUS_EQUAL; SLASH_EQUAL; STAR_EQUAL; PERCENT_EQUAL
+
     # Comparison
     EQUAL; EQUAL_EQUAL; GREATER; GREATER_EQUAL; LESS; LESS_EQUAL
 

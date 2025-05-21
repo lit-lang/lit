@@ -1,5 +1,16 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Add augmented assignment operators
+
+```lit
+let a = 1
+a += 2 # a = a + 2
+a -= 3 # a = a - 3
+a *= 4 # a = a * 4
+a /= 5 # a = a / 5
+a %= 6 # a = a % 6
+```
+
 - Improve REPL
 
 Now it outputs the result of the last expression. It also has colors for the results.
