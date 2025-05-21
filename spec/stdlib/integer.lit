@@ -1,32 +1,59 @@
 import "test_runner"
 
 TestRunner().describe("Lit Integer", fn { | t |
-  t.test("#is_positive? when number is greater than 0", fn { | should |
+  t.test("#abs returns the absolute value of the integer", fn { |should|
+    (-5).abs() |> should.eq(5)
+  })
+  t.test("#is_zero? returns true when number is 0", fn { |should|
+    0.is_zero?() |> should.eq(true)
+  })
+  t.test("#is_zero? returns false when number is not 0", fn { |should|
+    5.is_zero?() |> should.eq(false)
+  })
+  t.test("#is_positive? when number is greater than 0", fn { |should|
     5.is_positive?() |> should.eq(true)
   })
-  t.test("#is_positive? when number is less than 0", fn { | should |
-      (-5).is_positive?() |> should.eq(false)
+  t.test("#is_positive? when number is less than 0", fn { |should|
+    (-5).is_positive?() |> should.eq(false)
   })
-  t.test("#is_positive? when number is 0", fn { | should |
-        0.is_positive?() |> should.eq(false)
+  t.test("#is_positive? when number is 0", fn { |should|
+    0.is_positive?() |> should.eq(false)
   })
-  t.test("#to_f returns the float value of the integer", fn { | should |
-          1.to_f() |> should.eq(1.0)
+  t.test("#is_negative? when number is greater than 0", fn { |should|
+    5.is_negative?() |> should.eq(false)
   })
-  t.test("#to_s returns the string value of the number", fn { | should |
-            42.to_s() |> should.eq("42")
+  t.test("#is_negative? when number is less than 0", fn { |should|
+    (-5).is_negative?() |> should.eq(true)
   })
-  t.test("#digits returns the digits of the number as an array", fn { | should |
-              1234.digits() |> should.eq([4, 3, 2, 1])
+  t.test("#is_negative? when number is 0", fn { |should|
+    0.is_negative?() |> should.eq(false)
   })
-  t.test("#chr returns the character representation of the integer", fn { | should |
-                65.chr() |> should.eq("A")
+  t.test("#to_f returns the float value of the integer", fn { |should|
+    1.to_f() |> should.eq(1.0)
   })
-  t.test("#times runs the given block n times", fn { | should |
-                  let arr = []
+  t.test("#to_s returns the string value of the number", fn { |should|
+    42.to_s() |> should.eq("42")
+  })
+  t.test("#digits returns the digits of the number as an array", fn { |should|
+    1234.digits() |> should.eq([4, 3, 2, 1])
+  })
+  t.test("#chr returns the character representation of the integer", fn { |should|
+    65.chr() |> should.eq("A")
+  })
+  t.test("#upto returns an array of numbers from the number to the given number", fn { |should|
+    1.upto(5) |> should.eq([1, 2, 3, 4, 5])
+  })
+  t.test("#upto returns an empty array when the range is reversed", fn { |should|
+    5.upto(1) |> should.eq([])
+  })
+  t.test("#upto returns a single element array when the range is empty", fn { |should|
+    1.upto(1) |> should.eq([1])
+  })
+  t.test("#times runs the given block n times", fn { |should|
+    let arr = []
 
-    3.times(fn { | i |
-                    arr.push(i)
+    3.times(fn { |i|
+      arr.push(i)
     })
 
     arr |> should.eq([0, 1, 2])
