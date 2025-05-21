@@ -7,7 +7,7 @@ var guess = ""
 var tries = 0
 
 while guess != word {
-  tries = tries + 1
+  tries += 1
   print("Guess: ")
   guess = readln().chomp()
 

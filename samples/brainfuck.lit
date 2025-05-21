@@ -62,7 +62,7 @@ type Parser {
           bracket_map[right] = left
         }
 
-        i = i + 1
+        i += 1
       }
     })
 
@@ -108,7 +108,7 @@ type Interpreter {
         }
       }
 
-      pc = pc + 1
+      pc += 1
     }
 
     println()

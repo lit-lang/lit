@@ -17,7 +17,7 @@ while i < 4 {
     }
   }
 
-  i = i + 1
+  i += 1
 }
 
 f1() # expect: 1

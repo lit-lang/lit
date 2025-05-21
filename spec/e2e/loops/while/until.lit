@@ -1,6 +1,6 @@
 # Single-expression body.
 var c = 0
-until c > 2 { println(c = c + 1); }
+until c > 2 { println(c += 1); }
 # expect: 1
 # expect: 2
 # expect: 3
@@ -9,7 +9,7 @@ until c > 2 { println(c = c + 1); }
 var a = 0
 until (a >= 3) {
   println(a)
-  a = a + 1
+  a += 1
 }
 # expect: 0
 # expect: 1

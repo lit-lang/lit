@@ -6,7 +6,7 @@ fn map { |array, f|
   while i < size {
     let item = array.get(i)
     result.push(f(item))
-    i = i + 1
+    i += 1
   }
 
   return result

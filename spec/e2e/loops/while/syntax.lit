@@ -1,6 +1,6 @@
 # Single-expression body.
 var a = 0
-while a < 3 do println(a = a + 1)
+while a < 3 do println(a += 1)
 # expect: 1
 # expect: 2
 # expect: 3
@@ -9,7 +9,7 @@ while a < 3 do println(a = a + 1)
 var b = 0
 while (b < 3) {
   println(b)
-  b = b + 1
+  b += 1
 }
 # expect: 0
 # expect: 1
@@ -25,7 +25,7 @@ println(inspect(while false {})) # expect: nil
 var c = 0
 println(
   while c < 2 {
-    c = c + 1
+    c += 1
     c - 1
   }
 ) # expect: 1
@@ -37,7 +37,7 @@ println(
       break # break returns nil
     }
 
-    d = d + 1
+    d += 1
   })
 ) # expect: nil
 
@@ -45,11 +45,11 @@ var e = 0
 println(
   inspect(while e < 3 {
     if e == 0 || e == 2 {
-      e = e + 1
+      e += 1
       next # next returns nil
     }
 
-    e = e + 1
+    e += 1
     e
   })
 ) # expect: nil
@@ -61,7 +61,7 @@ println(
       break "one"
     }
 
-    f = f + 1
+    f += 1
     f
   }
 ) # expect: one

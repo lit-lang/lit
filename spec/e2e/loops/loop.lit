@@ -1,7 +1,7 @@
 var i = 0
 loop {
   println(i)
-  i = i + 1
+  i += 1
   if i == 3 {
     break
   }
@@ -20,14 +20,14 @@ loop {
   loop {
     print("  inner: ")
     println(inner)
-    inner = inner + 1
+    inner += 1
 
     if inner == 2 {
       break # Breaks inner loop only
     }
   }
 
-  outer = outer + 1
+  outer += 1
   if outer == 3 {
     break # Breaks outer loop
   }
