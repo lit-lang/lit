@@ -144,21 +144,6 @@ module Lit
       end
     end
 
-    private def advance
-      @current_pos += 1
-
-      @src[@current_pos - 1]
-    end
-
-    private def match?(expected)
-      return false if at_end?
-      return false if @src[@current_pos] != expected
-
-      @current_pos += 1
-
-      true
-    end
-
     private def consume_number
       successful = scan_digits_with_underscores
       return unless successful
@@ -216,17 +201,13 @@ module Lit
       while nesting > 0
         return syntax_error("Unterminated block comment") if at_end?
 
-        if closing_comment_next?
+        if match?('=', '#')
           nesting -= 1
-          advance # consume the =
-          advance # consume the #
           next
         end
 
-        if opening_block_comment_next?
+        if match?('#', '=')
           nesting += 1
-          advance # consume the #
-          advance # consume the =
           next
         end
 
@@ -330,6 +311,29 @@ module Lit
       @src[@current_pos - 1]
     end
 
+    private def advance
+      @current_pos += 1
+
+      @src[@current_pos - 1]
+    end
+
+    private def match?(expected)
+      return false if at_end?
+      return false if @src[@current_pos] != expected
+
+      @current_pos += 1
+
+      true
+    end
+
+    private def match?(expected : Char, next_expected : Char)
+      if peek == expected && peek_next == next_expected
+        @current_pos += 2
+      else
+        false
+      end
+    end
+
     private def current_token_string
       @src[@token_start_pos...@current_pos]
     end
@@ -368,14 +372,6 @@ module Lit
 
     private def keyword_from(text : String)
       KEYWORDS[text]?
-    end
-
-    private def closing_comment_next?
-      peek == '=' && peek_next == '#'
-    end
-
-    private def opening_block_comment_next?
-      peek == '#' && peek_next == '='
     end
 
     private def syntax_error(message : String)
