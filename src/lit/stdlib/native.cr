@@ -44,6 +44,12 @@ module Lit
               print ::Lit.stringify_value(arg, interpreter, token)
             end
           }),
+          ::Lit::Native::Fn.new("inspect", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+            ::Lit.inspect_value(arguments[0], interpreter, token)
+          }),
+          ::Lit::Native::Fn.new("debug", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+            puts ::Lit.inspect_value(arguments[0], interpreter, token)
+          }),
           ::Lit::Native::Fn.new("readln", 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
             gets || ""
           }),
@@ -104,9 +110,6 @@ module Lit
           }),
           ::Lit::Native::Fn.new("typeof", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), _token : Token) : Value {
             interpreter.type_of(arguments[0])
-          }),
-          ::Lit::Native::Fn.new("inspect", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
-            ::Lit.inspect_value(arguments[0], interpreter, token)
           }),
           ::Lit::Native::Fn.new("sleep", 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
             seconds = arguments[0]

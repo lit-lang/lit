@@ -18,7 +18,7 @@ println(a) # expect: []
 println(a.size()) # expect: 0
 
 # getter
-println(inspect(a[10])) # expect: nil
+debug(a[10]) # expect: nil
 
 # setting an undefined index
 println(a[2] = "hey") # expect: hey
@@ -33,7 +33,7 @@ a = [1, 2, 3,] # trailing comma
 println(a[-1]) # expect: 3
 println(a[-2]) # expect: 2
 println(a[-3]) # expect: 1
-println(inspect(a[-4])) # expect: nil
+debug(a[-4]) # expect: nil
 
 a = [1]
 # concat

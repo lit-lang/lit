@@ -20,7 +20,7 @@ while false { fn test {} }
 while false { type Foo {} }
 
 # return values
-println(inspect(while false {})) # expect: nil
+debug(while false {}) # expect: nil
 
 var c = 0
 println(

@@ -2,4 +2,4 @@ type Foo {
   bar {}
 }
 
-println(inspect(Foo().bar())) # expect: nil
+debug(Foo().bar()) # expect: nil

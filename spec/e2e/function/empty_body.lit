@@ -1,2 +1,2 @@
 fn f {}
-println(inspect(f())) # expect: nil
+debug(f()) # expect: nil
