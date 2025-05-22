@@ -39,6 +39,18 @@ module Lit
 
           LitMap.new(@elements.merge(arguments[0].as(LitMap).elements))
         })
+      when "keys"
+        ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
+          LitArray.new(@elements.keys.map { |k| k.as(Value) })
+        })
+      when "values"
+        ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
+          LitArray.new(@elements.values.map { |v| v.as(Value) })
+        })
+      when "has_key?"
+        ::Lit::Native::Fn.new(name.lexeme, 1, ->(_interpreter : Interpreter, arguments : ::Array(Value), _token : Token) : Value {
+          @elements.has_key?(arguments[0])
+        })
       when "is_empty?"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
           @elements.empty?

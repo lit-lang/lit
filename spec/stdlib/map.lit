@@ -1,0 +1,18 @@
+import "test_runner"
+
+TestRunner().describe("Lit Map", fn { |t|
+  t.test("#keys returns the keys of the map", fn { |should|
+    let map = {a: 1, b: 2, c: 3}
+    map.keys() |> should.eq(["a", "b", "c"])
+  })
+  t.test("#values returns the values of the map", fn { |should|
+    let map = {a: 1, b: 2, c: 3}
+    map.values() |> should.eq([1, 2, 3])
+  })
+  t.test("#has_key? returns true if the key exists", fn { |should|
+    {a: 1}.has_key?(:a) |> should.eq(true)
+  })
+  t.test("#has_key? returns false if the key does not exist", fn { |should|
+    {a: 1}.has_key?(:b) |> should.eq(false)
+  })
+}).run()
