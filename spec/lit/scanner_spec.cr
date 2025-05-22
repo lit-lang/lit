@@ -44,6 +44,7 @@ describe Lit::Scanner do
   it_scans "<=", to_type: token_type(LESS_EQUAL)
   it_scans "|", to_type: token_type(BAR)
   it_scans "||", to_type: token_type(OR)
+  it_scans "&.", to_type: token_type(AMPERSAND_DOT)
   it_scans "&&", to_type: token_type(AND)
   it_scans "|>", to_type: token_type(PIPE_GREATER)
   it_scans "!=", to_type: token_type(BANG_EQUAL)

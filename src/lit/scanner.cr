@@ -119,6 +119,8 @@ module Lit
       when '&'
         if match?('&')
           add_token(TokenType::AND)
+        elsif match?('.')
+          add_token(TokenType::AMPERSAND_DOT)
         else
           syntax_error("Unexpected character #{c.inspect}")
         end

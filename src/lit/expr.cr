@@ -151,8 +151,8 @@ module Lit
 
     class If < Expr
       getter condition : Expr
-      getter then_branch : Expr::Block
-      getter else_branch : Expr::Block?
+      getter then_branch : Expr
+      getter else_branch : Expr?
 
       def initialize(@condition, @then_branch, @else_branch); end
 

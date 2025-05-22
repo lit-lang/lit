@@ -1,0 +1,2 @@
+let a = nil
+a&.b.c # error: Runtime error: Only instances have properties, got Nil.

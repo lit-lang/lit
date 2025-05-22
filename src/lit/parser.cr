@@ -433,6 +433,13 @@ module Lit
           ignore_newlines
           name = consume(TokenType::IDENTIFIER, "I was expecting a property name after '.'.")
           expr = Expr::Get.new(expr, name)
+        elsif match?(TokenType::AMPERSAND_DOT)
+          token = previous
+          ignore_newlines
+          name = consume(TokenType::IDENTIFIER, "I was expecting a property name after '&.'.")
+          # # Desugar a&.b into: if a != nil then a.b else nil
+          condition = Expr::Binary.new(expr, token.with_type(TokenType::BANG_EQUAL), Expr::Literal.new(nil))
+          expr = Expr::If.new(condition, then_branch: Expr::Get.new(expr, name), else_branch: Expr::Literal.new(nil))
         else
           break
         end

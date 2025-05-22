@@ -18,7 +18,7 @@ module AstGenerator
       "Set                 = object : Expr, name : Token, value : Expr",
       "Grouping            = expression : Expr",
       "Literal             = value : Union(String | Int64 | Float64 | Bool | Nil)",
-      "If                  = condition : Expr, then_branch : Expr::Block, else_branch : Expr::Block?",
+      "If                  = condition : Expr, then_branch : Expr, else_branch : Expr?",
       "Import              = path : Token",
       "Logical             = left : Expr, operator : Token, right : Expr",
       "Self                = keyword : Token",

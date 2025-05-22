@@ -1,0 +1,18 @@
+type A {
+  fn b do "b"
+  fn b_nil do nil
+  fn b_c do A()
+  fn c do "c"
+}
+
+let a = nil
+debug(a&.b) # expect: nil
+debug(a&.b&.c) # expect: nil
+
+let a_instance = A()
+debug(a_instance&.b()) # expect: "b"
+debug(a_instance&.b_c()&.c()) # expect: "c"
+
+debug(a_instance&.b_nil()) # expect: nil
+debug(a_instance&.b_nil()&.unknown) # expect: nil
+debug(a_instance.b_nil()&.unknown) # expect: nil
