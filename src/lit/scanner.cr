@@ -282,7 +282,7 @@ module Lit
         advance
       end
 
-      text = @src[@token_start_pos...@current_pos]
+      text = current_token_string
 
       if peek == ':' # symbol-like string shortcut for maps
         advance
