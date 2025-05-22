@@ -55,7 +55,7 @@ type Parser {
 
         if c == "[" {
           bracket_stack.push(i)
-        } else if c == "]" && !bracket_stack.is_empty?() {
+        } else if c == "]" and !bracket_stack.is_empty?() {
           let left = bracket_stack.pop()
           let right = i
           bracket_map[left] = right
@@ -128,7 +128,7 @@ fn help {
 }
 
 fn parse_options {
-  let option = argv()[0] || help()
+  let option = argv()[0] or help()
 
   if "--hello-world".includes?(option) {
     "
@@ -159,9 +159,9 @@ fn parse_options {
       http://www.hevanet.com/cristofd/brainfuck/]
 
     "
-  } else if "--file".includes?(option) && argv()[1] {
+  } else if "--file".includes?(option) and argv()[1] {
     open(argv()[1])
-  } else if "--eval".includes?(option) && argv()[1] {
+  } else if "--eval".includes?(option) and argv()[1] {
     argv()[1]
   } else {
     help()

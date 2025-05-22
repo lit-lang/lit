@@ -21,23 +21,23 @@ type Vector2D {
   }
 
   eq { |other|
-    return self.x == other.x && self.y == other.y
+    return self.x == other.x and self.y == other.y
   }
 
   lt { |other|
-    return self.x < other.x || (self.x == other.x && self.y < other.y)
+    return self.x < other.x or (self.x == other.x and self.y < other.y)
   }
 
   lte { |other|
-    return self.x < other.x || (self.x == other.x && self.y <= other.y)
+    return self.x < other.x or (self.x == other.x and self.y <= other.y)
   }
 
   gt { |other|
-    return self.x > other.x || (self.x == other.x && self.y > other.y)
+    return self.x > other.x or (self.x == other.x and self.y > other.y)
   }
 
   gte { |other|
-    return self.x > other.x || (self.x == other.x && self.y >= other.y)
+    return self.x > other.x or (self.x == other.x and self.y >= other.y)
   }
 
   mod { |other|

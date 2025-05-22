@@ -22,7 +22,7 @@ type TestRunner {
     self.tests.each(fn { |t|
       let result = t[:block](Should())
 
-      if result && result[:ok] == false {
+      if result and result[:ok] == false {
         print("F")
         failed_tests.push({ name: "{self.current_group} {t[:name]}", message: result[:message] })
       } else {

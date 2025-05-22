@@ -44,7 +44,7 @@ println(
 var e = 0
 println(
   inspect(while e < 3 {
-    if e == 0 || e == 2 {
+    if e == 0 or e == 2 {
       e += 1
       next # next returns nil
     }
