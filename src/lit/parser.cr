@@ -326,10 +326,18 @@ module Lit
       branches = [] of Tuple(Expr, Expr)
 
       until check(TokenType::RIGHT_BRACE) || at_end?
-        pattern = expression
+        patterns = [expression] of Expr
+        while match?(TokenType::COMMA)
+          ignore_newlines
+          # Allow trailing comma by checking if we're at the end of the match block
+          break if check(TokenType::THEN)
+          patterns << expression
+        end
+
         consume(TokenType::THEN, "I was expecting 'then' after the match pattern.")
 
-        branches << {pattern, expression}
+        body = expression
+        branches += patterns.map { |p| {p, body}.as(Tuple(Expr, Expr)) }
         consume_line("I was expecting a newline after the match case.")
 
         ignore_newlines
