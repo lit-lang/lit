@@ -62,6 +62,14 @@ module Lit
       resolve(expr.else_branch.not_nil!) if expr.else_branch
     end
 
+    def visit_match_expr(expr) : Nil
+      resolve(expr.subject)
+      expr.branches.each do |(pattern, body)|
+        resolve(pattern)
+        resolve(body)
+      end
+    end
+
     def visit_while_expr(expr) : Nil
       with_loop_scope do
         resolve(expr.condition)

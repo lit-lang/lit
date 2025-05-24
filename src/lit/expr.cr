@@ -19,6 +19,7 @@ module Lit
       abstract def visit_if_expr(expr : If) : T
       abstract def visit_import_expr(expr : Import) : T
       abstract def visit_logical_expr(expr : Logical) : T
+      abstract def visit_match_expr(expr : Match) : T
       abstract def visit_self_expr(expr : Self) : T
       abstract def visit_unary_expr(expr : Unary) : T
       abstract def visit_variable_expr(expr : Variable) : T
@@ -180,6 +181,18 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_logical_expr(self)
+      end
+    end
+
+    class Match < Expr
+      getter keyword : Token
+      getter subject : Expr
+      getter branches : Array(Tuple(Expr, Expr))
+
+      def initialize(@keyword, @subject, @branches); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_match_expr(self)
       end
     end
 

@@ -21,6 +21,7 @@ module AstGenerator
       "If                  = condition : Expr, then_branch : Expr, else_branch : Expr?",
       "Import              = path : Token",
       "Logical             = left : Expr, operator : Token, right : Expr",
+      "Match               = keyword : Token, subject : Expr, branches : Array(Tuple(Expr, Expr))",
       "Self                = keyword : Token",
       "Unary               = operator : Token, right : Expr",
       "Variable            = name : Token",

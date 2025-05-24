@@ -1,0 +1,10 @@
+match foo 1 # error: Syntax error at "1": I was expecting a '{' after the match subject.
+
+match foo {
+} # error: Syntax error at "}": I was expecting a match case after the '{'.
+
+match foo {
+  1 else # error: Syntax error at "else": I was expecting 'then' after the match pattern.
+
+match foo {
+  1 then "one" bar # error: Syntax error at "bar": I was expecting a newline after the match case.

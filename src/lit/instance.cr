@@ -40,6 +40,10 @@ module Lit
       end
     end
 
+    def has_type?(type)
+      self.type == type
+    end
+
     def to_s(interpreter, token) : String
       "#{type.name}(#{fields.map { |k, v| "#{k}: #{::Lit.inspect_value(v, interpreter, token)}" }.join(", ")})"
     end

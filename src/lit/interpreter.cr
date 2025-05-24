@@ -93,6 +93,31 @@ module Lit
                     end
     end
 
+    def visit_match_expr(expr) : Value
+      subject = evaluate(expr.subject)
+
+      result = expr.branches.find do |(expr_pattern, body)|
+        if expr_pattern.is_a?(Expr::Variable) && expr_pattern.name.lexeme == "_"
+          true
+        else
+          pattern = evaluate(expr_pattern)
+          if equal?(subject, pattern, expr.keyword)
+            true
+          elsif subject.is_a?(Instance) && subject.has_type?(pattern)
+            true
+          else
+            false
+          end
+        end
+      end
+
+      if result
+        evaluate(result[1].not_nil!)
+      else
+        runtime_error(expr.keyword, "No match found for #{::Lit.inspect_value(subject, self, expr.keyword)}.")
+      end
+    end
+
     def visit_while_expr(expr) : Value
       return_value = nil
 
@@ -436,11 +461,15 @@ module Lit
     end
 
     private def equal?(a : Value, b : Value, token : Token) : Bool
+      # p! a
+      # p! b
       return true if a.nil? && b.nil?
       return false if a.nil?
 
       if a.is_a?(LitArray)
+        # puts "a is a LitArray"
         return false if !b.is_a?(LitArray)
+        # puts "b is a LitArray"
         return a.elements.each_with_index.all? { |value, i| equal?(value, b.elements[i]?, token) }
       end
       if a.is_a?(LitMap)

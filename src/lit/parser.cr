@@ -282,6 +282,8 @@ module Lit
     private def control_flow
       if match?(TokenType::IF)
         if_expr
+      elsif match?(TokenType::MATCH)
+        match_expr
       elsif match?(TokenType::WHILE)
         while_expr
       elsif match?(TokenType::UNTIL)
@@ -310,6 +312,31 @@ module Lit
       end
 
       Expr::If.new(condition, then_branch, else_branch) # TODO: hack to get else if to be a stmt
+    end
+
+    private def match_expr
+      keyword = previous
+      subject = expression
+      consume(TokenType::LEFT_BRACE, "I was expecting a '{' after the match subject.")
+      ignore_newlines
+      if match?(TokenType::RIGHT_BRACE) # Empty match block
+        raise error(previous, "I was expecting a match case after the '{'.")
+      end
+
+      branches = [] of Tuple(Expr, Expr)
+
+      until check(TokenType::RIGHT_BRACE) || at_end?
+        pattern = expression
+        consume(TokenType::THEN, "I was expecting 'then' after the match pattern.")
+
+        branches << {pattern, expression}
+        consume_line("I was expecting a newline after the match case.")
+
+        ignore_newlines
+        break if match?(TokenType::RIGHT_BRACE)
+      end
+
+      Expr::Match.new(keyword, subject, branches)
     end
 
     private def pipeline_expr

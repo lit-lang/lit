@@ -1,0 +1,5 @@
+fn number_as_word do match it { # error: Runtime error: No match found for 2.
+  1 then "one"
+}
+
+debug(number_as_word(2))

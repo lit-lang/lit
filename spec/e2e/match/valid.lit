@@ -1,0 +1,49 @@
+fn number_as_word do match it {
+  2 then "two"
+  1 then "one"
+  _ then "too big"
+}
+
+debug(number_as_word(1)) # expect: "one"
+debug(number_as_word(2)) # expect: "two"
+debug(number_as_word(3)) # expect: "too big"
+
+fn word_to_number do match it {
+  "one" then 1
+  "two" then 2
+  _ then 0
+}
+debug(word_to_number("one")) # expect: 1
+debug(word_to_number("two")) # expect: 2
+debug(word_to_number("other")) # expect: 0
+
+fn is_empty do match it {
+  [] then true
+  {:} then true
+  _ then false
+}
+debug(is_empty([])) # expect: true
+debug(is_empty({:})) # expect: true
+debug(is_empty([1])) # expect: false
+debug(is_empty({1 : 2})) # expect: false
+
+type Foo {
+  init do |a| self.a = a
+  eq { |other|
+    if typeof(other) != 'Foo' do return false
+
+    self.a == other.a
+  }
+}
+type Bar {}
+fn compare_foo { |foo|
+  match foo {
+    Foo(1) then "Foo 1"
+    Foo then "different Foo"
+    _ then "not Foo"
+  }
+}
+
+debug(compare_foo(Foo(1))) # expect: "Foo 1"
+debug(compare_foo(Foo(2))) # expect: "different Foo"
+debug(compare_foo(Bar())) # expect: "not Foo"
