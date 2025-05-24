@@ -25,14 +25,14 @@ type Tape {
   }
 
   fn advance {
-    self.pos = self.pos + 1
+    self.pos += 1
     if self.tape.size() <= self.pos {
       self.tape.push(0)
     }
   }
 
   fn devance {
-    self.pos = self.pos - 1
+    self.pos -= 1
     if self.pos < 0 {
       panic("pos should be > 0")
     }
@@ -85,27 +85,27 @@ type Interpreter {
     while pc < size {
       let c = self.chars[pc]
 
-      if c == ">" {
-        tape.advance()
-      } else if c == "<" {
-        tape.devance()
-      } else if c == "+" {
-        tape.inc()
-      } else if c == "-" {
-        tape.dec()
-      } else if c == "." {
-        print(tape.get().chr())
-      } else if c == "," {
-        let byte = readln().bytes().first()
-        tape.set(byte)
-      } else if c == "[" {
-        if tape.get() == 0 {
-          pc = self.bracket_map[pc]
+      match self.chars[pc] {
+        '>' then tape.advance()
+        '<' then tape.devance()
+        '+' then tape.inc()
+        '-' then tape.dec()
+        '.' then print(tape.get().chr())
+        ',' then {
+          let byte = readln().bytes().first()
+          tape.set(byte)
         }
-      } else if c == "]" {
-        if tape.get() != 0 {
-          pc = self.bracket_map[pc]
+        '[' then {
+          if tape.get() == 0 {
+            pc = self.bracket_map[pc]
+          }
         }
+        ']' then {
+          if tape.get() != 0 {
+            pc = self.bracket_map[pc]
+          }
+        }
+        _ then nil # Ignore any other characters
       }
 
       pc += 1
