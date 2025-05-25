@@ -136,6 +136,11 @@ module Lit
           ::Lit::Native::Fn.new("argv", 0, ->(interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
             interpreter.argv
           }),
+          ::Lit::Native::Fn.new("env", 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
+            LitMap.new(
+              ENV.to_h { |key, value| {key.as(Value), value.as(Value)} }
+            )
+          }),
         ]
       end
     end

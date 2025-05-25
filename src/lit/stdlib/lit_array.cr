@@ -96,6 +96,26 @@ module Lit
             end
           )
         })
+      when "any?"
+        ::Lit::Native::Fn.new(name.lexeme, 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          fn = arguments[0]
+          if !fn.is_a?(Function)
+            raise RuntimeError.new(token, "Expected function as the first argument, got #{interpreter.type_of(fn)}.")
+          end
+          @elements.any? do |element|
+            fn.call(interpreter, [element], token).as(Bool)
+          end
+        })
+      when "all?"
+        ::Lit::Native::Fn.new(name.lexeme, 1, ->(interpreter : Interpreter, arguments : ::Array(Value), token : Token) : Value {
+          fn = arguments[0]
+          if !fn.is_a?(Function)
+            raise RuntimeError.new(token, "Expected function as the first argument, got #{interpreter.type_of(fn)}.")
+          end
+          @elements.all? do |element|
+            fn.call(interpreter, [element], token).as(Bool)
+          end
+        })
       when "sample"
         ::Lit::Native::Fn.new(name.lexeme, 0, ->(_interpreter : Interpreter, _arguments : ::Array(Value), _token : Token) : Value {
           @elements.sample
