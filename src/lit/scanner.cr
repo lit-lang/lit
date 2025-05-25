@@ -242,6 +242,8 @@ module Lit
               string += "\t"
             when 'r'
               string += "\r"
+            when 'e'
+              string += "\e"
             else
               string += e # Adding the unknown escape sequence to the string
             end
