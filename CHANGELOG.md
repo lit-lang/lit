@@ -1,4 +1,6 @@
-## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
+## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.3.0...main)
+
+## v0.3.0 - More expressions. More files. More syntax sugar. | [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...v0.3.0)
 
 - Make `var`/`let` expressions, not statements
 

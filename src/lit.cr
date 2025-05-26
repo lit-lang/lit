@@ -2,7 +2,7 @@ require "option_parser"
 require "./lit/lit"
 
 module Lit
-  VERSION = "0.2.0"
+  VERSION = "0.3.0"
 
   private class_property current_file_path = ""
 
