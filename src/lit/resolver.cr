@@ -107,10 +107,10 @@ module Lit
       resolve_function(stmt.function, FunctionType::Function)
     end
 
-    def visit_var_stmt(stmt) : Nil
-      declare(stmt.name)
-      resolve(stmt.initializer.not_nil!) if stmt.initializer
-      define(stmt.name)
+    def visit_var_expr(expr) : Nil
+      declare(expr.name)
+      resolve(expr.initializer.not_nil!) if expr.initializer
+      define(expr.name)
     end
 
     def visit_expression_stmt(stmt) : Nil

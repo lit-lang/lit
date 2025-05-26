@@ -7,43 +7,6 @@ describe Lit::Parser do
   it_parses :number, to_literal: 1.0
   it_parses :string, to_literal: "some text"
 
-  describe "var statements" do
-    it "parses var statements" do
-      tokens = Create.tokens(:var, :identifier, :newline, :eof)
-      stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Var)
-
-      stmt.name.lexeme.should eq "my_var"
-      stmt.mutable?.should be_true
-      stmt.initializer.as(Lit::Expr::Literal).value.should eq nil
-    end
-
-    it "parses let statements" do
-      tokens = Create.tokens(:let, :identifier, :newline, :eof)
-      stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Var)
-
-      stmt.name.lexeme.should eq "my_var"
-      stmt.mutable?.should be_false
-      stmt.initializer.as(Lit::Expr::Literal).value.should eq nil
-    end
-
-    it "parses var statements with initializer" do
-      tokens = Create.tokens(:var, :identifier, :equal, :number, :newline, :eof)
-      stmt = Lit::Parser.parse(tokens).first.as(Lit::Stmt::Var)
-
-      stmt.name.lexeme.should eq "my_var"
-      stmt.initializer.as(Lit::Expr::Literal).value.should eq 1.0
-    end
-
-    context "when there's no variable name" do
-      it do
-        tokens = Create.tokens(:var, :newline, :eof)
-        error_msg = output_of { Lit::Parser.parse(tokens) }
-
-        error_msg.should contain("I was expecting a variable name here")
-      end
-    end
-  end
-
   describe "assignment expression" do
     it "parses the assignment" do
       tokens = Create.tokens(:identifier, :equal, :number, :newline, :eof)

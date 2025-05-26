@@ -25,6 +25,7 @@ module AstGenerator
       "Self                = keyword : Token",
       "Unary               = operator : Token, right : Expr",
       "Variable            = name : Token",
+      "Var                 = name : Token, initializer : Expr, mutable : Bool", # var declaration
       "StringInterpolation = parts : Array(Expr), token : Token",
       "Loop                = body : Expr::Block",
       "Break               = keyword : Token, value : Expr?",
@@ -37,7 +38,6 @@ module AstGenerator
       "Type       = name : Token, methods : Array(Stmt::Function)",
       "Expression = expression : Expr",
       "Function   = name : Token, function : Expr::Function",
-      "Var        = name : Token, initializer : Expr, mutable : Bool",
     ])
   end
 

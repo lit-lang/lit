@@ -58,8 +58,6 @@ module Lit
         consume(TokenType::FN, "BUG")
         return function("function")
       end
-      return var_declaration(mutable: false) if match?(TokenType::LET)
-      return var_declaration(mutable: true) if match?(TokenType::VAR)
       return type_declaration if match?(TokenType::TYPE)
 
       statement
@@ -69,19 +67,6 @@ module Lit
       name = consume(TokenType::IDENTIFIER, "I was expecting a #{kind} name.")
 
       Stmt::Function.new(name, function_body(kind))
-    end
-
-    private def var_declaration(mutable)
-      name = consume(TokenType::IDENTIFIER, "I was expecting a variable name here.")
-      initializer = if match?(TokenType::EQUAL)
-                      ignore_newlines
-                      expression
-                    else
-                      Expr::Literal.new(nil)
-                    end
-      consume_line("I was expecting a newline after variable declaration.")
-
-      Stmt::Var.new(name, initializer, mutable)
     end
 
     private def type_declaration
@@ -240,9 +225,24 @@ module Lit
         value = check(TokenType::NEWLINE) ? nil : expression
 
         Expr::Return.new(token, value)
+      elsif match?(TokenType::LET, TokenType::VAR)
+        var_declaration(mutable: previous.type != TokenType::LET)
       else
         assignment
       end
+    end
+
+    private def var_declaration(mutable)
+      name = consume(TokenType::IDENTIFIER, "I was expecting a variable name here.")
+      initializer = if match?(TokenType::EQUAL)
+                      ignore_newlines
+                      expression
+                    else
+                      Expr::Literal.new(nil)
+                    end
+      # consume_line("I was expecting a newline after variable declaration.")
+
+      Expr::Var.new(name, initializer, mutable)
     end
 
     private def assignment

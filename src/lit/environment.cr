@@ -25,6 +25,7 @@ module Lit
 
     def define(name, value, mutable = false)
       @values[name] = Binding.new(value, mutable)
+      value
     end
 
     def get_at(distance : Int32, name : String)

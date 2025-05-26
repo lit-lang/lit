@@ -1,0 +1,11 @@
+debug(let a = 1) # expect: 1
+debug(let b = let c = 2) # expect: 2
+debug(b) # expect: 2
+debug(c) # expect: 2
+debug(let d) # expect: nil
+
+debug(var aa = 1) # expect: 1
+debug(var bb = var cc = 2) # expect: 2
+debug(bb) # expect: 2
+debug(cc) # expect: 2
+debug(var dd) # expect: nil

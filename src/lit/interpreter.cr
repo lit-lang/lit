@@ -182,8 +182,8 @@ module Lit
       @environment.define(stmt.name.lexeme, function)
     end
 
-    def visit_var_stmt(stmt) : Nil
-      @environment.define(stmt.name.lexeme, evaluate(stmt.initializer), stmt.mutable?)
+    def visit_var_expr(expr) : Value
+      @environment.define(expr.name.lexeme, evaluate(expr.initializer), expr.mutable?)
     end
 
     def visit_expression_stmt(stmt) : Nil

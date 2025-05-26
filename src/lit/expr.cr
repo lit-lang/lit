@@ -23,6 +23,7 @@ module Lit
       abstract def visit_self_expr(expr : Self) : T
       abstract def visit_unary_expr(expr : Unary) : T
       abstract def visit_variable_expr(expr : Variable) : T
+      abstract def visit_var_expr(expr : Var) : T
       abstract def visit_string_interpolation_expr(expr : StringInterpolation) : T
       abstract def visit_loop_expr(expr : Loop) : T
       abstract def visit_break_expr(expr : Break) : T
@@ -224,6 +225,18 @@ module Lit
 
       def accept(visitor : Visitor)
         visitor.visit_variable_expr(self)
+      end
+    end
+
+    class Var < Expr
+      getter name : Token
+      getter initializer : Expr
+      getter? mutable : Bool
+
+      def initialize(@name, @initializer, @mutable); end
+
+      def accept(visitor : Visitor)
+        visitor.visit_var_expr(self)
       end
     end
 

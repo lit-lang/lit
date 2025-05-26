@@ -1,5 +1,14 @@
 ## Unreleased - [Full diff](https://github.com/lit-lang/lit/compare/v0.2.0...main)
 
+- Make `var`/`let` expressions, not statements
+
+Declaring a variable now returns it's value:
+
+```lit
+let a = let b = let c = 1
+println([a, b, c]) # prints [1, 1, 1]
+```
+
 - Add augmented assignment operators
 
 ```lit
